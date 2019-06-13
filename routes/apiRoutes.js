@@ -1,8 +1,10 @@
 //const db = require("../models");
+const path = require('path');
+const router = require("express").Router();
 
-module.exports = (app, path) => {
-  //Tester route for express routing, will not stay when adding react
-  app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "../index.html"));
-  });
-};
+// API Routes
+router.get('/', (req, res) => {
+  res.send('Hi!')
+});
+
+module.exports = router;

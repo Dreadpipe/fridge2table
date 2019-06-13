@@ -1,5 +1,6 @@
 {
   "main": "node_modules/expo/AppEntry.js",
+  "proxy": "http://localhost:3001/",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -8,6 +9,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "axios": "^0.19.0",
     "expo": "^33.0.0",
     "react": "16.8.3",
     "react-dom": "^16.8.6",
