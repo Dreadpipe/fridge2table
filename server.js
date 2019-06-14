@@ -16,10 +16,8 @@ app.use(express.json());
 //   app.use(express.static("client/build"))
 // }
 //Routes
-// app.use('/', routes);
-app.get('/', (req, res) => {
-  res.send('Hi!')
-})
+app.use('/', routes);
+
 //Connect to Mongo
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fridge2table", {useNewUrlParser: true});
 //Start server
