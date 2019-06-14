@@ -1,13 +1,15 @@
 import React from "react";
-import { StyleSheet, Button, View } from "react-native";
+import { StyleSheet, Button, View, ImageBackground, Image, Text } from "react-native";
+import Freezer from "../components/freezer";
+import Fridge from "../components/fridge";
+import FullFridge from "../components/fullFridge";
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#fff",
 		alignItems: "center",
 		justifyContent: "center"
-	}
+  }
 });
 
 class Login extends React.Component {
@@ -19,9 +21,9 @@ class Login extends React.Component {
 
 	render() {
 		return (
-			<View style={styles.container}>
-				<Button title="Login" onPress={this.handlePress} />
-			</View>
+      <View style={styles.container}>
+        <FullFridge handlePress={this.handlePress} />
+      </View>
 		);
 	}
 }
