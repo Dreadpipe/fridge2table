@@ -1,29 +1,30 @@
 import React from "react";
-import { StyleSheet, Button, View } from "react-native";
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center"
-	}
-});
-
-class Login extends React.Component {
-	state = {};
-
-	handlePress = () => {
-		this.props.navigation.navigate("Home");
+import { Button, StyleSheet, Text, View } from "react-native";
+import { Linking } from "expo";
+import env from "../../env";
+export default class Login extends React.Component {
+	state = {
+		authResult: {}
 	};
+
+	handleAuth = () => {
+		const auth = Linking.openURL(`http://www.${env.IP_ADDRESS}.xip.io:3001/auth/google`)
+
+		console.log(auth)
+	}
 
 	render() {
 		return (
 			<View style={styles.container}>
-				<Button title="Login" onPress={this.handlePress} />
+				<Button title="Login" onPress={this.handleAuth} />
 			</View>
 		);
 	}
 }
-
-export default Login;
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center"
+	}
+});
