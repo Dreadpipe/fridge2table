@@ -6,7 +6,10 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 const AppNavigator = createStackNavigator(
   {
     Login: Login,
-    Home: Home,
+    Home: {
+      screen: Home,
+      path: '/',
+    },
   },
   {
     initialRouteName: 'Login'
