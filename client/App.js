@@ -1,33 +1,24 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import API from './src/utils/API';
+import React from "react";
+import Home from "./src/pages/home";
+import Login from './src/pages/login';
+import { createStackNavigator, createAppContainer } from "react-navigation";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const AppNavigator = createStackNavigator(
+  {
+    Login: Login,
+    Home: Home,
   },
-});
-
-class App extends React.Component {
-
-  state = {
-    callResults: '',
+  {
+    initialRouteName: 'Login'
   }
+);
 
-  componentDidMount() {
-    API.get().then(response => {
-      this.setState({callResults: response.data})
-    })
-  }
+const AppContainer = createAppContainer(AppNavigator);
 
-  render() {return (
-    <View style={styles.container}>
-      <Text>{this.state.callResults}</Text>
-    </View>
-  );}
+function App() {
+	return (
+		<AppContainer />
+	);
 }
 
 export default App;
