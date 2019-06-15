@@ -48,8 +48,9 @@ export default class BarCodeScannerExample extends React.Component {
     
     handleBarCodeScanned = ({type, data}) => {
       this.setState({scanned: true});
-      Axios.get(`https://api.edamam.com/api/food-database/parser?upc=${data}&app_id=2738ba89&app_key=18838a2aa6866b92497c8ebae315be66`).then((response) => {
-        alert(`You just scanned: ${response.data.hints[0].food.label}`)
-      })
+      alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+      // Axios.get(`https://api.edamam.com/api/food-database/parser?upc=${data}&app_id=2738ba89&app_key=18838a2aa6866b92497c8ebae315be66`).then((response) => {
+      //   alert(`You just scanned: ${response.data.hints[0].food.label}`)
+      // })
     };
   }

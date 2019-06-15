@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Button, View, ImageBackground, Image, Text } from "react-native";
+import { TouchableHighlight } from "react-native-gesture-handler";
 
 const styles = StyleSheet.create({
 	container: {
@@ -28,7 +29,9 @@ function FullFridge(props) {
       </View>
       <View style={styles.container}>
         <Text>2</Text>
-        <Image style={styles.icon} source={{uri: "https://image.flaticon.com/teams/slug/google.jpg"}} onPress={props.handlePress} />
+        <TouchableHighlight onPress={props.handlePress}>
+          <Image style={styles.icon} source={{uri: "https://image.flaticon.com/teams/slug/google.jpg"}} />
+        </TouchableHighlight>
         {/* <Button color="red" title="Login with Google" /> */}
         <Button color="purple" title="Login with other..." onPress={props.handlePress} />
       </View>
