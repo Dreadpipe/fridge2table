@@ -19,15 +19,14 @@ export default class Login extends React.Component {
 		authResult: {}
 	};
 
-	handleAuth = () => {
-		const auth = Linking.openURL(`http://www.${env.IP_ADDRESS}.xip.io:3001/auth/google`)
-		console.log(auth)
+	handlePress = () => {
+		this.props.navigation.navigate('Home');
 	}
 
 	render() {
 		return (
       <View style={styles.container}>
-        <FullFridge handlePress={this.handleAuth} />
+        <FullFridge handlePress={this.handlePress} />
       </View>
 		);
 	}
