@@ -28,8 +28,8 @@ function FullFridge(props) {
       </View>
       <View style={styles.container}>
         <Text>2</Text>
-        <Image style={styles.icon} source={{uri: "https://image.flaticon.com/teams/slug/google.jpg"}} />
-        <Button color="red" title="Login with Google" onPress={props.handlePress} />
+        <Image style={styles.icon} source={{uri: "https://image.flaticon.com/teams/slug/google.jpg"}} onPress={props.handlePress} />
+        <Button color="red" title="Login with Google" />
         <Button title="Login with other..." onPress={props.handlePress} />
       </View>
       <View style={styles.container}>
