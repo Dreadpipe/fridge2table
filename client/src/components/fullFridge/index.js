@@ -14,8 +14,8 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   icon: {
-    height: "10%",
-    width: "10%",
+    height: "20%",
+    width: "20%",
     backgroundColor: "grey"
   }
 });
@@ -29,8 +29,8 @@ function FullFridge(props) {
       <View style={styles.container}>
         <Text>2</Text>
         <Image style={styles.icon} source={{uri: "https://image.flaticon.com/teams/slug/google.jpg"}} onPress={props.handlePress} />
-        <Button color="red" title="Login with Google" />
-        <Button title="Login with other..." onPress={props.handlePress} />
+        {/* <Button color="red" title="Login with Google" /> */}
+        <Button color="purple" title="Login with other..." onPress={props.handlePress} />
       </View>
       <View style={styles.container}>
         <Text>Table</Text>

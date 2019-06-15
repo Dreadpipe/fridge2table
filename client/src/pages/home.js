@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
+import Scanner from "../components/scanner";
 import API from "../utils/API";
 
 const styles = StyleSheet.create({
@@ -13,7 +14,12 @@ const styles = StyleSheet.create({
 
 class Home extends React.Component {
 	state = {
-		callResults: ""
+		callResults: "",
+		scannerOn: false
+	};
+
+	toggleScan = () => {
+		this.setState({scannerOn: true});
 	};
 
 	componentDidMount() {
@@ -25,7 +31,8 @@ class Home extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Text>{this.state.callResults}</Text>
+				<Button title="Scan" onPress={this.toggleScan} />
+				{this.state.scannerOn ? <Scanner /> : null}
 			</View>
 		);
 	}

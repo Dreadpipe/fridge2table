@@ -31,5 +31,5 @@ app.use('/auth', authRoutes);
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fridge2table", {useNewUrlParser: true});
 //Start server
 app.listen(PORT, function() {
-  console.log("🌎  ==> API Server now listening on PORT " + PORT + "!");
+  console.log(`🌎  ==> API Server now listening on PORT ${PORT} !`);
 });
