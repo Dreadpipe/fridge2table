@@ -34,11 +34,14 @@ const productSchema = new Schema({
     type: Number,
     required: true,
   },
-  recipes: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    default: null,
-  },
+  recipes: [ 
+    {
+      type: Schema.Types.ObjectId,
+      required: true,
+      default: null,
+      ref: 'associatedRecipes'
+    },
+  ],
   dateAdded: {
     type: Date,
     required: true,

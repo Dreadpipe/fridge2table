@@ -11,24 +11,20 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  thirdPartyAccessToken: {
-    type: String,
-    required: true,
-  },
-  thirdPartyRefreshToken: {
-    type: String,
-    required: true,
-  },
   allProducts: [ // An array of every barcode ever scanned into the inventory.
     {
       type: Number,
       ref: 'allProduct',
+      required: true,
+      default: null,
     },
   ],
   inventoryProducts: [
     {
       type: Schema.Types.ObjectId,
       ref: 'currentInventory',
+      required: true,
+      default: null,
     },
   ],
   expiredFood: 
@@ -36,7 +32,9 @@ const userSchema = new Schema({
     {
 //     type: Schema.Types.ObjectId,
       type: Number,
-      ref: 'expiredProduct',
+      required: true,
+      default: 0,
+      // ref: 'expiredProduct',
     },
   // ]
   lastLogin: {

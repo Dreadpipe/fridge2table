@@ -5,8 +5,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const passport = require("passport");
 const passportSetup = require('./config/passport');
-const routes = require("./routes/apiRoutes");
-const dbRoutes = require("./routes/dbRoutes");
+const routes = require("./routes/routes");
 const authRoutes = require('./routes/authRoutes');
 
 const PORT = process.env.PORT || 3001;
@@ -26,7 +25,6 @@ app.use(express.json());
 
 //Routes
 app.use('/', routes);
-app.use('/db', dbRoutes);
 app.use('/auth', authRoutes);
 
 //Connect to Mongo
