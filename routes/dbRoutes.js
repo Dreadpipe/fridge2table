@@ -1,10 +1,18 @@
 // Establish our Express Dependancy
 const express = require('express');
+const path = require('path');
 const router = express.Router();
 const axios = require('axios');
 
 // Bring in the database models
 const db = require('../models');
+
+//-------------------------------------
+
+// HealthCheck Route
+router.get('/healthCheck', function (req, res) {
+    res.send('healthy!');
+});
 
 //-------------------------------------
 
@@ -29,3 +37,5 @@ router.post('/newProduct', function (req, res) {
 //Remove Product
 
 //-------------------------------------
+
+module.exports = router;
