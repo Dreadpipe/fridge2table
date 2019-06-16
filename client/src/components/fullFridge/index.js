@@ -33,7 +33,7 @@ function FullFridge(props) {
           <Image style={styles.icon} source={{uri: "https://image.flaticon.com/teams/slug/google.jpg"}} />
         </TouchableHighlight>
         {/* <Button color="red" title="Login with Google" /> */}
-        <Button color="purple" title="Login with other..." onPress={props.handlePress} />
+        <Button color="purple" title="Login" onPress={props.login} />
       </View>
       <View style={styles.container}>
         <Text>Table</Text>
