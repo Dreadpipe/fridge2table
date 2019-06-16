@@ -11,22 +11,40 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  thirdPartyAccessToken: {
-    type: String,
-    required: true,
-  },
-  thirdPartyRefreshToken: {
-    type: String,
-    required: true,
-  },
-  products: [
+  allProducts: [ // An array of every barcode ever scanned into the inventory.
     {
-      // Store ObjectIds in the array
-      type: Schema.Types.ObjectId,
-      // The ObjectIds will refer to the ids in the Comment model
-      ref: 'product',
+      type: Number,
+      ref: 'allProduct',
+      required: true,
+      default: null,
     },
   ],
+  inventoryProducts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'currentInventory',
+      required: true,
+      default: null,
+    },
+  ],
+  expiredFood: 
+  // [ //If we expand the data we keep on expired foods, we can uncomment the needed bits here.
+    {
+//     type: Schema.Types.ObjectId,
+      type: Number,
+      required: true,
+      default: 0,
+      // ref: 'expiredProduct',
+    },
+  // ]
+  lastLogin: {
+    type: Date,
+    required: true,
+  },
+  dateJoined: {
+    type: Date,
+    required: true,
+  },
 });
 
 const User = mongoose.model('user', userSchema);
