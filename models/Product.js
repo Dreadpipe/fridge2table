@@ -31,7 +31,7 @@ const productSchema = new Schema({
     required: true,
   },
   owner: {
-    type: Schema.Types.ObjectId,
+    type: String,
     required: true,
   },
   quantity: {

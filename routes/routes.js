@@ -56,7 +56,7 @@ router.get('/findOneUser', function (req, res) {
 
 // Find all Products Route
 router.get('/findAllProducts', function (req, res) {
-    db.User.find({})
+    db.Product.find({})
         .populate('associatedRecipes')
         .then(data => {
             res.json(data);
@@ -115,7 +115,7 @@ router.post('/newUser', function (req, res) {
 router.post('/newProduct', function (req, res) {
     console.log(req.body)
     // Check for existence of user in database
-    db.Product.find({
+    db.Product.findOne({
         foodId: req.body.id
     })
         .populate('associatedRecipes')
@@ -137,11 +137,11 @@ router.post('/newProduct', function (req, res) {
                 if(req.body.expDate) {
                     Object.assign(newProduct, {expDate: req.body.expDate})
                 }
-                new Product({newProduct})
+                new Product(newProduct)
                     .save()
                     .then((newProduct) => {
                         console.log(`Product added! \nDetails: ${newProduct}`);
-                        const target = { thirdPartyId: newProduct.owner };
+                        const target = { id: newProduct.owner };
                         const update = { 
                             brandNewProduct: newProduct.foodId,
                             productObjId: newProduct._id
