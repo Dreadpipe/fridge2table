@@ -3,18 +3,13 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const productSchema = new Schema({
-  name: {
+  productname: {
     type: String,
     required: true,
   },
   category: {
     type: String,
     required: true,
-  },
-  barcode: {
-    type: Number,
-    required: false,
-    default: null,
   },
   expDate: {
     type: Date,
@@ -26,8 +21,17 @@ const productSchema = new Schema({
     required: true,
     default: false,
   },
+  foodId: {
+    type: Number,
+    required: false,
+    default: null,
+  },
   location: {
     type: String,
+    required: true,
+  },
+  owner: {
+    type: Schema.Types.ObjectId,
     required: true,
   },
   quantity: {
@@ -48,10 +52,6 @@ const productSchema = new Schema({
   },
   lastUpdated: {
     type: Date,
-    required: true,
-  },
-  owner: {
-    type: Schema.Types.ObjectId,
     required: true,
   }
 });

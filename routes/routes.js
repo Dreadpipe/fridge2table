@@ -7,6 +7,7 @@ const axios = require('axios');
 // Bring in the database models
 const db = require('../models');
 const { User } = db;
+const { Product } = db;
 
 //++++++++++++++++++++++
 // All GET Routes Below ------------
@@ -90,10 +91,12 @@ router.post('/newUser', function (req, res) {
                     thirdPartyId: req.body.id,
                     lastLogin: Date.now(),
                     dateJoined: Date.now(),
+                    lastUpdated: Date.now()
                 })
                 .save()
                 .then((newUser) => {
                     console.log(`User added! \nDetails: ${newUser}`);
+                    res.send('New User Made!')
                 });
         }
     })
@@ -107,7 +110,43 @@ router.post('/newUser', function (req, res) {
 
 //Create new Product
 router.post('/newProduct', function (req, res) {
-
+    console.log(req.body)
+    // Check for existence of user in database
+    db.Product.find({
+        foodId: req.body.id
+    })
+        .populate('associatedRecipes')
+        .then(data => {
+            if(data) {
+                // Product already exists
+                res.send(data);
+            } else {
+                // db.User.findOne
+                let newProduct = {
+                    productname: req.body.name,
+                    category: req.body.category,
+                    foodId: req.body.id,
+                    location: req.body.location,
+                    quantity: req.body.quantity,
+                    dateAdded: Date.now(),
+                    lastUpdated: Date.now(),
+                    owner: req.body.userId
+                };
+                if(req.body.expDate) {
+                    newProduct = Object.assign(newProduct, {expDate: req.body.expDate})
+                }
+                new Product({newProduct})
+                    .save()
+                    .then((newProduct) => {
+                        console.log(`Product added! \nDetails: ${newProduct}`);
+                    });
+            }
+            
+        })
+        .catch(err => {
+            console.log("We had a problem creating a new product in the database.\n------------------------")
+            console.log(err);
+        });
 });
 
 
@@ -115,9 +154,14 @@ router.post('/newProduct', function (req, res) {
 // All PUT Routes Below ------------
 //++++++++++++++++++++++
 
+//Update User
+router.put('/updateUser', function (req, res) {
+    updateUser(req, res);
+});
+
 //-------------------------------------
 
-//Update Product Quantity
+//Update Product
 
 //-------------------------------------
 
@@ -129,5 +173,78 @@ router.post('/newProduct', function (req, res) {
 //Remove Product
 
 //-------------------------------------
+
+function updateUser (req, res) {
+    let reqTarget = req.body.target;
+    const reqUpdate = req.body.update;
+    let finalTarget = {};
+    let finalUpdate = {};
+    switch (true) {
+        case (reqTarget.username !== undefined):
+            Object.assign(finalTarget, { username: reqTarget.username });
+            break;
+        case (reqTarget.id !== undefined):
+            Object.assign(finalTarget, { thirdPartyId: reqTarget.id });
+            break;
+        case (reqTarget.joinedBefore !== undefined):
+            Object.assign(finalTarget, { dateJoined: { $lte: new Date(joinedBefore) } });
+            break;
+        case (reqTarget.joinedAfter !== undefined):
+            Object.assign(finalTarget, { dateJoined: { $gte: new Date(joinedAfter) } });
+            break;
+        case (reqTarget.lastLoggedBefore !== undefined):
+            Object.assign(finalTarget, { lastLogin: { $lte: new Date(lastLoggedBefore) } });
+            break;
+        case (reqTarget.lastLoggedAfter !== undefined):
+            Object.assign(finalTarget, { lastLogin: { $gte: new Date(lastLoggedAfter) } });
+            break;
+        case (finalTarget === undefined):
+            console.log('There was no valid target.');
+            break;
+        default:
+    };
+    console.log('The target data will be:');
+    console.log(finalTarget);
+    switch (true) {
+        case (reqUpdate.username):
+            Object.assign(finalUpdate, { username: reqUpdate.username });
+            break;
+        case (reqUpdate.brandNewProduct):
+            Object.assign(finalUpdate, { $push: { allProducts: reqUpdate.brandNewProduct } });
+            break;
+        case (reqUpdate.productObjId):
+            Object.assign(finalUpdate, { $push:{ inventoryProducts: reqUpdate.productObjId } });
+            break;
+        case (reqUpdate.addExpired):
+            Object.assign(finalUpdate, { $inc: { expiredFood: 1} });
+            break;
+        case (reqUpdate.throwExpired):
+            Object.assign(finalUpdate, { $inc: { expiredFood: -1} });
+            break;
+        case (reqUpdate.justLogged):
+            Object.assign(finalUpdate, { lastLogin: Date.now() });
+            break;
+        case (finalUpdate === undefined):
+            console.log('There was no valid update.');
+            break;
+        default:
+    };
+    const now = Date.now()
+    Object.assign(finalUpdate, {lastUpdated: now});
+    console.log('The update data will be:');
+    console.log(finalUpdate);
+    db.User.findOneAndUpdate(finalTarget, finalUpdate)
+        .then(data => {
+            console.log(finalTarget)
+            console.log(finalUpdate)
+            console.log(data)
+            res.send('Update Sent!')
+            console.log('Update has been sent to the targeted User!')
+        })
+        .catch(err => {
+            console.log("We've got a problem. The update to the targeted User failed!")
+            console.log(err);
+        });
+}
 
 module.exports = router;
