@@ -6,6 +6,9 @@ export default {
     return axios.get(`http://${env.IP_ADDRESS}:3001/`);
   },
   checkForOrCreateUser(data) {
-    return axios.post(`http://${env.IP_ADDRESS}:3001/newUser`, data)
+    return axios.post(`http://${env.IP_ADDRESS}:3001/newUser`, data);
+  },
+  getCurrentUser(id) {
+    return axios.get(`http://${env.IP_ADDRESS}:3001/findOneUser/${id}`);
   }
 };
