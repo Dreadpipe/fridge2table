@@ -59,7 +59,7 @@ function FullFridge(props) {
         </TouchableHighlight>
       </View>
       <View style={{margin: 0}}>
-        <Button title="Login" color="red" onPress={props.handlePress} />
+        <Button title="Login" color="red" onPress={props.login} />
       </View>
       <View style={styles.freezer}>
         <Text>Fridge2Table &copy; 2019</Text>

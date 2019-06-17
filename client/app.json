@@ -3,11 +3,10 @@
     "name": "fridgetotable",
     "slug": "fridgetotable",
     "privacy": "public",
-    "sdkVersion": "33.0.0",
+    "sdkVersion": "32.0.0",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
