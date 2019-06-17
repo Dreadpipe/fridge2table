@@ -22,11 +22,6 @@ class Home extends React.Component {
 		this.setState({scannerOn: true});
 	};
 
-	componentDidMount() {
-		API.get().then(response => {
-			this.setState({ callResults: response.data });
-		});
-	}
 
 	render() {
 		return (
