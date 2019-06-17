@@ -3,7 +3,8 @@ import { StyleSheet, Text, View, Button, Alert } from "react-native";
 import { AuthSession } from "expo";
 import FullFridge from "./src/components/fullFridge";
 import jwtDecode from "jwt-decode";
-import env from './env';
+import API from "./src/utils/API";
+import env from "./env";
 
 const auth0ClientId = env.AUTH0_CLIENT_ID;
 const auth0Domain = env.AUTH0_DOMAIN;
@@ -25,7 +26,7 @@ function toQueryString(params) {
 
 export default class App extends React.Component {
 	state = {
-		name: null
+		user: {}
 	};
 
 	login = async () => {
@@ -46,7 +47,6 @@ export default class App extends React.Component {
 
 		// Perform the authentication
 		const response = await AuthSession.startAsync({ authUrl });
-		console.log("Authentication response", response);
 
 		if (response.type === "success") {
 			this.handleResponse(response.params);
@@ -65,18 +65,31 @@ export default class App extends React.Component {
 		// Retrieve the JWT token and decode it
 		const jwtToken = response.id_token;
 		const decoded = jwtDecode(jwtToken);
+		let user;
 
-		const { name } = decoded;
-		this.setState({ name });
+		if (decoded.sub.split("|")[0] === "auth0") {
+			user = {
+				name: decoded.nickname,
+				id: decoded.sub.split("|")[1]
+			};
+		} else {
+			user = {
+				name: decoded.name,
+				id: decoded.sub.split("|")[1]
+			};
+		}
+
+		API.checkForOrCreateUser(user);
+		this.setState({ user });
 	};
 
 	render() {
-		const { name } = this.state;
+		const { user } = this.state;
 
 		return (
 			<View style={styles.container}>
-				{name ? (
-					<Text style={styles.title}>You are logged in, {name}!</Text>
+				{user.name ? (
+					<Text style={styles.title}>You are logged in, {user.name}!</Text>
 				) : (
 					<FullFridge login={this.login} />
 				)}
