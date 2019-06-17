@@ -11,9 +11,9 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  allProducts: [ // An array of every barcode ever scanned into the inventory.
+  allProducts: [ // An array of every foodID ever scanned into the inventory.
     {
-      type: Number,
+      type: String,
       ref: 'allProduct',
       required: true,
       default: null,
@@ -45,6 +45,10 @@ const userSchema = new Schema({
     type: Date,
     required: true,
   },
+  lastUpdated: {
+    type: Date,
+    required: true,
+  }
 });
 
 const User = mongoose.model('user', userSchema);
