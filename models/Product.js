@@ -22,7 +22,7 @@ const productSchema = new Schema({
     default: false,
   },
   foodId: {
-    type: Number,
+    type: String,
     required: false,
     default: null,
   },

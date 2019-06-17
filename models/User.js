@@ -13,7 +13,7 @@ const userSchema = new Schema({
   },
   allProducts: [ // An array of every foodID ever scanned into the inventory.
     {
-      type: Number,
+      type: String,
       ref: 'allProduct',
       required: true,
       default: null,

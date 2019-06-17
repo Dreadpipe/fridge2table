@@ -81,6 +81,9 @@ router.post('/newUser', function (req, res) {
         thirdPartyId: req.body.id
     }).then((currentUser) => {
         if (currentUser) {
+            const target = { thirdPartyId: currentUser.id };
+            const update = { justLogged: true }
+            updateUser(target, update);
             // User already registered
             res.send('User already exists!');
             console.log(`Existing User is: \n${currentUser}`);
@@ -121,7 +124,6 @@ router.post('/newProduct', function (req, res) {
                 // Product already exists
                 res.send(data);
             } else {
-                // db.User.findOne
                 let newProduct = {
                     productname: req.body.name,
                     category: req.body.category,
@@ -133,15 +135,20 @@ router.post('/newProduct', function (req, res) {
                     owner: req.body.userId
                 };
                 if(req.body.expDate) {
-                    newProduct = Object.assign(newProduct, {expDate: req.body.expDate})
+                    Object.assign(newProduct, {expDate: req.body.expDate})
                 }
                 new Product({newProduct})
                     .save()
                     .then((newProduct) => {
                         console.log(`Product added! \nDetails: ${newProduct}`);
+                        const target = { thirdPartyId: newProduct.owner };
+                        const update = { 
+                            brandNewProduct: newProduct.foodId,
+                            productObjId: newProduct._id
+                        };
+                        updateUser(target, update);
                     });
             }
-            
         })
         .catch(err => {
             console.log("We had a problem creating a new product in the database.\n------------------------")
@@ -156,7 +163,9 @@ router.post('/newProduct', function (req, res) {
 
 //Update User
 router.put('/updateUser', function (req, res) {
-    updateUser(req, res);
+    const reqTarget = req.body.target;
+    const reqUpdate = req.body.update;
+    updateUser(reqTarget, reqUpdate);
 });
 
 //-------------------------------------
@@ -174,9 +183,7 @@ router.put('/updateUser', function (req, res) {
 
 //-------------------------------------
 
-function updateUser (req, res) {
-    let reqTarget = req.body.target;
-    const reqUpdate = req.body.update;
+function updateUser (reqTarget, reqUpdate) {
     let finalTarget = {};
     let finalUpdate = {};
     switch (true) {
@@ -184,7 +191,9 @@ function updateUser (req, res) {
             Object.assign(finalTarget, { username: reqTarget.username });
             break;
         case (reqTarget.id !== undefined):
+            console.log(reqTarget)
             Object.assign(finalTarget, { thirdPartyId: reqTarget.id });
+            console.log(finalTarget)
             break;
         case (reqTarget.joinedBefore !== undefined):
             Object.assign(finalTarget, { dateJoined: { $lte: new Date(joinedBefore) } });
@@ -206,22 +215,22 @@ function updateUser (req, res) {
     console.log('The target data will be:');
     console.log(finalTarget);
     switch (true) {
-        case (reqUpdate.username):
+        case (reqUpdate.username !== undefined):
             Object.assign(finalUpdate, { username: reqUpdate.username });
             break;
-        case (reqUpdate.brandNewProduct):
+        case (reqUpdate.brandNewProduct !== undefined):
             Object.assign(finalUpdate, { $push: { allProducts: reqUpdate.brandNewProduct } });
             break;
-        case (reqUpdate.productObjId):
+        case (reqUpdate.productObjId !== undefined):
             Object.assign(finalUpdate, { $push:{ inventoryProducts: reqUpdate.productObjId } });
             break;
-        case (reqUpdate.addExpired):
+        case (reqUpdate.addExpired !== undefined):
             Object.assign(finalUpdate, { $inc: { expiredFood: 1} });
             break;
-        case (reqUpdate.throwExpired):
+        case (reqUpdate.throwExpired !== undefined):
             Object.assign(finalUpdate, { $inc: { expiredFood: -1} });
             break;
-        case (reqUpdate.justLogged):
+        case (reqUpdate.justLogged !== undefined):
             Object.assign(finalUpdate, { lastLogin: Date.now() });
             break;
         case (finalUpdate === undefined):
@@ -235,10 +244,7 @@ function updateUser (req, res) {
     console.log(finalUpdate);
     db.User.findOneAndUpdate(finalTarget, finalUpdate)
         .then(data => {
-            console.log(finalTarget)
-            console.log(finalUpdate)
             console.log(data)
-            res.send('Update Sent!')
             console.log('Update has been sent to the targeted User!')
         })
         .catch(err => {
