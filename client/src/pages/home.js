@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 class Home extends React.Component {
 	state = {
 		user: {},
-		view: "pantry"
+		view: "fridge"
 	};
 
 	componentDidMount() {
