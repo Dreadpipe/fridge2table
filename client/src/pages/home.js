@@ -8,10 +8,9 @@ import API from "../utils/API";
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center"
+		display: "flex",
+		justifyContent: "center",
+		width: "100%"
 	}
 });
 
@@ -30,7 +29,6 @@ class Home extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Text>Hi, {this.state.user.username}!</Text>
 				<Button
 					title="fridge"
 					onPress={() => this.setState({ view: "fridge" })}
@@ -59,7 +57,10 @@ class Home extends React.Component {
 							break;
 					}
 				})()}
-				<Button title="Scan" onPress={() => this.setState({view: "scanner"})} />
+				<Button
+					title="Scan"
+					onPress={() => this.setState({ view: "scanner" })}
+				/>
 			</View>
 		);
 	}
