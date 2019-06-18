@@ -1,14 +1,14 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Container } from 'native-base';
+import { Container } from "native-base";
 import { AuthSession } from "expo";
 import FullFridge from "./src/components/fullFridge";
-import Home from './src/pages/home';
+import Home from "./src/pages/home";
 import jwtDecode from "jwt-decode";
 import API from "./src/utils/API";
 import env from "./env";
-import { Font } from 'expo';
-import { Ionicons } from '@expo/vector-icons';
+import { Font, AppLoading } from "expo";
+import { Ionicons } from "@expo/vector-icons";
 
 const auth0ClientId = env.AUTH0_CLIENT_ID;
 const auth0Domain = env.AUTH0_DOMAIN;
@@ -30,16 +30,22 @@ function toQueryString(params) {
 
 export default class App extends React.Component {
 	state = {
-		user: {}
+		user: {},
+		isReady: false
 	};
 
-	async componentDidMount() {
+	componentWillMount() {
+		this.loadFonts();
+	}
+
+	async loadFonts() {
 		await Font.loadAsync({
-		  'Roboto': require('native-base/Fonts/Roboto.ttf'),
-		  'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-		  ...Ionicons.font,
+			Roboto: require("native-base/Fonts/Roboto.ttf"),
+			Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+			...Ionicons.font
 		});
-	  }
+		this.setState({ isReady: true });
+	}
 
 	login = async () => {
 		// Retrieve the redirect URL, add this to the callback URL list
@@ -96,15 +102,13 @@ export default class App extends React.Component {
 	};
 
 	render() {
+		if (!this.state.isReady) {
+			return <AppLoading />;
+		}
 		const { user } = this.state;
-
 		return (
 			<Container style={styles.container}>
-				{user.name ? (
-					<Home user={user} />
-				) : (
-					<FullFridge login={this.login} />
-				)}
+				{user.name ? <Home user={user} /> : <FullFridge login={this.login} />}
 			</Container>
 		);
 	}
@@ -112,6 +116,6 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+		flex: 1
 	}
 });

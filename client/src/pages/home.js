@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Button } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import Head from "../components/head";
 import OpenFridge from "../components/openFridge";
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 class Home extends React.Component {
 	state = {
 		user: {},
-		view: "fridge"
+		view: "pantry"
 	};
 
 	componentDidMount() {

@@ -26,24 +26,24 @@ const styles = StyleSheet.create({
 		left: '17.8%',
 	},
 	grainsBtn: {
-		
+		backgroundColor: '#0092D6'
 	},
 	drinksBtn: {
-		
+		backgroundColor: '#0092D6',
 		marginLeft: 3,
 	},
 	dairyBtn: {
-		
+		backgroundColor: '#0092D6',
 	},
 	meatsBtn: {
-		
+		backgroundColor: '#0092D6',
 		marginLeft: 23,
 	},
 	miscBtn: {
-		
+		backgroundColor: '#0092D6',
 	},
 	produceBtn: {
-		
+		backgroundColor: '#0092D6',
 		marginLeft: 35,
 	}
 });
@@ -56,16 +56,16 @@ function Fridge(props) {
 			source={require("../../../assets/OpenFridge.png")}
 		>
 			<View style={styles.grainsDrinksDiv}>
-				<Button small hasText transparent style={styles.grainsBtn}><Text>Grains</Text></Button>
-				<Button small hasText transparent style={styles.drinksBtn}><Text>Drinks</Text></Button>
+				<Button small hasText style={styles.grainsBtn}><Text>Grains</Text></Button>
+				<Button small hasText style={styles.drinksBtn}><Text>Drinks</Text></Button>
 			</View>
 			<View style={styles.dairyMeatsDiv}>
-				<Button small hasText transparent style={styles.dairyBtn}><Text>Dairy</Text></Button>
-				<Button small hasText transparent style={styles.meatsBtn}><Text>Meats</Text></Button>
+				<Button small hasText style={styles.dairyBtn}><Text>Dairy</Text></Button>
+				<Button small hasText style={styles.meatsBtn}><Text>Meats</Text></Button>
 			</View>
 			<View style={styles.miscProduceDiv}>
-				<Button small hasText transparent style={styles.miscBtn}><Text>Misc</Text></Button>
-				<Button small hasText transparent style={styles.produceBtn}><Text>Produce</Text></Button>
+				<Button small hasText style={styles.miscBtn}><Text>Misc</Text></Button>
+				<Button small hasText style={styles.produceBtn}><Text>Produce</Text></Button>
 			</View>
 		</ImageBackground>
 	);
