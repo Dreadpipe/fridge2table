@@ -18,12 +18,7 @@ const styles = StyleSheet.create({
 class Home extends React.Component {
 	state = {
 		user: {},
-		scannerOn: false,
 		view: "fridge"
-	};
-
-	toggleScan = () => {
-		this.setState({ scannerOn: true });
 	};
 
 	componentDidMount() {
@@ -64,8 +59,7 @@ class Home extends React.Component {
 							break;
 					}
 				})()}
-				<Button title="Scan" onPress={this.toggleScan} />
-				{this.state.scannerOn ? <Scanner /> : null}
+				<Button title="Scan" onPress={() => this.setState({view: "scanner"})} />
 			</View>
 		);
 	}
