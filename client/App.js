@@ -1,11 +1,14 @@
 import React from "react";
-import { StyleSheet, Text, View, Button, Alert } from "react-native";
+import { StyleSheet } from "react-native";
+import { Container } from 'native-base';
 import { AuthSession } from "expo";
 import FullFridge from "./src/components/fullFridge";
 import Home from './src/pages/home';
 import jwtDecode from "jwt-decode";
 import API from "./src/utils/API";
 import env from "./env";
+import { Font } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 
 const auth0ClientId = env.AUTH0_CLIENT_ID;
 const auth0Domain = env.AUTH0_DOMAIN;
@@ -29,6 +32,14 @@ export default class App extends React.Component {
 	state = {
 		user: {}
 	};
+
+	async componentDidMount() {
+		await Font.loadAsync({
+		  'Roboto': require('native-base/Fonts/Roboto.ttf'),
+		  'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+		  ...Ionicons.font,
+		});
+	  }
 
 	login = async () => {
 		// Retrieve the redirect URL, add this to the callback URL list
@@ -88,13 +99,13 @@ export default class App extends React.Component {
 		const { user } = this.state;
 
 		return (
-			<View style={styles.container}>
+			<Container style={styles.container}>
 				{user.name ? (
 					<Home user={user} />
 				) : (
 					<FullFridge login={this.login} />
 				)}
-			</View>
+			</Container>
 		);
 	}
 }
@@ -102,13 +113,5 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center"
-	},
-	title: {
-		fontSize: 20,
-		textAlign: "center",
-		marginTop: 40
 	}
 });
