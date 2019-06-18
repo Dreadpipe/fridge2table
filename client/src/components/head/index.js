@@ -11,7 +11,7 @@ import {
 
 const styles = StyleSheet.create({
 	header: {
-		backgroundColor: '#009122'
+		backgroundColor: '#0092D6'
 	}
 })
 
