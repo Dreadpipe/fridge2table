@@ -37,9 +37,9 @@ router.get('/findAllUsers', function (req, res) {
 //-------------------------------------
 
 // Find one User Route
-router.get('/findOneUser', function (req, res) {
+router.get('/findOneUser/:id', function (req, res) {
     db.User.find({
-        thirdPartyId: req.body.id
+        thirdPartyId: req.params.id
     })
         .populate('allProduct')
         .populate('currentInventory')
@@ -85,7 +85,7 @@ router.post('/newUser', function (req, res) {
             const update = { justLogged: true }
             updateUser(target, update);
             // User already registered
-            res.send('User already exists!');
+            res.json(currentUser);
             console.log(`Existing User is: \n${currentUser}`);
         } else {
             // Create user
@@ -99,7 +99,7 @@ router.post('/newUser', function (req, res) {
                 .save()
                 .then((newUser) => {
                     console.log(`User added! \nDetails: ${newUser}`);
-                    res.send('New User Made!')
+                    res.json(newUser);
                 });
         }
     })

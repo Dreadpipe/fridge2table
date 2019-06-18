@@ -19,16 +19,12 @@ const styles = StyleSheet.create({
   }
 });
 
-function Fridge(props) {
-  return (
-    <ImageBackground style={styles.background} source={require("./fridge.jpg")}>      
+function Pantry(props) {
+  return (    
       <View style={styles.container}>
-        <Image style={styles.icon} source={{uri: "https://image.flaticon.com/teams/slug/google.jpg"}} />
-        <Button color="red" title="Login with Google" onPress={this.handlePress} />
-        <Button title="Login with other..." onPress={this.handlePress} />
+        <Text>This is the pantry page</Text>
       </View>
-    </ImageBackground>
   );
 }
 
-export default Fridge;
+export default Pantry;

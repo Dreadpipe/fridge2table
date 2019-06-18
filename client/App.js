@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, Button, Alert } from "react-native";
 import { AuthSession } from "expo";
 import FullFridge from "./src/components/fullFridge";
+import Home from './src/pages/home';
 import jwtDecode from "jwt-decode";
 import API from "./src/utils/API";
 import env from "./env";
@@ -89,7 +90,7 @@ export default class App extends React.Component {
 		return (
 			<View style={styles.container}>
 				{user.name ? (
-					<Text style={styles.title}>You are logged in, {user.name}!</Text>
+					<Home user={user} />
 				) : (
 					<FullFridge login={this.login} />
 				)}
