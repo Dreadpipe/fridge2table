@@ -53,7 +53,7 @@ class Home extends React.Component {
 							return <Freezer />;
 							break;
 						case "scanner":
-							return <Scanner />;
+							return <Scanner user={this.state.user} />;
 							break;
 					}
 				})()}
