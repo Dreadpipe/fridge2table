@@ -1,16 +1,20 @@
 import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
-import Scanner from "../components/scanner";
+import { StyleSheet, View } from "react-native";
+import { getStatusBarHeight } from "react-native-status-bar-height";
+import Head from "../components/head";
 import OpenFridge from "../components/openFridge";
 import Freezer from "../components/freezer";
 import Pantry from "../components/pantry";
+import Scanner from "../components/scanner";
 import API from "../utils/API";
 
 const styles = StyleSheet.create({
 	container: {
-		display: "flex",
-		justifyContent: "center",
-		width: "100%"
+		flex: 1,
+		paddingTop: getStatusBarHeight()
+	},
+	header: {
+		height: 54 + getStatusBarHeight()
 	}
 });
 
@@ -29,17 +33,10 @@ class Home extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Button
-					title="fridge"
-					onPress={() => this.setState({ view: "fridge" })}
-				/>
-				<Button
-					title="freezer"
-					onPress={() => this.setState({ view: "freezer" })}
-				/>
-				<Button
-					title="pantry"
-					onPress={() => this.setState({ view: "pantry" })}
+				<Head
+					toFridge={() => this.setState({ view: "fridge" })}
+					toFreezer={() => this.setState({ view: "freezer" })}
+					toPantry={() => this.setState({ view: "pantry" })}
 				/>
 				{(() => {
 					switch (this.state.view) {
@@ -57,10 +54,10 @@ class Home extends React.Component {
 							break;
 					}
 				})()}
-				<Button
+				{/* <Button
 					title="Scan"
 					onPress={() => this.setState({ view: "scanner" })}
-				/>
+				/> */}
 			</View>
 		);
 	}
