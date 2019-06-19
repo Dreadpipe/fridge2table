@@ -6,8 +6,12 @@ const axios = require('axios');
 
 // Bring in the database models
 const db = require('../models');
-const { User } = db;
-const { Product } = db;
+const {
+  User
+} = db;
+const {
+  Product
+} = db;
 
 //++++++++++++++++++++++
 // All GET Routes Below ------------
@@ -15,56 +19,56 @@ const { Product } = db;
 
 // HealthCheck Route
 router.get('/healthCheck', function (req, res) {
-    res.send('healthy!');
+  res.send('healthy!');
 });
 
 //-------------------------------------
 
 // Find all Users Route
 router.get('/findAllUsers', function (req, res) {
-    db.User.find({})
-        .populate('allProduct')
-        .populate('currentInventory')
-        .then(data => {
-            res.json(data);
-        })
-        .catch(err => {
-            console.log("We ran into a problem finding all of our Users.\n------------------------");
-            console.log(err);
-        });
+  db.User.find({})
+    .populate('allProduct')
+    .populate('currentInventory')
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => {
+      console.log("We ran into a problem finding all of our Users.\n------------------------");
+      console.log(err);
+    });
 });
 
 //-------------------------------------
 
 // Find one User Route
 router.get('/findOneUser/:id', function (req, res) {
-    db.User.find({
-        thirdPartyId: req.params.id
+  db.User.find({
+      thirdPartyId: req.params.id
     })
-        .populate('allProduct')
-        .populate('currentInventory')
-        .then(data => {
-            res.json(data);
-        })
-        .catch(err => {
-            console.log("We ran into a problem finding one of our Users.\n------------------------");
-            console.log(err);
-        });
+    .populate('allProduct')
+    .populate('currentInventory')
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => {
+      console.log("We ran into a problem finding one of our Users.\n------------------------");
+      console.log(err);
+    });
 });
 
 //-------------------------------------
 
 // Find all Products Route
 router.get('/findAllProducts', function (req, res) {
-    db.Product.find({})
-        .populate('associatedRecipes')
-        .then(data => {
-            res.json(data);
-        })
-        .catch(err => {
-            console.log("We ran into a problem finding all of our Products.\n------------------------");
-            console.log(err);
-        });
+  db.Product.find({})
+    .populate('associatedRecipes')
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => {
+      console.log("We ran into a problem finding all of our Products.\n------------------------");
+      console.log(err);
+    });
 });
 
 //-------------------------------------
@@ -75,37 +79,41 @@ router.get('/findAllProducts', function (req, res) {
 
 // Create new User
 router.post('/newUser', function (req, res) {
-    console.log(req.body)
-    // Check for existence of user in database
-    db.User.findOne({
-        thirdPartyId: req.body.id
+  console.log(req.body)
+  // Check for existence of user in database
+  db.User.findOne({
+      thirdPartyId: req.body.id
     }).then((currentUser) => {
-        if (currentUser) {
-            const target = { thirdPartyId: currentUser.id };
-            const update = { justLogged: true }
-            updateUser(target, update);
-            // User already registered
-            res.json(currentUser);
-            console.log(`Existing User is: \n${currentUser}`);
-        } else {
-            // Create user
-            new User({
-                    username: req.body.name,
-                    thirdPartyId: req.body.id,
-                    lastLogin: Date.now(),
-                    dateJoined: Date.now(),
-                    lastUpdated: Date.now()
-                })
-                .save()
-                .then((newUser) => {
-                    console.log(`User added! \nDetails: ${newUser}`);
-                    res.json(newUser);
-                });
+      if (currentUser) {
+        const target = {
+          thirdPartyId: currentUser.id
+        };
+        const update = {
+          justLogged: true
         }
+        updateUser(target, update);
+        // User already registered
+        res.json(currentUser);
+        console.log(`Existing User is: \n${currentUser}`);
+      } else {
+        // Create user
+        new User({
+            username: req.body.name,
+            thirdPartyId: req.body.id,
+            lastLogin: Date.now(),
+            dateJoined: Date.now(),
+            lastUpdated: Date.now()
+          })
+          .save()
+          .then((newUser) => {
+            console.log(`User added! \nDetails: ${newUser}`);
+            res.json(newUser);
+          });
+      }
     })
     .catch(err => {
-        console.log("We had a problem creating a new user in the database.\n------------------------")
-        console.log(err);
+      console.log("We had a problem creating a new user in the database.\n------------------------")
+      console.log(err);
     });
 });
 
@@ -113,47 +121,51 @@ router.post('/newUser', function (req, res) {
 
 //Create new Product
 router.post('/newProduct', function (req, res) {
-    console.log(req.body)
-    // Check for existence of user in database
-    db.Product.findOne({
-        foodId: req.body.id
+  console.log(req.body)
+  // Check for existence of user in database
+  db.Product.findOne({
+      foodId: req.body.id
     })
-        .populate('associatedRecipes')
-        .then(data => {
-            if(data) {
-                // Product already exists
-                res.send(data);
-            } else {
-                let newProduct = {
-                    productname: req.body.name,
-                    category: req.body.category,
-                    foodId: req.body.id,
-                    location: req.body.location,
-                    quantity: req.body.quantity,
-                    dateAdded: Date.now(),
-                    lastUpdated: Date.now(),
-                    owner: req.body.userId
-                };
-                if(req.body.expDate) {
-                    Object.assign(newProduct, {expDate: req.body.expDate})
-                }
-                new Product(newProduct)
-                    .save()
-                    .then((newProduct) => {
-                        console.log(`Product added! \nDetails: ${newProduct}`);
-                        const target = { id: newProduct.owner };
-                        const update = { 
-                            brandNewProduct: newProduct.foodId,
-                            productObjId: newProduct._id
-                        };
-                        updateUser(target, update);
-                    });
-            }
-        })
-        .catch(err => {
-            console.log("We had a problem creating a new product in the database.\n------------------------")
-            console.log(err);
-        });
+    .populate('associatedRecipes')
+    .then(data => {
+      if (data) {
+        // Product already exists
+        res.send(data);
+      } else {
+        let newProduct = {
+          productname: req.body.name,
+          category: req.body.category,
+          foodId: req.body.id,
+          location: req.body.location,
+          quantity: req.body.quantity,
+          dateAdded: Date.now(),
+          lastUpdated: Date.now(),
+          owner: req.body.userId
+        };
+        if (req.body.expDate) {
+          Object.assign(newProduct, {
+            expDate: req.body.expDate
+          })
+        }
+        new Product(newProduct)
+          .save()
+          .then((newProduct) => {
+            console.log(`Product added! \nDetails: ${newProduct}`);
+            const target = {
+              id: newProduct.owner
+            };
+            const update = {
+              brandNewProduct: newProduct.foodId,
+              productObjId: newProduct._id
+            };
+            updateUser(target, update);
+          });
+      }
+    })
+    .catch(err => {
+      console.log("We had a problem creating a new product in the database.\n------------------------")
+      console.log(err);
+    });
 });
 
 
@@ -163,9 +175,9 @@ router.post('/newProduct', function (req, res) {
 
 //Update User
 router.put('/updateUser', function (req, res) {
-    const reqTarget = req.body.target;
-    const reqUpdate = req.body.update;
-    updateUser(reqTarget, reqUpdate);
+  const reqTarget = req.body.target;
+  const reqUpdate = req.body.update;
+  updateUser(reqTarget, reqUpdate);
 });
 
 //-------------------------------------

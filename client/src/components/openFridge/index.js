@@ -1,32 +1,36 @@
 import React from "react";
-import { StyleSheet, Button, View, ImageBackground, Image, Text } from "react-native";
+import {
+	StyleSheet,
+	Button,
+	View,
+	ImageBackground,
+	Image,
+	Text
+} from "react-native";
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		alignItems: "center",
-		justifyContent: "center"
-  },
-  background: {
-    height: "80%",
-    width: "80%",
-    justifyContent: "center",
-  },
-  icon: {
-    height: "10%",
-    width: "10%",
-    backgroundColor: "grey"
-  }
+		display: "flex",
+		justifyContent: "center",
+		width: "100%"
+	},
+	backgroundImage: {
+		height: "97.6%",
+		width: "100%",
+		top: "6%"
+	}
 });
 
 function Fridge(props) {
-  return (
-    <ImageBackground style={styles.background} source={require("./fridge.jpg")}>      
-      <View style={styles.container}>
-        <Text>This is the fridge page</Text>
-      </View>
-    </ImageBackground>
-  );
+	return (
+		<View style={styles.container}>
+			<ImageBackground
+				style={styles.backgroundImage}
+				resizeMode="contain"
+				source={require("../../../assets/OpenFridge.png")}
+			/>
+		</View>
+	);
 }
 
 export default Fridge;

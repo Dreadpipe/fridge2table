@@ -15,13 +15,14 @@ styles = StyleSheet.create({
 export default class BarCodeScannerExample extends React.Component {
 	state = {
 		hasCameraPermission: null,
-		scanned: false
+    scanned: false,
 	};
 
 	async componentDidMount() {
 		const { status } = await Permissions.askAsync(Permissions.CAMERA);
-		this.setState({ hasCameraPermission: status === "granted" });
-	}
+    this.setState({ hasCameraPermission: status === "granted" });
+    console.log(this.props)
+  }
 
 	render() {
 		const { hasCameraPermission, scanned } = this.state;
@@ -49,6 +50,6 @@ export default class BarCodeScannerExample extends React.Component {
     handleBarCodeScanned = ({type, data}) => {
       this.setState({scanned: true});
       // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-      API.scanFood(data);
+      API.scanFood(data, this.props.user.thirdPartyId);
     };
   }
