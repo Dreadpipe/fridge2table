@@ -168,7 +168,6 @@ router.post('/newProduct', function (req, res) {
     });
 });
 
-
 //++++++++++++++++++++++
 // All PUT Routes Below ------------
 //++++++++++++++++++++++
@@ -189,20 +188,94 @@ router.put('/updateProduct', function (req, res) {
     updateProduct(reqTarget, reqUpdate);
 });
 
-//-------------------------------------
-
-
 //++++++++++++++++++++++
 // All DELETE Routes Below ------------
 //++++++++++++++++++++++
 
-//Remove Product
+//Remove User
+router.delete('/removeUser', function (req, res) {
+  const reqTarget = req.body.target;
+  const userId = {owner: req.body.target.id};
+  db.User.deleteOne(targetUser(reqTarget))
+    .then(data => {
+      console.log(data);
+      db.Product.deleteMany(targetProduct(userId))
+        .then(data => {
+          console.log(data);
+          res.end();
+        })
+        .catch(err => {
+          console.log("We've got a problem deleting all items associated with the removed user!")
+          console.log(err);
+        });
+      res.end();
+    })
+    .catch(err => {
+        console.log("We've got a problem deleing the user!")
+        console.log(err);
+    });
+});
 
 //-------------------------------------
+
+//Remove Product
+router.delete('/removeProduct', function (req, res) {
+  const reqTarget = req.body.target;
+  const userId = { thirdPartyId: req.body.target.owner };
+  const removeFromUser = { removeThisProduct: req.body.target.foodId }
+  if (req.body.target.owner && req.body.target.foodId) {
+    db.Product.deleteOne(targetProduct(reqTarget))
+    .then(data => {
+      console.log(data);
+      updateUser(userId, removeFromUser)
+      res.end();
+    })
+    .catch(err => {
+        console.log("We've got a problem deleing the product!")
+        console.log(err);
+    });
+  } else {
+    console.log('You need to include the owner\'s id and the food\'s id when removing a product!');
+  }
+});
 
 //++++++++++++++++++++++
 // All Modular Functions Below ------------
 //++++++++++++++++++++++
+
+// Target User Function
+function targetUser (reqTarget) {
+  let finalTarget = {};
+  switch (true) {
+      case (reqTarget.username !== undefined):
+          Object.assign(finalTarget, { username: reqTarget.username });
+          break;
+      case (reqTarget.id !== undefined):
+          Object.assign(finalTarget, { thirdPartyId: reqTarget.id });
+          break;
+      case (reqTarget.joinedBefore !== undefined):
+          Object.assign(finalTarget, { dateJoined: { $lte: new Date(joinedBefore) } });
+          break;
+      case (reqTarget.joinedAfter !== undefined):
+          Object.assign(finalTarget, { dateJoined: { $gte: new Date(joinedAfter) } });
+          break;
+      case (reqTarget.lastLoggedBefore !== undefined):
+          Object.assign(finalTarget, { lastLogin: { $lte: new Date(lastLoggedBefore) } });
+          break;
+      case (reqTarget.lastLoggedAfter !== undefined):
+          Object.assign(finalTarget, { lastLogin: { $gte: new Date(lastLoggedAfter) } });
+          break;
+      case (finalTarget === undefined):
+          console.log('There was no valid target.');
+          break;
+      default:
+  };
+  console.log('The target data will be:');
+  console.log(finalTarget);
+  return finalTarget;
+};
+
+//--------------------------------
 
 // Update User Function
 function updateUser (reqTarget, reqUpdate) {
@@ -213,9 +286,7 @@ function updateUser (reqTarget, reqUpdate) {
             Object.assign(finalTarget, { username: reqTarget.username });
             break;
         case (reqTarget.id !== undefined):
-            console.log(reqTarget)
             Object.assign(finalTarget, { thirdPartyId: reqTarget.id });
-            console.log(finalTarget)
             break;
         case (reqTarget.joinedBefore !== undefined):
             Object.assign(finalTarget, { dateJoined: { $lte: new Date(joinedBefore) } });
@@ -245,6 +316,9 @@ function updateUser (reqTarget, reqUpdate) {
             break;
         case (reqUpdate.productObjId !== undefined):
             Object.assign(finalUpdate, { $push:{ inventoryProducts: reqUpdate.productObjId } });
+            break;
+        case (reqUpdate.removeThisProduct !== undefined):
+            Object.assign(finalUpdate, { $pull:{ inventoryProducts: reqUpdate.removeThisProduct } });
             break;
         case (reqUpdate.addExpired !== undefined):
             Object.assign(finalUpdate, { $inc: { expiredFood: 1} });
@@ -277,6 +351,58 @@ function updateUser (reqTarget, reqUpdate) {
 
 //--------------------------------
 
+// Target Product Function
+function targetProduct (reqTarget) {
+  let finalTarget = {};
+  switch (true) {
+      case (reqTarget.productname !== undefined):
+          Object.assign(finalTarget, { productname: reqTarget.productname });
+          break;
+      case (reqTarget.foodId !== undefined):
+          Object.assign(finalTarget, { foodId: reqTarget.foodId });
+          break;
+      case (reqTarget.expiringBefore !== undefined):
+          Object.assign(finalTarget, { expDate: { $lte: new Date(expiringBefore) } });
+          break;
+      case (reqTarget.expiringAfter !== undefined):
+          Object.assign(finalTarget, { expDate: { $gte: new Date(expiringAfter) } });
+          break;
+      case (reqTarget.lessThanQuantity !== undefined):
+          Object.assign(finalTarget, { quantity: { $lte: lessThanQuantity } });
+          break;
+      case (reqTarget.greaterThanQuantity !== undefined):
+          Object.assign(finalTarget, { quantity: { $gte: greaterThanQuantity } });
+          break;
+      case (reqTarget.expiredOrNot !== undefined):
+          Object.assign(finalTarget, { expiredOrNot: expiredOrNot });
+          break;
+      case (reqTarget.location !== undefined):
+          Object.assign(finalTarget, { location: location });
+          break;
+      case (reqTarget.owner !== undefined):
+          Object.assign(finalTarget, { owner: owner });
+          break;
+      case (reqTarget.recipe !== undefined):
+          Object.assign(finalTarget, { recipes: recipe });
+          break;
+      case (reqTarget.addedBefore !== undefined):
+          Object.assign(finalTarget, { dateAdded: { $lte: new Date(addedBefore) } });
+          break;
+      case (reqTarget.addedAfter !== undefined):
+          Object.assign(finalTarget, { dateAdded: { $gte: new Date(addedAfter) } });
+          break;
+      case (finalTarget === undefined):
+          console.log('There was no valid target.');
+          break;
+      default:
+  };
+  console.log('The target data will be:');
+  console.log(finalTarget);
+  return finalTarget;
+};
+
+//--------------------------------
+
 // Update Product Function
 function updateProduct (reqTarget, reqUpdate) {
     let finalTarget = {};
@@ -286,7 +412,6 @@ function updateProduct (reqTarget, reqUpdate) {
             Object.assign(finalTarget, { productname: reqTarget.productname });
             break;
         case (reqTarget.foodId !== undefined):
-            console.log(reqTarget)
             Object.assign(finalTarget, { foodId: reqTarget.foodId });
             break;
         case (reqTarget.expiringBefore !== undefined):
@@ -345,8 +470,11 @@ function updateProduct (reqTarget, reqUpdate) {
         case (reqUpdate.quantity !== undefined):
             Object.assign(finalUpdate, { $inc: { quantity: reqUpdate.quantity} });
             break;
-        case (reqUpdate.recipes !== undefined): //Recipes needs to be an array, regardless if there is only one or not.
-            Object.assign(finalUpdate, { $push:{ recipes: { $each: reqUpdate.recipes } } });
+        case (reqUpdate.newRecipes !== undefined): //Recipes needs to be an array, regardless if there is only one or not.
+            Object.assign(finalUpdate, { $push:{ recipes: { $each: reqUpdate.newRecipes } } });
+            break;
+        case (reqUpdate.removeRecipes !== undefined): //Recipes needs to be an array, regardless if there is only one or not.
+            Object.assign(finalUpdate, { $pull:{ recipes: { $each: reqUpdate.removeRecipes } } });
             break;
         case (finalUpdate === undefined):
             console.log('There was no valid update.');
