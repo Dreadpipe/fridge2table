@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import { Container } from "native-base";
 import { AuthSession } from "expo";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
@@ -14,6 +14,14 @@ import { Ionicons } from "@expo/vector-icons";
 
 const auth0ClientId = env.AUTH0_CLIENT_ID;
 const auth0Domain = env.AUTH0_DOMAIN;
+
+const styles = StyleSheet.create({
+	container: {
+		width: vw(100),
+		height: vh(100) - getStatusBarHeight(),
+		paddingTop: Platform.OS === 'ios' ? 0 : getStatusBarHeight(),
+	}
+});
 
 /**
  * Converts an object to a query string.
@@ -44,6 +52,7 @@ export default class App extends React.Component {
 		await Font.loadAsync({
 			Roboto: require("native-base/Fonts/Roboto.ttf"),
 			Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+			FontAwesome: require("native-base/Fonts/FontAwesome.ttf"),
 			...Ionicons.font
 		});
 		this.setState({ isReady: true });
@@ -115,13 +124,3 @@ export default class App extends React.Component {
 		);
 	}
 }
-
-const screenheight = vh(100) - getStatusBarHeight();
-
-const styles = StyleSheet.create({
-	container: {
-		width: vw(100),
-		height: screenheight,
-		paddingTop: getStatusBarHeight()
-	}
-});

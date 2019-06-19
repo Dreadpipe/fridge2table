@@ -1,30 +1,47 @@
 import React from "react";
 import { StyleSheet, ImageBackground, View } from "react-native";
-import { Button, Text } from "native-base";
+import { Button, Text, Icon } from "native-base";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 
 const styles = StyleSheet.create({
 	backgroundImage: {
-		height: "96.9%",
+		height: "100%",
 		width: '100%'
+	},
+	iconDiv: {
+		top: 7,
+		left: 10,
+		zIndex: 1
+	},
+	icon: {
+		fontSize: 50,
+		color: '#0092D6'
+	},
+	solidIconDiv: {
+		top: -43,
+		left: 12
+	},
+	solidIcon: {
+		fontSize: 45,
+		color: '#FFFFFF'
 	},
 	grainsDrinksDiv: {
 		display: "flex",
 		flexDirection: "row",
-		top: '58.5%',
-		left: '15.5%'
+		top: vh(24.1),
+		left: vw(24.5)
 	},
 	dairyMeatsDiv: {
 		display: "flex",
 		flexDirection: "row",
-		top: "76.5%",
-		left: "21.5%"
+		top: vh(36),
+		left: vw(34)
 	},
 	miscProduceDiv: {
 		display: "flex",
 		flexDirection: "row",
-		top: "108%",
-		left: "17.8%"
+		top: vh(54),
+		left: vw(25)
 	},
 	grainsBtn: {
 		backgroundColor: "#0092D6"
@@ -38,7 +55,7 @@ const styles = StyleSheet.create({
 	},
 	meatsBtn: {
 		backgroundColor: "#0092D6",
-		marginLeft: 23
+		marginLeft: 15
 	},
 	miscBtn: {
 		backgroundColor: "#0092D6"
@@ -56,6 +73,12 @@ function Fridge(props) {
 			resizeMode="contain"
 			source={require("../../../assets/OpenFridge.png")}
 		>
+			<View style={styles.iconDiv}>
+				<Icon name="plus-circle" type="FontAwesome" style={styles.icon} onPress={props.toAddProductScreen} />
+			</View>
+			<View style={styles.solidIconDiv}>
+				<Icon name="circle" type="FontAwesome" style={styles.solidIcon} />
+			</View>
 			<View style={styles.grainsDrinksDiv}>
 				<Button small hasText style={styles.grainsBtn}>
 					<Text>Grains</Text>

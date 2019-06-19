@@ -6,14 +6,13 @@ import Head from "../components/head";
 import OpenFridge from "../components/openFridge";
 import Freezer from "../components/freezer";
 import Pantry from "../components/pantry";
+import AddProduct from '../components/addProduct';
 import Scanner from "../components/scanner";
 import API from "../utils/API";
 
-const screenheight = vh(100) - getStatusBarHeight();
-
 const styles = StyleSheet.create({
 	container: {
-		height: screenheight,
+		height: vh(100) - getStatusBarHeight() - 56,
 		width: '100%'
 	}
 });
@@ -33,7 +32,7 @@ class Home extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Head style={styles.header}
+				<Head
 					toFridge={() => this.setState({ view: "fridge" })}
 					toFreezer={() => this.setState({ view: "freezer" })}
 					toPantry={() => this.setState({ view: "pantry" })}
@@ -41,13 +40,16 @@ class Home extends React.Component {
 				{(() => {
 					switch (this.state.view) {
 						case "fridge":
-							return <OpenFridge />;
+							return <OpenFridge user={this.state.user} toAddProductScreen={() => this.setState({ view: "addProduct" })} />;
 							break;
 						case "pantry":
-							return <Pantry />;
+							return <Pantry user={this.state.user} toAddProductScreen={() => this.setState({ view: "addProduct" })}  />;
 							break;
 						case "freezer":
-							return <Freezer />;
+							return <Freezer user={this.state.user} toAddProductScreen={() => this.setState({ view: "addProduct" })} />;
+							break;
+						case 'addProduct':
+							return <AddProduct user={this.state.user} />
 							break;
 						case "scanner":
 							return <Scanner user={this.state.user} />;
