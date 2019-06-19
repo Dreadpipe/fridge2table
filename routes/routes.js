@@ -195,11 +195,12 @@ router.put('/updateProduct', function (req, res) {
 //Remove User
 router.delete('/removeUser', function (req, res) {
   const reqTarget = req.body.target;
-  const userId = {owner: req.body.target.id};
+  const userId = { owner: req.body.target.id };
   db.User.deleteOne(targetUser(reqTarget))
     .then(data => {
       console.log(data);
-      db.Product.deleteMany(targetProduct(userId))
+      // console.log(userId)
+      db.Product.deleteMany(targetProduct({userId}))
         .then(data => {
           console.log(data);
           res.end();
@@ -221,13 +222,14 @@ router.delete('/removeUser', function (req, res) {
 //Remove Product
 router.delete('/removeProduct', function (req, res) {
   const reqTarget = req.body.target;
-  const userId = { thirdPartyId: req.body.target.owner };
-  const removeFromUser = { removeThisProduct: req.body.target.foodId }
+  const userId = { id: req.body.target.owner };
+  const removeFromUser = { removeThisProduct: [req.body.target.foodId] }
+  console.log(`I am removing ${removeFromUser}`)
   if (req.body.target.owner && req.body.target.foodId) {
     db.Product.deleteOne(targetProduct(reqTarget))
     .then(data => {
       console.log(data);
-      updateUser(userId, removeFromUser)
+      updateUser(userId, removeFromUser);
       res.end();
     })
     .catch(err => {
@@ -314,11 +316,11 @@ function updateUser (reqTarget, reqUpdate) {
         case (reqUpdate.brandNewProduct !== undefined):
             Object.assign(finalUpdate, { $push: { allProducts: reqUpdate.brandNewProduct } });
             break;
+        case (reqUpdate.removeThisProduct !== undefined): // removeThisProduct has to be an array.
+          Object.assign(finalUpdate, { $pullAll:{ allProducts: reqUpdate.removeThisProduct } });
+          break;
         case (reqUpdate.productObjId !== undefined):
             Object.assign(finalUpdate, { $push:{ inventoryProducts: reqUpdate.productObjId } });
-            break;
-        case (reqUpdate.removeThisProduct !== undefined):
-            Object.assign(finalUpdate, { $pull:{ inventoryProducts: reqUpdate.removeThisProduct } });
             break;
         case (reqUpdate.addExpired !== undefined):
             Object.assign(finalUpdate, { $inc: { expiredFood: 1} });
@@ -353,6 +355,7 @@ function updateUser (reqTarget, reqUpdate) {
 
 // Target Product Function
 function targetProduct (reqTarget) {
+  console.log(reqTarget);
   let finalTarget = {};
   switch (true) {
       case (reqTarget.productname !== undefined):
@@ -474,7 +477,7 @@ function updateProduct (reqTarget, reqUpdate) {
             Object.assign(finalUpdate, { $push:{ recipes: { $each: reqUpdate.newRecipes } } });
             break;
         case (reqUpdate.removeRecipes !== undefined): //Recipes needs to be an array, regardless if there is only one or not.
-            Object.assign(finalUpdate, { $pull:{ recipes: { $each: reqUpdate.removeRecipes } } });
+            Object.assign(finalUpdate, { $pullAll:{ recipes: { $each: reqUpdate.removeRecipes } } });
             break;
         case (finalUpdate === undefined):
             console.log('There was no valid update.');
