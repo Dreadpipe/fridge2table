@@ -2,6 +2,8 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Container } from "native-base";
 import { AuthSession } from "expo";
+import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 import FullFridge from "./src/components/fullFridge";
 import Home from "./src/pages/home";
 import jwtDecode from "jwt-decode";
@@ -114,8 +116,12 @@ export default class App extends React.Component {
 	}
 }
 
+const screenheight = vh(100) - getStatusBarHeight();
+
 const styles = StyleSheet.create({
 	container: {
-		flex: 1
+		width: vw(100),
+		height: screenheight,
+		paddingTop: getStatusBarHeight()
 	}
 });

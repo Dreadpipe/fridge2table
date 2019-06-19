@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import {
 	Header,
-	Body,
+	Left,
 	Right,
 	Button,
 	Title,
@@ -10,18 +10,15 @@ import {
 } from "native-base";
 
 const styles = StyleSheet.create({
-	header: {
-		backgroundColor: '#0092D6'
-	}
 })
 
 export default class Head extends Component {
 	render() {
 		return (
-			<Header style={styles.header}>
-				<Body>
+			<Header>
+				<Left>
 					<Title>Fridge2Table</Title>
-				</Body>
+				</Left>
 				<Right>
 					<Button hasText transparent onPress={this.props.toFridge}>
 						<Text>Fridge</Text>

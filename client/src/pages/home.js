@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
+import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 import Head from "../components/head";
 import OpenFridge from "../components/openFridge";
 import Freezer from "../components/freezer";
@@ -8,13 +9,12 @@ import Pantry from "../components/pantry";
 import Scanner from "../components/scanner";
 import API from "../utils/API";
 
+const screenheight = vh(100) - getStatusBarHeight();
+
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		paddingTop: getStatusBarHeight()
-	},
-	header: {
-		height: 54 + getStatusBarHeight()
+		height: screenheight,
+		width: '100%'
 	}
 });
 
@@ -33,7 +33,7 @@ class Home extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Head
+				<Head style={styles.header}
 					toFridge={() => this.setState({ view: "fridge" })}
 					toFreezer={() => this.setState({ view: "freezer" })}
 					toPantry={() => this.setState({ view: "pantry" })}
