@@ -1,14 +1,21 @@
 import React from "react";
-import { StyleSheet, View, ImageBackground } from "react-native";
+import { StyleSheet, View, TouchableHighlight, Image } from "react-native";
 import { Button, Text, Icon } from "native-base";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 
 const styles = StyleSheet.create({
-	backgroundImage: {
+	pageDiv: {
+		display: "flex",
+		flex: 1,
+		flexDirection: "column",
+		justifyContent: "center",
+		alignContent: "center",
+		alignItems: "center",
 		height: "100%",
 		width: "100%"
 	},
 	iconDiv: {
+		position: "absolute",
 		top: 7,
 		left: 10,
 		zIndex: 1
@@ -18,47 +25,47 @@ const styles = StyleSheet.create({
 		color: "#0092D6"
 	},
 	solidIconDiv: {
-		top: -43,
-		left: 12
+		position: "absolute",
+		top: 7,
+		left: 10
 	},
 	solidIcon: {
 		fontSize: 45,
 		color: "#FFFFFF"
 	},
-	spiceBtn: {
-		backgroundColor: "#0092D6",
-		top: vh(-3),
-		left: vw(23)
+	bannerDiv: {
+		display: "flex",
+		flex: 1,
+		flexDirection: "row",
+		flexWrap: "wrap",
+		justifyContent: "space-around",
+		alignContent: "stretch",
+		alignItems: "flex-end"
 	},
-	produceBtn: {
-		backgroundColor: "#0092D6",
-		top: vh(5),
-		left: vw(36)
+	banner: {
+		width: "45%"
 	},
-	miscBtn: {
-		backgroundColor: "#0092D6",
-		top: vh(7),
-		left: vw(44)
+	bannerImg: {
+		height: 135,
+		width: "100%"
 	},
-	canGoodsBtn: {
-		backgroundColor: "#0092D6",
-		top: vh(14),
-		left: vw(24)
+	grainsImg: {
+		height: 120,
+		width: "100%"
 	},
-	grainsBtn: {
-		backgroundColor: "#0092D6",
-		top: vh(25),
-		left: vw(59)
+	produceImg: {
+		height: 140,
+		width: "100%"
+	},
+	spicesImg: {
+		height: 120,
+		width: "100%"
 	}
 });
 
 function Pantry(props) {
 	return (
-		<ImageBackground
-			style={styles.backgroundImage}
-			resizeMode="contain"
-			source={require("../../../assets/Pantry.png")}
-		>
+		<View style={styles.pageDiv}>
 			<View style={styles.iconDiv}>
 				<Icon
 					name="plus-circle"
@@ -70,22 +77,44 @@ function Pantry(props) {
 			<View style={styles.solidIconDiv}>
 				<Icon name="circle" type="FontAwesome" style={styles.solidIcon} />
 			</View>
-			<Button small hasText style={styles.spiceBtn}>
-				<Text>Spice Rack</Text>
-			</Button>
-			<Button small hasText style={styles.produceBtn}>
-				<Text>Produce</Text>
-			</Button>
-			<Button small hasText style={styles.miscBtn}>
-				<Text>Misc</Text>
-			</Button>
-			<Button small hasText style={styles.canGoodsBtn}>
-				<Text>Canned Goods</Text>
-			</Button>
-			<Button small hasText style={styles.grainsBtn}>
-				<Text>Grains</Text>
-			</Button>
-		</ImageBackground>
+			<View style={styles.bannerDiv}>
+				<TouchableHighlight style={styles.banner}>
+					<Image
+						resizeMode="stretch"
+						source={require("../../../assets/pantry_images/pantry_grains_banner.png")}
+						style={styles.grainsImg}
+					/>
+				</TouchableHighlight>
+				<TouchableHighlight style={styles.banner}>
+					<Image
+						resizeMode="stretch"
+						source={require("../../../assets/pantry_images/pantry_produce_banner.png")}
+						style={styles.bannerImg}
+					/>
+				</TouchableHighlight>
+				<TouchableHighlight style={styles.banner}>
+					<Image
+						resizeMode="stretch"
+						source={require("../../../assets/pantry_images/pantry_cans_banner.png")}
+						style={styles.bannerImg}
+					/>
+				</TouchableHighlight>
+				<TouchableHighlight style={styles.banner}>
+					<Image
+						resizeMode="stretch"
+						source={require("../../../assets/pantry_images/pantry_spices_banner.png")}
+						style={styles.spicesImg}
+					/>
+				</TouchableHighlight>
+				<TouchableHighlight style={styles.banner}>
+					<Image
+						resizeMode="stretch"
+						source={require("../../../assets/pantry_images/pantry_misc_banner.png")}
+						style={styles.bannerImg}
+					/>
+				</TouchableHighlight>
+			</View>
+		</View>
 	);
 }
 
