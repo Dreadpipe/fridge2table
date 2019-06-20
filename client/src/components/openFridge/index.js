@@ -1,14 +1,19 @@
 import React from "react";
-import { StyleSheet, ImageBackground, View } from "react-native";
+import { StyleSheet, TouchableHighlight, View, Image } from "react-native";
 import { Button, Text, Icon } from "native-base";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 
 const styles = StyleSheet.create({
-	backgroundImage: {
-		height: "100%",
+	pageDiv: {
+		display: 'flex',
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		height: '100%',
 		width: '100%'
 	},
 	iconDiv: {
+		position: 'absolute',
 		top: 7,
 		left: 10,
 		zIndex: 1
@@ -18,92 +23,75 @@ const styles = StyleSheet.create({
 		color: '#0092D6'
 	},
 	solidIconDiv: {
-		top: -43,
-		left: 12
+		position: 'absolute',
+		top: 7,
+		left: 10,
 	},
 	solidIcon: {
 		fontSize: 45,
 		color: '#FFFFFF'
 	},
-	grainsDrinksDiv: {
-		display: "flex",
-		flexDirection: "row",
-		top: vh(24.1),
-		left: vw(24.5)
+	bannerDiv: {
+		display: 'flex',
+		flex: 1,
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		justifyContent: 'space-around',
+		alignContent: 'stretch',
+		alignItems: 'flex-end'
 	},
-	dairyMeatsDiv: {
-		display: "flex",
-		flexDirection: "row",
-		top: vh(36),
-		left: vw(34)
+	banner: {
+		height: 'auto',
+		width: '45%'
 	},
-	miscProduceDiv: {
-		display: "flex",
-		flexDirection: "row",
-		top: vh(54),
-		left: vw(25)
+	bannerImg: {
+		height: 125,
+		width: '100%',
 	},
-	grainsBtn: {
-		backgroundColor: "#0092D6"
+	grainsImg: {
+		height: 120,
+		width: '100%',
 	},
-	drinksBtn: {
-		backgroundColor: "#0092D6",
-		marginLeft: 3
+	meatImg: {
+		height: 100,
+		width: '100%',
 	},
-	dairyBtn: {
-		backgroundColor: "#0092D6"
+	produceImg: {
+		height: 105,
+		width: '100%',
 	},
-	meatsBtn: {
-		backgroundColor: "#0092D6",
-		marginLeft: 15
-	},
-	miscBtn: {
-		backgroundColor: "#0092D6"
-	},
-	produceBtn: {
-		backgroundColor: "#0092D6",
-		marginLeft: 35
-	}
 });
 
 function Fridge(props) {
 	return (
-		<ImageBackground
-			style={styles.backgroundImage}
-			resizeMode="contain"
-			source={require("../../../assets/OpenFridge.png")}
-		>
+		<View style={styles.pageDiv}>
 			<View style={styles.iconDiv}>
 				<Icon name="plus-circle" type="FontAwesome" style={styles.icon} onPress={props.toAddProductScreen} />
 			</View>
 			<View style={styles.solidIconDiv}>
 				<Icon name="circle" type="FontAwesome" style={styles.solidIcon} />
 			</View>
-			<View style={styles.grainsDrinksDiv}>
-				<Button small hasText style={styles.grainsBtn}>
-					<Text>Grains</Text>
-				</Button>
-				<Button small hasText style={styles.drinksBtn}>
-					<Text>Drinks</Text>
-				</Button>
+			<View style={styles.bannerDiv}>
+				<TouchableHighlight style={styles.banner}>
+					<Image resizeMode='stretch' source={require('../../../assets/fridge_images/grains_banner.png')} style={styles.grainsImg} />
+				</TouchableHighlight>
+				<TouchableHighlight style={styles.banner}>
+					<Image resizeMode='stretch' source={require('../../../assets/fridge_images/dairy_banner.png')} style={styles.bannerImg} />
+				</TouchableHighlight>
+				<TouchableHighlight style={styles.banner}>
+					<Image resizeMode='stretch' source={require('../../../assets/fridge_images/meats_banner.png')} style={styles.meatImg} />
+				</TouchableHighlight>
+				<TouchableHighlight style={styles.banner}>
+					<Image resizeMode='stretch' source={require('../../../assets/fridge_images/produce_banner.png')} style={styles.produceImg} />
+				</TouchableHighlight>
+				<TouchableHighlight style={styles.banner}>
+					<Image resizeMode='stretch' source={require('../../../assets/fridge_images/drinks_banner.png')} style={styles.bannerImg} />
+				</TouchableHighlight>
+				<TouchableHighlight style={styles.banner}>
+					<Image resizeMode='stretch' source={require('../../../assets/fridge_images/misc_banner.png')} style={styles.bannerImg} />
+				</TouchableHighlight>
 			</View>
-			<View style={styles.dairyMeatsDiv}>
-				<Button small hasText style={styles.dairyBtn}>
-					<Text>Dairy</Text>
-				</Button>
-				<Button small hasText style={styles.meatsBtn}>
-					<Text>Meats</Text>
-				</Button>
-			</View>
-			<View style={styles.miscProduceDiv}>
-				<Button small hasText style={styles.miscBtn}>
-					<Text>Misc</Text>
-				</Button>
-				<Button small hasText style={styles.produceBtn}>
-					<Text>Produce</Text>
-				</Button>
-			</View>
-		</ImageBackground>
+		</View>
 	);
 }
 
