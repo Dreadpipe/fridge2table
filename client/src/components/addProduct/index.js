@@ -50,49 +50,13 @@ const styles = StyleSheet.create({
 });
 
 class AddProduct extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			chosenDate: new Date(),
-			selectedLocation: "Fridge",
-			selectedCategory: undefined,
-			selectedQuantity: undefined
-		};
-		this.setDate = this.setDate.bind(this);
-	}
-
-	setDate(newDate) {
-		this.setState({ chosenDate: newDate });
-	}
-
-	onLocationChange(value: string) {
-		this.setState({
-			selectedLocation: value
-		});
-		console.log(this.state);
-	}
-
-	onCategoryChange(value: string) {
-		this.setState({
-			selectedCategory: value
-		});
-		console.log(this.state);
-	}
-
-	onQuantityChange(value: string) {
-		this.setState({
-			selectedQuantity: value
-		});
-		console.log(this.state);
-	}
-
 	render() {
 		return (
 			<Content contentContainerStyle={styles.content}>
 				<Form style={styles.form}>
 					<Item floatingLabel style={styles.productName}>
 						<Label>Product Name</Label>
-						<Input />
+						<Input onChange={this.props.onNameChange} />
 					</Item>
 					<Item picker>
 						<Label>Location</Label>
@@ -102,8 +66,8 @@ class AddProduct extends React.Component {
 							style={styles.categoryPicker}
 							placeholderStyle={{ color: "#bfc6ea" }}
 							placeholderIconColor="#007aff"
-							selectedValue={this.state.selectedLocation}
-							onValueChange={this.onLocationChange.bind(this)}
+							selectedValue={this.props.location}
+							onValueChange={this.props.onLocationChange}
 						>
 							<Picker.Item label="Fridge" value="Fridge" />
 							<Picker.Item label="Freezer" value="Freezer" />
@@ -113,13 +77,13 @@ class AddProduct extends React.Component {
 					<Item picker>
 						<Label>Category</Label>
 						{(() => {
-							switch (this.state.selectedLocation) {
+							switch (this.props.location) {
 								case "Fridge":
 									return (
 										<FridgeCategoryPicker
 											styles={styles.categoryPicker}
-											onCategoryChange={this.onCategoryChange.bind(this)}
-											selectedCategory={this.state.selectedCategory}
+											onCategoryChange={this.props.onCategoryChange}
+											selectedCategory={this.props.category}
 										/>
 									);
 									break;
@@ -127,8 +91,8 @@ class AddProduct extends React.Component {
 									return (
 										<FreezerCategoryPicker
 											styles={styles.categoryPicker}
-											onCategoryChange={this.onCategoryChange.bind(this)}
-											selectedCategory={this.state.selectedCategory}
+											onCategoryChange={this.props.onCategoryChange}
+											selectedCategory={this.props.category}
 										/>
 									);
 									break;
@@ -136,8 +100,8 @@ class AddProduct extends React.Component {
 									return (
 										<PantryCategoryPicker
 											styles={styles.categoryPicker}
-											onCategoryChange={this.onCategoryChange.bind(this)}
-											selectedCategory={this.state.selectedCategory}
+											onCategoryChange={this.props.onCategoryChange}
+											selectedCategory={this.props.category}
 										/>
 									);
 									break;
@@ -153,8 +117,8 @@ class AddProduct extends React.Component {
 							placeholder="Press to select"
 							placeholderStyle={{ color: "#bfc6ea" }}
 							placeholderIconColor="#007aff"
-							selectedValue={this.state.selectedQuantity}
-							onValueChange={this.onQuantityChange.bind(this)}
+							selectedValue={this.props.quantity}
+							onValueChange={this.props.onQuantityChange}
 						>
 							<Picker.Item label="1" value="1" />
 							<Picker.Item label="2" value="2" />
@@ -169,9 +133,7 @@ class AddProduct extends React.Component {
 						</Picker>
 					</Item>
 					<DatePicker
-						defaultDate={new Date(2018, 4, 4)}
-						minimumDate={new Date(2018, 1, 1)}
-						maximumDate={new Date(2018, 12, 31)}
+						defaultDate={new Date()}
 						locale={"en"}
 						timeZoneOffsetInMinutes={undefined}
 						modalTransparent={false}
@@ -180,10 +142,10 @@ class AddProduct extends React.Component {
 						placeHolderText="Select expiration date"
 						textStyle={{ color: "green" }}
 						placeHolderTextStyle={{ color: "#d3d3d3" }}
-						onDateChange={this.setDate}
+						onDateChange={this.props.setDate}
 						disabled={false}
 					/>
-					<Text>Date: {this.state.chosenDate.toString().substr(4, 12)}</Text>
+					<Text>Date: {this.props.date.toString().substr(4, 12)}</Text>
 				</Form>
 				<View style={styles.iconDiv}>
 					<Icon
