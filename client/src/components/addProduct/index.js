@@ -56,7 +56,7 @@ class AddProduct extends React.Component {
 				<Form style={styles.form}>
 					<Item floatingLabel style={styles.productName}>
 						<Label>Product Name</Label>
-						<Input onChange={this.props.onNameChange} />
+						<Input value={this.props.productName} onChange={this.props.onNameChange} />
 					</Item>
 					<Item picker>
 						<Label>Location</Label>
@@ -152,6 +152,7 @@ class AddProduct extends React.Component {
 						name="barcode-scan"
 						type="MaterialCommunityIcons"
 						style={styles.barcodeIcon}
+						onPress={this.props.toScanner}
 					/>
 					<Text style={{ textAlign: "center" }}>Scan Barcode</Text>
 				</View>

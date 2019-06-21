@@ -69,6 +69,20 @@ class Home extends React.Component {
 		});
 	}
 
+	toScanner = () => {
+		this.setState({ view: "scanner" });
+	};
+
+	toAddProductScreen = () => {
+		this.setState({ view: "addProduct" });
+	};
+
+	// Scanner functions
+
+	addProductName = (name) => {
+		this.setState({productName: name})
+	}
+
 	// Render function
 
 	render() {
@@ -85,9 +99,7 @@ class Home extends React.Component {
 							return (
 								<OpenFridge
 									user={this.state.user}
-									toAddProductScreen={() =>
-										this.setState({ view: "addProduct" })
-									}
+									toAddProductScreen={this.toAddProductScreen}
 								/>
 							);
 							break;
@@ -95,9 +107,7 @@ class Home extends React.Component {
 							return (
 								<Pantry
 									user={this.state.user}
-									toAddProductScreen={() =>
-										this.setState({ view: "addProduct" })
-									}
+									toAddProductScreen={this.toAddProductScreen}
 								/>
 							);
 							break;
@@ -105,9 +115,7 @@ class Home extends React.Component {
 							return (
 								<Freezer
 									user={this.state.user}
-									toAddProductScreen={() =>
-										this.setState({ view: "addProduct" })
-									}
+									toAddProductScreen={this.toAddProductScreen}
 								/>
 							);
 							break;
@@ -116,6 +124,7 @@ class Home extends React.Component {
 								<AddProduct
 									user={this.state.user}
 									onNameChange={this.onNameChange.bind(this)}
+									productName={this.state.productName}
 									onLocationChange={this.onLocationChange.bind(this)}
 									location={this.state.selectedLocation}
 									onCategoryChange={this.onCategoryChange.bind(this)}
@@ -124,11 +133,12 @@ class Home extends React.Component {
 									quantity={this.state.selectedQuantity}
 									setDate={this.setDate}
 									date={this.state.chosenDate}
+									toScanner={this.toScanner}
 								/>
 							);
 							break;
 						case "scanner":
-							return <Scanner user={this.state.user} />;
+							return <Scanner user={this.state.user} addProductName={this.addProductName} toAddProductScreen={this.toAddProductScreen} />;
 							break;
 					}
 				})()}
