@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, TouchableHighlight, View, Image } from "react-native";
-import { Button, Text, Icon } from "native-base";
+import { Content, Icon } from "native-base";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 
 const styles = StyleSheet.create({
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 
 function Fridge(props) {
 	return (
-		<View style={styles.pageDiv}>
+		<Content contentContainerStyle={styles.pageDiv}>
 			<View style={styles.iconDiv}>
 				<Icon
 					name="plus-circle"
@@ -122,7 +122,7 @@ function Fridge(props) {
 					/>
 				</TouchableHighlight>
 			</View>
-		</View>
+		</Content>
 	);
 }
 

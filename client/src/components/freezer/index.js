@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, TouchableHighlight, View, Image } from "react-native";
-import { Button, Text, Icon } from "native-base";
+import { Icon, Content } from "native-base";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 
 const styles = StyleSheet.create({
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 
 function Freezer(props) {
 	return (
-		<View style={styles.pageDiv}>
+		<Content contentContainerStyle={styles.pageDiv}>
 			<View style={styles.iconDiv}>
 				<Icon
 					name="plus-circle"
@@ -80,7 +80,7 @@ function Freezer(props) {
 					style={styles.bannerImg}
 				/>
 			</TouchableHighlight>
-		</View>
+		</Content>
 	);
 }
 
