@@ -100,6 +100,7 @@ router.post('/newUser', function (req, res) {
         new User({
             username: req.body.name,
             thirdPartyId: req.body.id,
+            deviceToken: req.body.token,
             lastLogin: Date.now(),
             dateJoined: Date.now(),
             lastUpdated: Date.now()
@@ -136,6 +137,7 @@ router.post('/newProduct', function (req, res) {
           productname: req.body.name,
           category: req.body.category,
           foodId: req.body.id,
+          pic: req.body.pic,
           location: req.body.location,
           quantity: req.body.quantity,
           dateAdded: Date.now(),
