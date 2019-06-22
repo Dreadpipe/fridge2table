@@ -290,6 +290,9 @@ function updateUser (reqTarget, reqUpdate) {
         case (reqUpdate.token !== undefined):
             Object.assign(finalUpdate, { deviceToken: reqUpdate.token });
             break;
+        case (reqUpdate.pushToken !== undefined):
+            Object.assign(finalUpdate, { pushToken: reqUpdate.pushToken });
+            break;
         case (reqUpdate.brandNewProduct !== undefined):
             Object.assign(finalUpdate, { $push: { allProducts: reqUpdate.brandNewProduct } });
             break;

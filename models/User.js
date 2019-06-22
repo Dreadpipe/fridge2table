@@ -15,6 +15,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  pushToken: {
+    type: String,
+    required: false,
+  },
   allProducts: [ // An array of every foodID ever scanned into the inventory.
     {
       type: String,
