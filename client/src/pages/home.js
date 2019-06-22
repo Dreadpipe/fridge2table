@@ -25,9 +25,9 @@ class Home extends React.Component {
 			view: "fridge",
 			productName: "",
 			selectedLocation: "Fridge",
-			selectedCategory: undefined,
-			selectedQuantity: undefined,
-			chosenDate: new Date()
+			selectedCategory: "Dairy",
+			selectedQuantity: 1,
+			expDate: new Date()
 		};
 		this.setDate = this.setDate.bind(this);
 	}
@@ -43,7 +43,7 @@ class Home extends React.Component {
 	// Input-form functions:
 
 	setDate(newDate) {
-		this.setState({ chosenDate: newDate });
+		this.setState({ expDate: newDate });
 	}
 
 	onNameChange = e => {
@@ -52,9 +52,25 @@ class Home extends React.Component {
 	};
 
 	onLocationChange(value: string) {
-		this.setState({
-			selectedLocation: value
-		});
+		if (value === "Fridge") {
+			this.setState({
+				selectedLocation: value,
+				selectedCategory: "Dairy",
+				selectedQuantity: 1
+			});
+		} else if (value === "Freezer") {
+			this.setState({
+				selectedLocation: value,
+				selectedCategory: "Meats",
+				selectedQuantity: 1
+			});
+		} else {
+			this.setState({
+				selectedLocation: value,
+				selectedCategory: "Canned Goods",
+				selectedQuantity: 1
+			});
+		}
 	}
 
 	onCategoryChange(value: string) {
@@ -80,20 +96,29 @@ class Home extends React.Component {
 	addProduct = () => {
 		if (
 			this.state.productName &&
-			this.state.selectedCategory &&
 			this.state.selectedLocation &&
+			this.state.selectedCategory &&
 			this.state.selectedQuantity
 		) {
 			const newProduct = {
 				name: this.state.productName,
-				category: this.state.selectedCategory,
 				location: this.state.selectedLocation,
+				category: this.state.selectedCategory,
 				quantity: this.state.selectedQuantity,
+				expDate: this.state.expDate,
 				userId: this.state.user._id
 			};
 			API.addFood(newProduct);
+			this.setState({
+				productName: "",
+				selectedCategory: "Dairy",
+				selectedLocation: "Fridge",
+				selectedQuantity: 1,
+				expDate: new Date()
+			});
+			return alert("Product added! Click OK to add more.");
 		} else {
-			return alert('Please make sure to fill out the entire product form')
+			return alert("Please make sure to fill out the entire product form");
 		}
 	};
 
@@ -142,6 +167,7 @@ class Home extends React.Component {
 						case "addProduct":
 							return (
 								<AddProduct
+									consoleState={this.consoleState}
 									user={this.state.user}
 									onNameChange={this.onNameChange.bind(this)}
 									productName={this.state.productName}
@@ -152,7 +178,7 @@ class Home extends React.Component {
 									onQuantityChange={this.onQuantityChange.bind(this)}
 									quantity={this.state.selectedQuantity}
 									setDate={this.setDate}
-									date={this.state.chosenDate}
+									date={this.state.expDate}
 									toScanner={this.toScanner}
 									addProduct={this.addProduct}
 								/>
@@ -169,10 +195,6 @@ class Home extends React.Component {
 							break;
 					}
 				})()}
-				{/* <Button
-					title="Scan"
-					onPress={() => this.setState({ view: "scanner" })}
-				/> */}
 			</View>
 		);
 	}
