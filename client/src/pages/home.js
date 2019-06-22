@@ -54,9 +54,10 @@ class Home extends React.Component {
 
 	componentDidMount() {
 		API.getCurrentUser(this.props.user.id).then(response => {
-			this.setState({ user: response.data[0] });
+      this.setState({ user: response.data[0] });
     });
     registerForPushNotifications();
+    this.addPushToken();
     this._notificationSubscription = Notifications.addListener(this._handleNotification);
   }
 
@@ -86,15 +87,24 @@ class Home extends React.Component {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      token: {
-        value: expoToken,
-      },
-      user: {
-        username: this.state.user.name,
-      },
+      pushToken: expoToken,
+      id: this.props.user.id,
     }),
   });
   };
+
+  addPushToken = () => {
+    query = {
+      target: {
+        id: this.props.user.id
+      },
+      update: {
+        pushToken: expoToken
+      }
+    };
+    axios.put(`http://${env.IP_ADDRESS}:3001/updateUser`, query, {
+    });
+  }
 
 	// Input-form functions:
 

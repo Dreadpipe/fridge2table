@@ -163,7 +163,7 @@ router.post("/users/push-token", function(req, res) {
   // Create the messages that you want to send to clents
   console.log(req.body);
   let messages = [];
-  let pushToken = req.body.token.value;
+  let pushToken = req.body.pushToken;
   let somePushTokens = [];
   somePushTokens.push(pushToken);
   for (let pushToken of somePushTokens) {
@@ -177,8 +177,8 @@ router.post("/users/push-token", function(req, res) {
     messages.push({
       to: pushToken,
       sound: 'default',
-      body: 'This is a test notification',
-      data: { withSome: 'data' },
+      body: req.body.message,
+      data: { foodExp: req.body.name },
     })
   }
   // The Expo push notification service accepts batches of notifications so
@@ -259,6 +259,7 @@ router.post("/users/push-token", function(req, res) {
       }
     }
   })();
+  res.status(200).end();
 });
 
 //++++++++++++++++++++++
