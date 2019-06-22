@@ -278,7 +278,7 @@ class Home extends React.Component {
 				) : (
 					<View>
 						<Text>Expo Notifications Test!</Text>
-						<Button title="updatePushToken" onPress={this.sendNotification} />
+						<Button title="Test Notification" onPress={this.sendNotification} />
 					</View>
 				)}
 			</View>
