@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const CronJob = require('cron').CronJob;
+const axios = require('axios');
 const path = require("path");
 const routes = require("./routes/routes");
 
@@ -30,8 +31,92 @@ mongoose
 		console.log(err);
 	});
 
-new CronJob('0 0-59 * \* \* \*', function() {
-	console.log('You will see this message the first second of every minute');
+	//0 0 0 1-31
+
+new CronJob('0 * * * * *', function() {
+	console.log('Daily Check');
+	axios.get(`http://${process.env.IP_ADDRESS}:3001/findAllProducts`)
+		.then(response => {
+			const allProducts = response.data;
+			const today = Date.now();
+			allProducts.forEach( product => {
+				if (product.sevenDayWarning !== null && product.sevenDayWarning <= today) {
+					console.log('Seven day warning!');
+					const query = {
+						target: {
+							product: product._id
+						},
+						update: {
+							remove7DayWarning: true
+						}
+					}
+					axios.put(`http://${process.env.IP_ADDRESS}:3001/updateProduct`, query)
+						.then(response => {
+							console.log(response)
+						})
+						.catch(err => {
+							console.log("We ran into a problem removing the seven day warning.\n------------------------");
+							console.log(err);
+						})
+				} else if (product.sevenDayWarning === null && product.twoDayWarning !== null && product.twoDayWarning <= today) {
+					console.log('Two day warning!');
+					const query = {
+						target: {
+							product: product._id
+						},
+						update: {
+							remove2DayWarning: true
+						}
+					}
+					axios.put(`http://${process.env.IP_ADDRESS}:3001/updateProduct`, query)
+						.then(response => {
+							console.log(response)
+						})
+						.catch(err => {
+							console.log("We ran into a problem removing the two day warning.\n------------------------");
+							console.log(err);
+						})
+				} else if (product.sevenDayWarning === null && product.twoDayWarning === null && product.expDate !== null && product.expDate <= today && product.expiredOrNot === false) {
+					console.log('Oh no! Your food has expired!');
+					const query = {
+						target: {
+							product: product._id
+						},
+						update: {
+							expiredOrNot: true
+						}
+					}
+					axios.put(`http://${process.env.IP_ADDRESS}:3001/updateProduct`, query)
+						.then(response => {
+							console.log(response)
+						})
+						.catch(err => {
+							console.log("We ran into a problem expiring the food.\n------------------------");
+							console.log(err);
+						})
+					const query2 = {
+						target: {
+							id: product.owner
+						},
+						update: {
+							addExpired: true
+						}
+					}
+					axios.put(`http://${process.env.IP_ADDRESS}:3001/updateUser`, query2)
+					.then(response => {
+						console.log(response)
+					})
+					.catch(err => {
+						console.log("We ran into a problem updating the user's expired food.\n------------------------");
+						console.log(err);
+					})
+				} else (console.log(`The ${product.productname} isn\'t expiring today or within a week!`));
+			})
+		})
+		.catch(err => {
+			console.log("We ran into a problem finding our products.\n------------------------");
+			console.log(err);
+		})
 }, null, true, 'America/Los_Angeles');
 
 //Start server
