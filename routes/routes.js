@@ -137,7 +137,7 @@ router.post('/newProduct', function (req, res) {
           Object.assign(newProduct, {
             expDate: req.body.expDate,
             sevenDayWarning: addDays(req.body.expDate, 7),
-            sevenDayWarning: addDays(req.body.expDate, 2),
+            twoDayWarning: addDays(req.body.expDate, 2),
           })
         }
         new Product(newProduct)
