@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 });
 
 let expoToken = "";
-const PUSH_ENDPOINT = `https://${env.IP_ADDRESS}/users/push-token`;
+const PUSH_ENDPOINT = `http://${env.IP_ADDRESS}:3001/users/push-token`;
 async function registerForPushNotifications() {
   const { status }  = await Permissions.askAsync(Permissions.NOTIFICATIONS);
   const token = await Notifications.getExpoPushTokenAsync();
@@ -31,6 +31,7 @@ async function registerForPushNotifications() {
   }
   console.log(status, token);
   expoToken = token;
+  
 };
 
 class Home extends React.Component {
@@ -77,6 +78,21 @@ class Home extends React.Component {
         message: "Hey, nerd!"
       }
     });
+    // POST the token to your backend server from where you can retrieve it to send push notifications.
+  // return axios.post(PUSH_ENDPOINT, {
+  //   headers: {
+  //     Accept: 'application/json',
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify({
+  //     token: {
+  //       value: expoToken,
+  //     },
+  //     user: {
+  //       username: this.state.user.name,
+  //     },
+  //   }),
+  // });
   };
 
 	// Input-form functions:
