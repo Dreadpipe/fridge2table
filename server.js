@@ -2,6 +2,7 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const CronJob = require('cron').CronJob;
 const path = require("path");
 const routes = require("./routes/routes");
 
@@ -28,6 +29,10 @@ mongoose
 		console.log("We've got a problem with the database!");
 		console.log(err);
 	});
+
+new CronJob('0 0-59 * \* \* \*', function() {
+	console.log('You will see this message the first second of every minute');
+}, null, true, 'America/Los_Angeles');
 
 //Start server
 app.listen(PORT, function() {
