@@ -7,16 +7,18 @@ import OpenFridge from "../components/openFridge";
 import Freezer from "../components/freezer";
 import Pantry from "../components/pantry";
 import AddProduct from "../components/addProduct";
+import ViewProducts from "../components/viewProducts";
 import Scanner from "../components/scanner";
-import Foot from '../components/foot';
+import Foot from "../components/foot";
 import API from "../utils/API";
 import { Notifications, Permissions } from "expo";
 import axios from "axios";
 import env from "../../env";
+import viewProducts from "../components/viewProducts";
 
 const styles = StyleSheet.create({
 	container: {
-		height: Platform.OS === 'ios' ? vh(100) : vh(100) - getStatusBarHeight(),
+		height: Platform.OS === "ios" ? vh(100) : vh(100) - getStatusBarHeight(),
 		width: "100%"
 	}
 });
@@ -128,14 +130,6 @@ class Home extends React.Component {
 		});
 	}
 
-	toScanner = () => {
-		this.setState({ view: "scanner" });
-	};
-
-	toAddProductScreen = () => {
-		this.setState({ view: "addProduct" });
-	};
-
 	addProduct = () => {
 		if (
 			this.state.productName &&
@@ -165,6 +159,32 @@ class Home extends React.Component {
 		}
 	};
 
+	// Navigation functions
+
+	toFridgeScreen = () => {
+		this.setState({ view: "fridge" })
+	}
+
+	toFreezerScreen = () => {
+		this.setState({ view: "freezer" })
+	}
+
+	toPantryScreen = () => {
+		this.setState({ view: "pantry" })
+	}
+
+	toAddProductScreen = () => {
+		this.setState({ view: "addProduct" });
+	};
+
+	toViewProductsScreen = () => {
+		this.setState({ view: "viewProducts" })
+	}
+
+	toScanner = () => {
+		this.setState({ view: "scanner" });
+	};
+
 	// Scanner functions
 
 	addProductName = name => {
@@ -177,32 +197,20 @@ class Home extends React.Component {
 		return (
 			<View style={styles.container}>
 				<Head
-					toFridge={() => this.setState({ view: "fridge" })}
-					toFreezer={() => this.setState({ view: "freezer" })}
-					toPantry={() => this.setState({ view: "pantry" })}
+					toFridge={this.toFridgeScreen}
+					toFreezer={this.toFreezerScreen}
+					toPantry={this.toPantryScreen}
 				/>
 				{(() => {
 					switch (this.state.view) {
 						case "fridge":
-							return (
-								<OpenFridge
-									user={this.state.user}
-								/>
-							);
+							return <OpenFridge user={this.state.user} />;
 							break;
 						case "pantry":
-							return (
-								<Pantry
-									user={this.state.user}
-								/>
-							);
+							return <Pantry user={this.state.user} />;
 							break;
 						case "freezer":
-							return (
-								<Freezer
-									user={this.state.user}
-								/>
-							);
+							return <Freezer user={this.state.user} />;
 							break;
 						case "addProduct":
 							return (
@@ -224,6 +232,10 @@ class Home extends React.Component {
 								/>
 							);
 							break;
+						case "viewProducts":
+							console.log(this.state.user)
+							return <ViewProducts />;
+							break;
 						case "scanner":
 							return (
 								<Scanner
@@ -235,7 +247,7 @@ class Home extends React.Component {
 							break;
 					}
 				})()}
-				<Foot toAddProductScreen={this.toAddProductScreen} />
+				<Foot toAddProductScreen={this.toAddProductScreen} toViewProductsScreen={this.toViewProductsScreen} />
 				{/* {this.state.notification.origin ? (
 					<View>
 						<Text>Origin: {this.state.notification.origin}</Text>
