@@ -77,11 +77,31 @@ class Home extends React.Component {
 		this.setState({ view: "addProduct" });
 	};
 
+	addProduct = () => {
+		if (
+			this.state.productName &&
+			this.state.selectedCategory &&
+			this.state.selectedLocation &&
+			this.state.selectedQuantity
+		) {
+			const newProduct = {
+				name: this.state.productName,
+				category: this.state.selectedCategory,
+				location: this.state.selectedLocation,
+				quantity: this.state.selectedQuantity,
+				userId: this.state.user._id
+			};
+			API.addFood(newProduct);
+		} else {
+			return alert('Please make sure to fill out the entire product form')
+		}
+	};
+
 	// Scanner functions
 
-	addProductName = (name) => {
-		this.setState({productName: name})
-	}
+	addProductName = name => {
+		this.setState({ productName: name });
+	};
 
 	// Render function
 
@@ -134,11 +154,18 @@ class Home extends React.Component {
 									setDate={this.setDate}
 									date={this.state.chosenDate}
 									toScanner={this.toScanner}
+									addProduct={this.addProduct}
 								/>
 							);
 							break;
 						case "scanner":
-							return <Scanner user={this.state.user} addProductName={this.addProductName} toAddProductScreen={this.toAddProductScreen} />;
+							return (
+								<Scanner
+									user={this.state.user}
+									addProductName={this.addProductName}
+									toAddProductScreen={this.toAddProductScreen}
+								/>
+							);
 							break;
 					}
 				})()}
