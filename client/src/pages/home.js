@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, Button } from "react-native";
+import { StyleSheet, View, Platform } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 import Head from "../components/head";
@@ -16,10 +16,12 @@ import env from "../../env";
 
 const styles = StyleSheet.create({
 	container: {
-		height: vh(100) - getStatusBarHeight() - 56,
+		height: Platform.OS === 'ios' ? vh(100) : vh(100) - getStatusBarHeight(),
 		width: "100%"
 	}
 });
+
+// Platform.OS === 'ios' ? vh(100) : vh(100) - getStatusBarHeight()
 
 let expoToken = "";
 const PUSH_ENDPOINT = `https://${env.IP_ADDRESS}/users/push-token`;
@@ -185,7 +187,6 @@ class Home extends React.Component {
 							return (
 								<OpenFridge
 									user={this.state.user}
-									toAddProductScreen={this.toAddProductScreen}
 								/>
 							);
 							break;
@@ -193,7 +194,6 @@ class Home extends React.Component {
 							return (
 								<Pantry
 									user={this.state.user}
-									toAddProductScreen={this.toAddProductScreen}
 								/>
 							);
 							break;
@@ -201,7 +201,6 @@ class Home extends React.Component {
 							return (
 								<Freezer
 									user={this.state.user}
-									toAddProductScreen={this.toAddProductScreen}
 								/>
 							);
 							break;
@@ -236,8 +235,8 @@ class Home extends React.Component {
 							break;
 					}
 				})()}
-				<Foot />
-				{this.state.notification.origin ? (
+				<Foot toAddProductScreen={this.toAddProductScreen} />
+				{/* {this.state.notification.origin ? (
 					<View>
 						<Text>Origin: {this.state.notification.origin}</Text>
 						{this.state.notification.data ? (
@@ -251,7 +250,7 @@ class Home extends React.Component {
 						<Text>Expo Notifications Test!</Text>
 						<Button title="Test Notification" onPress={this.sendNotification} />
 					</View>
-				)}
+				)} */}
 			</View>
 		);
 	}

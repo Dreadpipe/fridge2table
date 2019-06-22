@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { StyleSheet } from "react-native";
 import {
 	Container,
 	Header,
@@ -14,12 +15,12 @@ function Foot(props) {
 	return (
 		<Footer>
 			<FooterTab>
-				<Button vertical>
+				<Button vertical onPress={props.toAddProductScreen}>
 					<Icon name="plus" type="FontAwesome" />
 					<Text>Add Product</Text>
 				</Button>
 				<Button vertical>
-					<Icon name="globe" type="FontAwesome" />
+					<Icon name="search" type="FontAwesome" />
 					<Text>All Products</Text>
 				</Button>
 			</FooterTab>

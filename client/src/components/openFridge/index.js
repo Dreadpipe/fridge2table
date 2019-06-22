@@ -8,39 +8,18 @@ const styles = StyleSheet.create({
 		display: "flex",
 		flex: 1,
 		flexDirection: "column",
-		justifyContent: "center",
-		alignContent: 'center',
-		alignItems: 'center',
-		height: "100%",
-		width: "100%"
-	},
-	iconDiv: {
-		position: "absolute",
-		top: 7,
-		left: 10,
-		zIndex: 1
-	},
-	icon: {
-		fontSize: 50,
-		color: "#0092D6"
-	},
-	solidIconDiv: {
-		position: "absolute",
-		top: 7,
-		left: 10
-	},
-	solidIcon: {
-		fontSize: 45,
-		color: "#FFFFFF"
+		justifyContent: "flex-start",
+		alignContent: "center",
+		alignItems: "center"
 	},
 	bannerDiv: {
 		display: "flex",
-		flex: 1,
 		flexDirection: "row",
 		flexWrap: "wrap",
 		justifyContent: "space-around",
-		alignContent: "stretch",
-		alignItems: "flex-end"
+		alignContent: "space-around",
+		alignItems: "flex-start",
+		height: "100%"
 	},
 	banner: {
 		height: "auto",
@@ -51,11 +30,11 @@ const styles = StyleSheet.create({
 		width: "100%"
 	},
 	grainsImg: {
-		height: 120,
+		height: 125,
 		width: "100%"
 	},
 	meatImg: {
-		height: 100,
+		height: 105,
 		width: "100%"
 	},
 	produceImg: {
@@ -67,17 +46,6 @@ const styles = StyleSheet.create({
 function Fridge(props) {
 	return (
 		<Content contentContainerStyle={styles.pageDiv}>
-			<View style={styles.iconDiv}>
-				<Icon
-					name="plus-circle"
-					type="FontAwesome"
-					style={styles.icon}
-					onPress={props.toAddProductScreen}
-				/>
-			</View>
-			<View style={styles.solidIconDiv}>
-				<Icon name="circle" type="FontAwesome" style={styles.solidIcon} />
-			</View>
 			<View style={styles.bannerDiv}>
 				<TouchableHighlight style={styles.banner}>
 					<Image
