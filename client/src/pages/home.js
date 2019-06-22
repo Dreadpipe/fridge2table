@@ -67,32 +67,33 @@ class Home extends React.Component {
   };
 
   sendNotification = () => {
-    axios.post(`https://exp.host/--/api/v2/push/send`, 
-    {
-      to: expoToken,
-      title: "Title Notification",
-      sound: "default",
-      badge: 1,
-      body: "Hello World!",
-      data: {
-        message: "Hey, nerd!"
-      }
-    });
+    // axios.post(`https://exp.host/--/api/v2/push/send`, 
+    // {
+    //   to: expoToken,
+    //   title: "Title Notification",
+    //   sound: "default",
+    //   badge: 1,
+    //   body: "Hello World!",
+    //   data: {
+    //     message: "Hey, nerd!"
+    //   }
+    // });
     // POST the token to your backend server from where you can retrieve it to send push notifications.
-  // return axios.post(PUSH_ENDPOINT, {
-  //   headers: {
-  //     Accept: 'application/json',
-  //     'Content-Type': 'application/json',
-  //   },
-  //   body: JSON.stringify({
-  //     token: {
-  //       value: expoToken,
-  //     },
-  //     user: {
-  //       username: this.state.user.name,
-  //     },
-  //   }),
-  // });
+  return fetch(PUSH_ENDPOINT, {
+    method: "POST",
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      token: {
+        value: expoToken,
+      },
+      user: {
+        username: this.state.user.name,
+      },
+    }),
+  });
   };
 
 	// Input-form functions:

@@ -161,7 +161,11 @@ router.post("/users/push-token", function(req, res) {
   // Create a new Expo SDK client
   let expo = new Expo();
   // Create the messages that you want to send to clents
+  console.log(req.body);
   let messages = [];
+  let pushToken = req.body.token.value;
+  let somePushTokens = [];
+  somePushTokens.push(pushToken);
   for (let pushToken of somePushTokens) {
     // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
     // Check that all your push tokens appear to be valid Expo push tokens
