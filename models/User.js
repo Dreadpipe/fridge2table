@@ -11,10 +11,6 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  deviceToken: {
-    type: String,
-    required: true,
-  },
   pushToken: {
     type: String,
     required: false,

@@ -34,7 +34,7 @@ router.get('/findAllUsers', function (req, res) {
     })
     .catch(err => {
       console.log("We ran into a problem finding all of our Users.\n------------------------");
-      console.log(err);
+      //console.log(err);
     });
 });
 
@@ -52,7 +52,7 @@ router.get('/findOneUser/:id', function (req, res) {
     })
     .catch(err => {
       console.log("We ran into a problem finding one of our Users.\n------------------------");
-      console.log(err);
+      //console.log(err);
     });
 });
 
@@ -67,7 +67,7 @@ router.get('/findAllProducts', function (req, res) {
     })
     .catch(err => {
       console.log("We ran into a problem finding all of our Products.\n------------------------");
-      console.log(err);
+      //console.log(err);
     });
 });
 
@@ -84,7 +84,7 @@ router.get('/findOneProduct/:objid', function (req, res) {
     })
     .catch(err => {
       console.log("We ran into a problem finding one of our Products.\n------------------------");
-      console.log(err);
+      //console.log(err);
     });
 });
 
@@ -116,7 +116,6 @@ router.post('/newUser', function (req, res) {
         new User({
             username: req.body.name,
             thirdPartyId: req.body.id,
-            deviceToken: req.body.token,
             lastLogin: Date.now(),
             dateJoined: Date.now(),
             lastUpdated: Date.now()
@@ -130,7 +129,7 @@ router.post('/newUser', function (req, res) {
     })
     .catch(err => {
       console.log("We had a problem creating a new user in the database.\n------------------------")
-      console.log(err);
+      //console.log(err);
     });
 });
 
@@ -313,13 +312,13 @@ router.delete('/removeUser', function (req, res) {
         })
         .catch(err => {
           console.log("We've got a problem deleting all items associated with the removed user!")
-          console.log(err);
+          //console.log(err);
         });
       res.end();
     })
     .catch(err => {
         console.log("We've got a problem deleing the user!")
-        console.log(err);
+        //console.log(err);
     });
 });
 
@@ -339,7 +338,7 @@ router.delete('/removeProduct', function (req, res) {
     })
     .catch(err => {
         console.log("We've got a problem deleing the product!")
-        console.log(err);
+        //console.log(err);
     });
   } else {
     console.log('You need to include the owner\'s id and the food\'s id when removing a product!');
@@ -435,7 +434,7 @@ function updateUser (reqTarget, reqUpdate) {
         })
         .catch(err => {
             console.log("We've got a problem. The update to the targeted User failed!")
-            console.log(err);
+            //console.log(err);
         });
 }
 
@@ -550,7 +549,7 @@ function updateProduct (reqTarget, reqUpdate) {
         })
         .catch(err => {
             console.log("We've got a problem. The update to the targeted Product failed!")
-            console.log(err);
+            //console.log(err);
         });
 }
 
