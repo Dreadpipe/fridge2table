@@ -136,7 +136,9 @@ router.post('/newProduct', function (req, res) {
         };
         if (req.body.expDate) {
           Object.assign(newProduct, {
-            expDate: req.body.expDate
+            expDate: req.body.expDate,
+            sevenDayWarning: addDays(req.body.expDate, 7),
+            sevenDayWarning: addDays(req.body.expDate, 2),
           })
         }
         new Product(newProduct)
@@ -552,6 +554,14 @@ function updateProduct (reqTarget, reqUpdate) {
             break;
         case (reqUpdate.expDate !== undefined):
             Object.assign(finalUpdate, { expDate: reqUpdate.expDate } );
+            Object.assign(finalUpdate, { sevenDayWarning: addDays(reqUpdate.expDate, 7) } );
+            Object.assign(finalUpdate, { twoDayWarning: addDays(reqUpdate.expDate, 2) } );
+            break;
+        case (reqUpdate.remove7DayWarning !== undefined):
+            Object.assign(finalUpdate, { sevenDayWarning: null } );
+            break;
+        case (reqUpdate.remove2DayWarning !== undefined):
+            Object.assign(finalUpdate, { twoDayWarning: null } );
             break;
         case (reqUpdate.expiredOrNot !== undefined):
             Object.assign(finalUpdate, { expiredOrNot: reqUpdate.expiredOrNot });
@@ -586,6 +596,15 @@ function updateProduct (reqTarget, reqUpdate) {
             console.log("We've got a problem. The update to the targeted Product failed!")
             console.log(err);
         });
+}
+
+//--------------------------------
+
+// Add Days to a Date - based on a function by Joel Coehoorn at Stack Overflow - Source: "https://stackoverflow.com/questions/563406/add-days-to-javascript-date"
+function addDays(date, days) {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
 }
 
 module.exports = router;

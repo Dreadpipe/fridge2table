@@ -16,6 +16,16 @@ const productSchema = new Schema({
     required: false,
     default: null,
   },
+  sevenDayWarning: {
+    type: Date,
+    required: false,
+    default: null,
+  },
+  twoDayWarning: {
+    type: Date,
+    required: false,
+    default: null,
+  },
   expiredOrNot: {
     type: Boolean,
     required: true,

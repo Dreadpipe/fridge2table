@@ -30,5 +30,5 @@ export default {
   },
   getCurrentUser(id) {
     return axios.get(`http://${env.IP_ADDRESS}:3001/findOneUser/${id}`);
-  }
+  },
 };
