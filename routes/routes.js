@@ -1,6 +1,5 @@
 // Establish our Express Dependancy
 const express = require('express');
-const path = require('path');
 const router = express.Router();
 const axios = require('axios');
 const { Expo } = require("expo-server-sdk");
@@ -74,6 +73,22 @@ router.get('/findAllProducts', function (req, res) {
 
 //-------------------------------------
 
+// Find one Product Route
+router.get('/findOneProduct/:objid', function (req, res) {
+  db.Product.find({
+      _id: req.params.objid
+    })
+    .populate('associatedRecipes')
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => {
+      console.log("We ran into a problem finding one of our Products.\n------------------------");
+      console.log(err);
+    });
+});
+
+
 //++++++++++++++++++++++
 // All POST Routes Below ------------
 //++++++++++++++++++++++
@@ -138,7 +153,7 @@ router.post('/newProduct', function (req, res) {
           Object.assign(newProduct, {
             expDate: req.body.expDate,
             sevenDayWarning: addDays(req.body.expDate, 7),
-            sevenDayWarning: addDays(req.body.expDate, 2),
+            twoDayWarning: addDays(req.body.expDate, 2),
           })
         }
         new Product(newProduct)
@@ -345,6 +360,9 @@ function targetUser (reqTarget) {
       case (reqTarget.id !== undefined):
           Object.assign(finalTarget, { thirdPartyId: reqTarget.id });
           break;
+      case (reqTarget.token !== undefined):
+          Object.assign(finalTarget, { deviceToken: reqTarget.token });
+          break;
       case (reqTarget.joinedBefore !== undefined):
           Object.assign(finalTarget, { dateJoined: { $lte: new Date(joinedBefore) } });
           break;
@@ -371,37 +389,17 @@ function targetUser (reqTarget) {
 
 // Update User Function
 function updateUser (reqTarget, reqUpdate) {
-    let finalTarget = {};
+    const finalTarget = targetUser(reqTarget);
     let finalUpdate = {};
-    switch (true) {
-        case (reqTarget.username !== undefined):
-            Object.assign(finalTarget, { username: reqTarget.username });
-            break;
-        case (reqTarget.id !== undefined):
-            Object.assign(finalTarget, { thirdPartyId: reqTarget.id });
-            break;
-        case (reqTarget.joinedBefore !== undefined):
-            Object.assign(finalTarget, { dateJoined: { $lte: new Date(joinedBefore) } });
-            break;
-        case (reqTarget.joinedAfter !== undefined):
-            Object.assign(finalTarget, { dateJoined: { $gte: new Date(joinedAfter) } });
-            break;
-        case (reqTarget.lastLoggedBefore !== undefined):
-            Object.assign(finalTarget, { lastLogin: { $lte: new Date(lastLoggedBefore) } });
-            break;
-        case (reqTarget.lastLoggedAfter !== undefined):
-            Object.assign(finalTarget, { lastLogin: { $gte: new Date(lastLoggedAfter) } });
-            break;
-        case (finalTarget === undefined):
-            console.log('There was no valid target.');
-            break;
-        default:
-    };
-    console.log('The target data will be:');
-    console.log(finalTarget);
     switch (true) {
         case (reqUpdate.username !== undefined):
             Object.assign(finalUpdate, { username: reqUpdate.username });
+            break;
+        case (reqUpdate.token !== undefined):
+            Object.assign(finalUpdate, { deviceToken: reqUpdate.token });
+            break;
+        case (reqUpdate.pushToken !== undefined):
+            Object.assign(finalUpdate, { pushToken: reqUpdate.pushToken });
             break;
         case (reqUpdate.brandNewProduct !== undefined):
             Object.assign(finalUpdate, { $push: { allProducts: reqUpdate.brandNewProduct } });
@@ -501,55 +499,8 @@ function targetProduct (reqTarget) {
 
 // Update Product Function
 function updateProduct (reqTarget, reqUpdate) {
-    let finalTarget = {};
+    const finalTarget = targetProduct(reqTarget);
     let finalUpdate = {};
-    switch (true) {
-        case (reqTarget.productname !== undefined):
-            Object.assign(finalTarget, { productname: reqTarget.productname });
-            break;
-        case (reqTarget.foodId !== undefined):
-            Object.assign(finalTarget, { foodId: reqTarget.foodId });
-            break;
-        case (reqTarget._id !== undefined):
-            Object.assign(finalTarget, { _id: reqTarget._id });
-            break;
-        case (reqTarget.expiringBefore !== undefined):
-            Object.assign(finalTarget, { expDate: { $lte: new Date(expiringBefore) } });
-            break;
-        case (reqTarget.expiringAfter !== undefined):
-            Object.assign(finalTarget, { expDate: { $gte: new Date(expiringAfter) } });
-            break;
-        case (reqTarget.lessThanQuantity !== undefined):
-            Object.assign(finalTarget, { quantity: { $lte: lessThanQuantity } });
-            break;
-        case (reqTarget.greaterThanQuantity !== undefined):
-            Object.assign(finalTarget, { quantity: { $gte: greaterThanQuantity } });
-            break;
-        case (reqTarget.expiredOrNot !== undefined):
-            Object.assign(finalTarget, { expiredOrNot: expiredOrNot });
-            break;
-        case (reqTarget.location !== undefined):
-            Object.assign(finalTarget, { location: location });
-            break;
-        case (reqTarget.owner !== undefined):
-            Object.assign(finalTarget, { owner: owner });
-            break;
-        case (reqTarget.recipe !== undefined):
-            Object.assign(finalTarget, { recipes: recipe });
-            break;
-        case (reqTarget.addedBefore !== undefined):
-            Object.assign(finalTarget, { dateAdded: { $lte: new Date(addedBefore) } });
-            break;
-        case (reqTarget.addedAfter !== undefined):
-            Object.assign(finalTarget, { dateAdded: { $gte: new Date(addedAfter) } });
-            break;
-        case (finalTarget === undefined):
-            console.log('There was no valid target.');
-            break;
-        default:
-    };
-    console.log('The target data will be:');
-    console.log(finalTarget);
     switch (true) {
         case (reqUpdate.productname !== undefined):
             Object.assign(finalUpdate, { productname: reqUpdate.productname });

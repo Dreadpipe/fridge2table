@@ -13,10 +13,10 @@ function PantryCategoryPicker(props) {
 			selectedValue={props.selectedCategory}
 			onValueChange={props.onCategoryChange.bind(this)}
 		>
-			<Picker.Item label="Spice Rack" value="Spice Rack" />
 			<Picker.Item label="Canned Goods" value="Canned Goods" />
 			<Picker.Item label="Grains" value="Grains" />
 			<Picker.Item label="Produce" value="Produce" />
+			<Picker.Item label="Spice Rack" value="Spice Rack" />
 			<Picker.Item label="Misc" value="Misc" />
 		</Picker>
 	);

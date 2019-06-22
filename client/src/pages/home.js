@@ -8,6 +8,7 @@ import Freezer from "../components/freezer";
 import Pantry from "../components/pantry";
 import AddProduct from "../components/addProduct";
 import Scanner from "../components/scanner";
+import Foot from '../components/foot';
 import API from "../utils/API";
 import { Notifications, Permissions } from "expo";
 import axios from "axios";
@@ -22,6 +23,7 @@ const styles = StyleSheet.create({
 
 let expoToken = "";
 const PUSH_ENDPOINT = `http://${env.IP_ADDRESS}:3001/users/push-token`;
+
 async function registerForPushNotifications() {
   const { status }  = await Permissions.askAsync(Permissions.NOTIFICATIONS);
   const token = await Notifications.getExpoPushTokenAsync();
@@ -42,10 +44,10 @@ class Home extends React.Component {
 			view: "fridge",
 			productName: "",
 			selectedLocation: "Fridge",
-			selectedCategory: undefined,
-			selectedQuantity: undefined,
-      chosenDate: new Date(),
-      notification: {}
+			selectedCategory: "Dairy",
+			selectedQuantity: 1,
+			expDate: new Date(),
+			notification: {}
 		};
 		this.setDate = this.setDate.bind(this);
 	}
@@ -54,10 +56,12 @@ class Home extends React.Component {
 
 	componentDidMount() {
 		API.getCurrentUser(this.props.user.id).then(response => {
-      this.setState({ user: response.data[0] });
+      this.setState({ user: response.data[0] }, () => {
+        registerForPushNotifications().then(() => {
+          this.addPushToken();
+        });
+      });
     });
-    registerForPushNotifications();
-    this.addPushToken();
     this._notificationSubscription = Notifications.addListener(this._handleNotification);
   }
 
@@ -109,7 +113,7 @@ class Home extends React.Component {
 	// Input-form functions:
 
 	setDate(newDate) {
-		this.setState({ chosenDate: newDate });
+		this.setState({ expDate: newDate });
 	}
 
 	onNameChange = e => {
@@ -118,9 +122,25 @@ class Home extends React.Component {
 	};
 
 	onLocationChange(value: string) {
-		this.setState({
-			selectedLocation: value
-		});
+		if (value === "Fridge") {
+			this.setState({
+				selectedLocation: value,
+				selectedCategory: "Dairy",
+				selectedQuantity: 1
+			});
+		} else if (value === "Freezer") {
+			this.setState({
+				selectedLocation: value,
+				selectedCategory: "Meats",
+				selectedQuantity: 1
+			});
+		} else {
+			this.setState({
+				selectedLocation: value,
+				selectedCategory: "Canned Goods",
+				selectedQuantity: 1
+			});
+		}
 	}
 
 	onCategoryChange(value: string) {
@@ -143,11 +163,40 @@ class Home extends React.Component {
 		this.setState({ view: "addProduct" });
 	};
 
+	addProduct = () => {
+		if (
+			this.state.productName &&
+			this.state.selectedLocation &&
+			this.state.selectedCategory &&
+			this.state.selectedQuantity
+		) {
+			const newProduct = {
+				name: this.state.productName,
+				location: this.state.selectedLocation,
+				category: this.state.selectedCategory,
+				quantity: this.state.selectedQuantity,
+				expDate: this.state.expDate,
+				userId: this.state.user._id
+			};
+			API.addFood(newProduct);
+			this.setState({
+				productName: "",
+				selectedCategory: "Dairy",
+				selectedLocation: "Fridge",
+				selectedQuantity: 1,
+				expDate: new Date()
+			});
+			return alert("Product added! Click OK to add more.");
+		} else {
+			return alert("Please make sure to fill out the entire product form");
+		}
+	};
+
 	// Scanner functions
 
-	addProductName = (name) => {
-		this.setState({productName: name})
-	}
+	addProductName = name => {
+		this.setState({ productName: name });
+	};
 
 	// Render function
 
@@ -188,6 +237,7 @@ class Home extends React.Component {
 						case "addProduct":
 							return (
 								<AddProduct
+									consoleState={this.consoleState}
 									user={this.state.user}
 									onNameChange={this.onNameChange.bind(this)}
 									productName={this.state.productName}
@@ -198,27 +248,39 @@ class Home extends React.Component {
 									onQuantityChange={this.onQuantityChange.bind(this)}
 									quantity={this.state.selectedQuantity}
 									setDate={this.setDate}
-									date={this.state.chosenDate}
+									date={this.state.expDate}
 									toScanner={this.toScanner}
+									addProduct={this.addProduct}
 								/>
 							);
 							break;
 						case "scanner":
-							return <Scanner user={this.state.user} addProductName={this.addProductName} toAddProductScreen={this.toAddProductScreen} />;
+							return (
+								<Scanner
+									user={this.state.user}
+									addProductName={this.addProductName}
+									toAddProductScreen={this.toAddProductScreen}
+								/>
+							);
 							break;
 					}
 				})()}
+				<Foot />
 				{this.state.notification.origin ? (
-          <View>
-            <Text>Origin: {this.state.notification.origin}</Text>
-            {this.state.notification.data ? <Text>Data: {JSON.stringify(this.state.notification.data)}</Text> : <Text>No Data</Text>}
-          </View>
-        ) : (
-          <View>
-              <Text>Expo Notifications Test!</Text>
-              <Button title="Test Notification" onPress={this.sendNotification} />
-            </View>
-        )}
+					<View>
+						<Text>Origin: {this.state.notification.origin}</Text>
+						{this.state.notification.data ? (
+							<Text>Data: {JSON.stringify(this.state.notification.data)}</Text>
+						) : (
+							<Text>No Data</Text>
+						)}
+					</View>
+				) : (
+					<View>
+						<Text>Expo Notifications Test!</Text>
+						<Button title="updatePushToken" onPress={this.sendNotification} />
+					</View>
+				)}
 			</View>
 		);
 	}
