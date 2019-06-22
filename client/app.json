@@ -24,6 +24,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "",
+    "githubUrl": "https://github.com/Dreadpipe/fridge2table"
   }
 }
