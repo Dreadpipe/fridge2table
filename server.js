@@ -32,8 +32,7 @@ mongoose
 		console.log(err);
 	});
 
-	//0 0 0 1-31
-
+			//'0 0 0 1-31 * *' = Daily Check.
 new CronJob('0,15,30,45 * * * * *', function() {
 	console.log('Daily Check');
 	db.Product.find({})
