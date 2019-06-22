@@ -26,6 +26,11 @@ const productSchema = new Schema({
     required: false,
     default: null,
   },
+  pic: {
+    type: String,
+    required: false,
+    default: null,
+  },
   location: {
     type: String,
     required: true,

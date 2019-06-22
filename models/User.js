@@ -11,6 +11,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  deviceToken: {
+    type: String,
+    required: true,
+  },
   allProducts: [ // An array of every foodID ever scanned into the inventory.
     {
       type: String,
