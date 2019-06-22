@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text, Button } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 import Head from "../components/head";
@@ -9,6 +9,9 @@ import Pantry from "../components/pantry";
 import AddProduct from "../components/addProduct";
 import Scanner from "../components/scanner";
 import API from "../utils/API";
+import { Notifications, Permissions } from "expo";
+import axios from "axios";
+import env from "../../env";
 
 const styles = StyleSheet.create({
 	container: {
@@ -16,6 +19,19 @@ const styles = StyleSheet.create({
 		width: "100%"
 	}
 });
+
+let expoToken = "";
+const PUSH_ENDPOINT = `https://${env.IP_ADDRESS}/users/push-token`;
+async function registerForPushNotifications() {
+  const { status }  = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+  const token = await Notifications.getExpoPushTokenAsync();
+  if (status !== 'granted') {
+    alert('You did not grant notifications permissions');
+    return;
+  }
+  console.log(status, token);
+  expoToken = token;
+};
 
 class Home extends React.Component {
 	constructor(props) {
@@ -27,7 +43,8 @@ class Home extends React.Component {
 			selectedLocation: "Fridge",
 			selectedCategory: undefined,
 			selectedQuantity: undefined,
-			chosenDate: new Date()
+      chosenDate: new Date(),
+      notification: {}
 		};
 		this.setDate = this.setDate.bind(this);
 	}
@@ -37,8 +54,30 @@ class Home extends React.Component {
 	componentDidMount() {
 		API.getCurrentUser(this.props.user.id).then(response => {
 			this.setState({ user: response.data[0] });
-		});
-	}
+    });
+    registerForPushNotifications();
+    this._notificationSubscription = Notifications.addListener(this._handleNotification);
+  }
+
+  //Notification functions
+
+  _handleNotification = (notification) => {
+    this.setState({notification: notification});
+  };
+
+  sendNotification = () => {
+    axios.post(`https://exp.host/--/api/v2/push/send`, 
+    {
+      to: expoToken,
+      title: "Title Notification",
+      sound: "default",
+      badge: 1,
+      body: "Hello World!",
+      data: {
+        message: "Hey, nerd!"
+      }
+    });
+  };
 
 	// Input-form functions:
 
@@ -142,10 +181,17 @@ class Home extends React.Component {
 							break;
 					}
 				})()}
-				{/* <Button
-					title="Scan"
-					onPress={() => this.setState({ view: "scanner" })}
-				/> */}
+				{this.state.notification.origin ? (
+          <View>
+            <Text>Origin: {this.state.notification.origin}</Text>
+            {this.state.notification.data ? <Text>Data: {JSON.stringify(this.state.notification.data)}</Text> : <Text>No Data</Text>}
+          </View>
+        ) : (
+          <View>
+              <Text>Expo Notifications Test!</Text>
+              <Button title="Test Notification" onPress={this.sendNotification} />
+            </View>
+        )}
 			</View>
 		);
 	}
