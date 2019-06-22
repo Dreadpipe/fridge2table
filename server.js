@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const CronJob = require('cron').CronJob;
+const db = require('./models');
 const axios = require('axios');
 const path = require("path");
 const routes = require("./routes/routes");
@@ -33,11 +34,12 @@ mongoose
 
 	//0 0 0 1-31
 
-new CronJob('0 * * * * *', function() {
+new CronJob('0,15,30,45 * * * * *', function() {
 	console.log('Daily Check');
-	axios.get(`http://${process.env.IP_ADDRESS}:3001/findAllProducts`)
-		.then(response => {
-			const allProducts = response.data;
+	db.Product.find({})
+    .populate('associatedRecipes')
+    .then(response => {
+			const allProducts = response;
 			const today = Date.now();
 			allProducts.forEach( product => {
 				if (product.sevenDayWarning !== null && product.sevenDayWarning <= today) {
