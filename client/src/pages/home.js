@@ -1,34 +1,89 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
+import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 import Head from "../components/head";
 import OpenFridge from "../components/openFridge";
 import Freezer from "../components/freezer";
 import Pantry from "../components/pantry";
+import AddProduct from "../components/addProduct";
 import Scanner from "../components/scanner";
 import API from "../utils/API";
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		paddingTop: getStatusBarHeight()
-	},
-	header: {
-		height: 54 + getStatusBarHeight()
+		height: vh(100) - getStatusBarHeight() - 56,
+		width: "100%"
 	}
 });
 
 class Home extends React.Component {
-	state = {
-		user: {},
-		view: "fridge"
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			user: {},
+			view: "fridge",
+			productName: "",
+			selectedLocation: "Fridge",
+			selectedCategory: undefined,
+			selectedQuantity: undefined,
+			chosenDate: new Date()
+		};
+		this.setDate = this.setDate.bind(this);
+	}
+
+	// Mounting function
 
 	componentDidMount() {
 		API.getCurrentUser(this.props.user.id).then(response => {
 			this.setState({ user: response.data[0] });
 		});
 	}
+
+	// Input-form functions:
+
+	setDate(newDate) {
+		this.setState({ chosenDate: newDate });
+	}
+
+	onNameChange = e => {
+		const productName = e.nativeEvent.text;
+		this.setState({ productName });
+	};
+
+	onLocationChange(value: string) {
+		this.setState({
+			selectedLocation: value
+		});
+	}
+
+	onCategoryChange(value: string) {
+		this.setState({
+			selectedCategory: value
+		});
+	}
+
+	onQuantityChange(value: string) {
+		this.setState({
+			selectedQuantity: value
+		});
+	}
+
+	toScanner = () => {
+		this.setState({ view: "scanner" });
+	};
+
+	toAddProductScreen = () => {
+		this.setState({ view: "addProduct" });
+	};
+
+	// Scanner functions
+
+	addProductName = (name) => {
+		this.setState({productName: name})
+	}
+
+	// Render function
 
 	render() {
 		return (
@@ -41,16 +96,49 @@ class Home extends React.Component {
 				{(() => {
 					switch (this.state.view) {
 						case "fridge":
-							return <OpenFridge />;
+							return (
+								<OpenFridge
+									user={this.state.user}
+									toAddProductScreen={this.toAddProductScreen}
+								/>
+							);
 							break;
 						case "pantry":
-							return <Pantry />;
+							return (
+								<Pantry
+									user={this.state.user}
+									toAddProductScreen={this.toAddProductScreen}
+								/>
+							);
 							break;
 						case "freezer":
-							return <Freezer />;
+							return (
+								<Freezer
+									user={this.state.user}
+									toAddProductScreen={this.toAddProductScreen}
+								/>
+							);
+							break;
+						case "addProduct":
+							return (
+								<AddProduct
+									user={this.state.user}
+									onNameChange={this.onNameChange.bind(this)}
+									productName={this.state.productName}
+									onLocationChange={this.onLocationChange.bind(this)}
+									location={this.state.selectedLocation}
+									onCategoryChange={this.onCategoryChange.bind(this)}
+									category={this.state.selectedCategory}
+									onQuantityChange={this.onQuantityChange.bind(this)}
+									quantity={this.state.selectedQuantity}
+									setDate={this.setDate}
+									date={this.state.chosenDate}
+									toScanner={this.toScanner}
+								/>
+							);
 							break;
 						case "scanner":
-							return <Scanner user={this.state.user} />;
+							return <Scanner user={this.state.user} addProductName={this.addProductName} toAddProductScreen={this.toAddProductScreen} />;
 							break;
 					}
 				})()}

@@ -1,73 +1,128 @@
 import React from "react";
-import { StyleSheet, ImageBackground, View } from "react-native";
-import { Button, Text } from "native-base";
+import { StyleSheet, TouchableHighlight, View, Image } from "react-native";
+import { Content, Icon } from "native-base";
+import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 
 const styles = StyleSheet.create({
-	backgroundImage: {
-		height: "96.9%",
+	pageDiv: {
+		display: "flex",
+		flex: 1,
+		flexDirection: "column",
+		justifyContent: "center",
+		alignContent: 'center',
+		alignItems: 'center',
+		height: "100%",
 		width: "100%"
 	},
-	grainsDrinksDiv: {
-		display: 'flex',
-		flexDirection: 'row',
-		top: '58.5%',
-		left: '15.5%',
+	iconDiv: {
+		position: "absolute",
+		top: 7,
+		left: 10,
+		zIndex: 1
 	},
-	dairyMeatsDiv: {
-		display: 'flex',
-		flexDirection: 'row',
-		top: '76.5%',
-		left: '21.5%',
+	icon: {
+		fontSize: 50,
+		color: "#0092D6"
 	},
-	miscProduceDiv: {
-		display: 'flex',
-		flexDirection: 'row',
-		top: '108%',
-		left: '17.8%',
+	solidIconDiv: {
+		position: "absolute",
+		top: 7,
+		left: 10
 	},
-	grainsBtn: {
-		backgroundColor: '#0092D6'
+	solidIcon: {
+		fontSize: 45,
+		color: "#FFFFFF"
 	},
-	drinksBtn: {
-		backgroundColor: '#0092D6',
-		marginLeft: 3,
+	bannerDiv: {
+		display: "flex",
+		flex: 1,
+		flexDirection: "row",
+		flexWrap: "wrap",
+		justifyContent: "space-around",
+		alignContent: "stretch",
+		alignItems: "flex-end"
 	},
-	dairyBtn: {
-		backgroundColor: '#0092D6',
+	banner: {
+		height: "auto",
+		width: "45%"
 	},
-	meatsBtn: {
-		backgroundColor: '#0092D6',
-		marginLeft: 23,
+	bannerImg: {
+		height: 125,
+		width: "100%"
 	},
-	miscBtn: {
-		backgroundColor: '#0092D6',
+	grainsImg: {
+		height: 120,
+		width: "100%"
 	},
-	produceBtn: {
-		backgroundColor: '#0092D6',
-		marginLeft: 35,
+	meatImg: {
+		height: 100,
+		width: "100%"
+	},
+	produceImg: {
+		height: 105,
+		width: "100%"
 	}
 });
 
 function Fridge(props) {
 	return (
-		<ImageBackground
-			style={styles.backgroundImage}
-			resizeMode="contain"
-			source={require("../../../assets/OpenFridge.png")}
-		>
-			<View style={styles.grainsDrinksDiv}>
-				<Button small hasText style={styles.grainsBtn}><Text>Grains</Text></Button>
-				<Button small hasText style={styles.drinksBtn}><Text>Drinks</Text></Button>
+		<Content contentContainerStyle={styles.pageDiv}>
+			<View style={styles.iconDiv}>
+				<Icon
+					name="plus-circle"
+					type="FontAwesome"
+					style={styles.icon}
+					onPress={props.toAddProductScreen}
+				/>
 			</View>
-			<View style={styles.dairyMeatsDiv}>
-				<Button small hasText style={styles.dairyBtn}><Text>Dairy</Text></Button>
-				<Button small hasText style={styles.meatsBtn}><Text>Meats</Text></Button>
+			<View style={styles.solidIconDiv}>
+				<Icon name="circle" type="FontAwesome" style={styles.solidIcon} />
 			</View>
-			<View style={styles.miscProduceDiv}>
-				<Button small hasText style={styles.miscBtn}><Text>Misc</Text></Button>
-				<Button small hasText style={styles.produceBtn}><Text>Produce</Text></Button>
+			<View style={styles.bannerDiv}>
+				<TouchableHighlight style={styles.banner}>
+					<Image
+						resizeMode="stretch"
+						source={require("../../../assets/fridge_images/grains_banner.png")}
+						style={styles.grainsImg}
+					/>
+				</TouchableHighlight>
+				<TouchableHighlight style={styles.banner}>
+					<Image
+						resizeMode="stretch"
+						source={require("../../../assets/fridge_images/dairy_banner.png")}
+						style={styles.bannerImg}
+					/>
+				</TouchableHighlight>
+				<TouchableHighlight style={styles.banner}>
+					<Image
+						resizeMode="stretch"
+						source={require("../../../assets/fridge_images/meats_banner.png")}
+						style={styles.meatImg}
+					/>
+				</TouchableHighlight>
+				<TouchableHighlight style={styles.banner}>
+					<Image
+						resizeMode="stretch"
+						source={require("../../../assets/fridge_images/produce_banner.png")}
+						style={styles.produceImg}
+					/>
+				</TouchableHighlight>
+				<TouchableHighlight style={styles.banner}>
+					<Image
+						resizeMode="stretch"
+						source={require("../../../assets/fridge_images/drinks_banner.png")}
+						style={styles.bannerImg}
+					/>
+				</TouchableHighlight>
+				<TouchableHighlight style={styles.banner}>
+					<Image
+						resizeMode="stretch"
+						source={require("../../../assets/fridge_images/misc_banner.png")}
+						style={styles.bannerImg}
+					/>
+				</TouchableHighlight>
 			</View>
-		</ImageBackground>
+		</Content>
 	);
 }
 

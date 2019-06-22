@@ -100,6 +100,7 @@ router.post('/newUser', function (req, res) {
         new User({
             username: req.body.name,
             thirdPartyId: req.body.id,
+            deviceToken: req.body.token,
             lastLogin: Date.now(),
             dateJoined: Date.now(),
             lastUpdated: Date.now()
@@ -121,21 +122,11 @@ router.post('/newUser', function (req, res) {
 
 //Create new Product
 router.post('/newProduct', function (req, res) {
-  console.log(req.body)
-  // Check for existence of user in database
-  db.Product.findOne({
-      foodId: req.body.id
-    })
-    .populate('associatedRecipes')
-    .then(data => {
-      if (data) {
-        // Product already exists
-        res.send(data);
-      } else {
         let newProduct = {
           productname: req.body.name,
           category: req.body.category,
           foodId: req.body.id,
+          pic: req.body.pic,
           location: req.body.location,
           quantity: req.body.quantity,
           dateAdded: Date.now(),
@@ -160,12 +151,6 @@ router.post('/newProduct', function (req, res) {
             };
             updateUser(target, update);
           });
-      }
-    })
-    .catch(err => {
-      console.log("We had a problem creating a new product in the database.\n------------------------")
-      console.log(err);
-    });
 });
 
 //++++++++++++++++++++++
@@ -198,11 +183,8 @@ router.delete('/removeUser', function (req, res) {
   const userId = { owner: req.body.target.id };
   db.User.deleteOne(targetUser(reqTarget))
     .then(data => {
-      console.log(data);
-      // console.log(userId)
       db.Product.deleteMany(targetProduct({userId}))
         .then(data => {
-          console.log(data);
           res.end();
         })
         .catch(err => {
@@ -223,12 +205,11 @@ router.delete('/removeUser', function (req, res) {
 router.delete('/removeProduct', function (req, res) {
   const reqTarget = req.body.target;
   const userId = { id: req.body.target.owner };
-  const removeFromUser = { removeThisProduct: [req.body.target.foodId] }
+  const removeFromUser = { removeThisProduct: [req.body.target._id] }
   console.log(`I am removing ${removeFromUser}`)
-  if (req.body.target.owner && req.body.target.foodId) {
+  if (req.body.target.owner && req.body.target._id) {
     db.Product.deleteOne(targetProduct(reqTarget))
     .then(data => {
-      console.log(data);
       updateUser(userId, removeFromUser);
       res.end();
     })
@@ -364,6 +345,9 @@ function targetProduct (reqTarget) {
       case (reqTarget.foodId !== undefined):
           Object.assign(finalTarget, { foodId: reqTarget.foodId });
           break;
+      case (reqTarget._id !== undefined):
+          Object.assign(finalTarget, { _id: reqTarget._id });
+          break;
       case (reqTarget.expiringBefore !== undefined):
           Object.assign(finalTarget, { expDate: { $lte: new Date(expiringBefore) } });
           break;
@@ -416,6 +400,9 @@ function updateProduct (reqTarget, reqUpdate) {
             break;
         case (reqTarget.foodId !== undefined):
             Object.assign(finalTarget, { foodId: reqTarget.foodId });
+            break;
+        case (reqTarget._id !== undefined):
+            Object.assign(finalTarget, { _id: reqTarget._id });
             break;
         case (reqTarget.expiringBefore !== undefined):
             Object.assign(finalTarget, { expDate: { $lte: new Date(expiringBefore) } });
