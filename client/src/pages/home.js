@@ -26,17 +26,19 @@ const styles = StyleSheet.create({
 // Platform.OS === 'ios' ? vh(100) : vh(100) - getStatusBarHeight()
 
 let expoToken = "";
-const PUSH_ENDPOINT = `https://${env.IP_ADDRESS}/users/push-token`;
+const PUSH_ENDPOINT = `http://${env.IP_ADDRESS}:3001/users/push-token`;
+
 async function registerForPushNotifications() {
-	const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-	const token = await Notifications.getExpoPushTokenAsync();
-	if (status !== "granted") {
-		alert("You did not grant notifications permissions");
-		return;
-	}
-	console.log(status, token);
-	expoToken = token;
-}
+  const { status }  = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+  const token = await Notifications.getExpoPushTokenAsync();
+  if (status !== 'granted') {
+    alert('You did not grant notifications permissions');
+    return;
+  }
+  console.log(status, token);
+  expoToken = token;
+  
+};
 
 class Home extends React.Component {
 	constructor(props) {
@@ -58,32 +60,59 @@ class Home extends React.Component {
 
 	componentDidMount() {
 		API.getCurrentUser(this.props.user.id).then(response => {
-			this.setState({ user: response.data[0] });
-		});
-		registerForPushNotifications();
-		this._notificationSubscription = Notifications.addListener(
-			this._handleNotification
-		);
-	}
+      this.setState({ user: response.data[0] }, () => {
+        registerForPushNotifications().then(() => {
+          this.addPushToken();
+        });
+      });
+    });
+    this._notificationSubscription = Notifications.addListener(this._handleNotification);
+  }
 
-	//Notification functions
+  //Notification functions
 
-	_handleNotification = notification => {
-		this.setState({ notification: notification });
-	};
+  _handleNotification = (notification) => {
+    this.setState({notification: notification});
+  };
 
-	sendNotification = () => {
-		axios.post(`https://exp.host/--/api/v2/push/send`, {
-			to: expoToken,
-			title: "Title Notification",
-			sound: "default",
-			badge: 1,
-			body: "Hello World!",
-			data: {
-				message: "Hey, nerd!"
-			}
-		});
-	};
+  sendNotification = () => {
+    // axios.post(`https://exp.host/--/api/v2/push/send`, 
+    // {
+    //   to: expoToken,
+    //   title: "Title Notification",
+    //   sound: "default",
+    //   badge: 1,
+    //   body: "Hello World!",
+    //   data: {
+    //     message: "Hey, nerd!"
+    //   }
+    // });
+    // POST the token to your backend server from where you can retrieve it to send push notifications.
+  return fetch(PUSH_ENDPOINT, {
+    method: "POST",
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      pushToken: expoToken,
+      id: this.props.user.id,
+    }),
+  });
+  };
+
+  addPushToken = () => {
+    query = {
+      target: {
+        id: this.props.user.id
+      },
+      update: {
+        pushToken: expoToken
+      }
+    };
+    axios.put(`http://${env.IP_ADDRESS}:3001/updateUser`, query, {
+    });
+  }
 
 	// Input-form functions:
 
@@ -260,7 +289,7 @@ class Home extends React.Component {
 				) : (
 					<View>
 						<Text>Expo Notifications Test!</Text>
-						<Button title="Test Notification" onPress={this.sendNotification} />
+						<Button title="updatePushToken" onPress={this.sendNotification} />
 					</View>
 				)} */}
 			</View>
