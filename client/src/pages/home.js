@@ -8,6 +8,7 @@ import Freezer from "../components/freezer";
 import Pantry from "../components/pantry";
 import AddProduct from "../components/addProduct";
 import Scanner from "../components/scanner";
+import Foot from '../components/foot';
 import API from "../utils/API";
 import { Notifications, Permissions } from "expo";
 import axios from "axios";
@@ -235,6 +236,7 @@ class Home extends React.Component {
 							break;
 					}
 				})()}
+				<Foot />
 				{this.state.notification.origin ? (
 					<View>
 						<Text>Origin: {this.state.notification.origin}</Text>
