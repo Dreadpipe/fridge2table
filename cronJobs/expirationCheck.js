@@ -11,19 +11,22 @@ console.log('Daily Check');
 			allProducts.forEach( product => {
 				if (product.sevenDayWarning !== null && product.sevenDayWarning <= today) {
                     console.log('Seven day warning!');
-                    const pushObj = {
-                        productname: product.productname,
-                        pushToken: product.pushToken,
-                        message: 'One of your items is expiring within the week.'
-                    }
-                    axios.post('/users/push-token', pushObj)
-                        .then(response => {
-							console.log(response)
-						})
-						.catch(err => {
-							console.log("We ran into a problem sending the seven day warning to the push notification.\n------------------------");
-							console.log(err);
-						})
+                    axios.get(`/findOneUser/${product.owner}`)
+                        .then( response => {
+                            const pushObj = {
+                                productname: product.productname,
+                                pushToken: response.pushToken,
+                                message: 'One of your items is expiring within the week.'
+                            }
+                            axios.post('/users/push-token', pushObj)
+                                .then(response => {
+                                    console.log(response)
+                                })
+                                .catch(err => {
+                                    console.log("We ran into a problem sending the seven day warning to the push notification.\n------------------------");
+                                    console.log(err);
+                                })
+                        })
 					const query = {
 						target: {
 							product: product._id
@@ -41,19 +44,22 @@ console.log('Daily Check');
 							console.log(err);
 						})
 				} else if (product.sevenDayWarning === null && product.twoDayWarning !== null && product.twoDayWarning <= today) {
-                    const pushObj = {
-                        productname: product.productname,
-                        pushToken: product.pushToken,
-                        message: 'One of your items is expiring within two days!'
-                    }
-                    axios.post('/users/push-token', pushObj)
-                    .then(response => {
-                        console.log(response)
-                    })
-                    .catch(err => {
-                        console.log("We ran into a problem sending the two day warning to the push notification.\n------------------------");
-                        console.log(err);
-                    })
+                    axios.get(`/findOneUser/${product.owner}`)
+                        .then( response => {
+                            const pushObj = {
+                                productname: product.productname,
+                                pushToken: response.pushToken,
+                                message: 'One of your items is expiring within two days.'
+                            }
+                            axios.post('/users/push-token', pushObj)
+                                .then(response => {
+                                    console.log(response)
+                                })
+                                .catch(err => {
+                                    console.log("We ran into a problem sending the two day warning to the push notification.\n------------------------");
+                                    console.log(err);
+                                })
+                        })
 					const query = {
 						target: {
 							product: product._id
@@ -71,19 +77,22 @@ console.log('Daily Check');
 							console.log(err);
 						})
 				} else if (product.sevenDayWarning === null && product.twoDayWarning === null && product.expDate !== null && product.expDate <= today && product.expiredOrNot === false) {
-                    const pushObj = {
-                        productname: product.productname,
-                        pushToken: product.pushToken,
-                        message: 'One of your items has expired!'
-                    }
-                    axios.post('/users/push-token', pushObj)
-                    .then(response => {
-                        console.log(response)
-                    })
-                    .catch(err => {
-                        console.log("We ran into a problem sending the food-expired warning to the push notification.\n------------------------");
-                        console.log(err);
-                    })
+                    axios.get(`/findOneUser/${product.owner}`)
+                        .then( response => {
+                            const pushObj = {
+                                productname: product.productname,
+                                pushToken: response.pushToken,
+                                message: 'One of your items just expired!'
+                            }
+                            axios.post('/users/push-token', pushObj)
+                                .then(response => {
+                                    console.log(response)
+                                })
+                                .catch(err => {
+                                    console.log("We ran into a problem sending the expiration alert to the push notification.\n------------------------");
+                                    console.log(err);
+                                })
+                        })
 					const query = {
 						target: {
 							product: product._id
