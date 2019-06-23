@@ -160,12 +160,13 @@ router.post('/newProduct', function (req, res) {
           .then((newProduct) => {
             console.log(`Product added! \nDetails: ${newProduct}`);
             const target = {
-              id: newProduct.owner
+              _id: newProduct.owner
             };
             const update = {
               brandNewProduct: newProduct.foodId,
               productObjId: newProduct._id
             };
+            console.log(update)
             updateUser(target, update);
           });
 });
@@ -352,33 +353,15 @@ router.delete('/removeProduct', function (req, res) {
 // Target User Function
 function targetUser (reqTarget) {
   let finalTarget = {};
-  switch (true) {
-      case (reqTarget.username !== undefined):
-          Object.assign(finalTarget, { username: reqTarget.username });
-          break;
-      case (reqTarget.id !== undefined):
-          Object.assign(finalTarget, { thirdPartyId: reqTarget.id });
-          break;
-      case (reqTarget.token !== undefined):
-          Object.assign(finalTarget, { deviceToken: reqTarget.token });
-          break;
-      case (reqTarget.joinedBefore !== undefined):
-          Object.assign(finalTarget, { dateJoined: { $lte: new Date(joinedBefore) } });
-          break;
-      case (reqTarget.joinedAfter !== undefined):
-          Object.assign(finalTarget, { dateJoined: { $gte: new Date(joinedAfter) } });
-          break;
-      case (reqTarget.lastLoggedBefore !== undefined):
-          Object.assign(finalTarget, { lastLogin: { $lte: new Date(lastLoggedBefore) } });
-          break;
-      case (reqTarget.lastLoggedAfter !== undefined):
-          Object.assign(finalTarget, { lastLogin: { $gte: new Date(lastLoggedAfter) } });
-          break;
-      case (finalTarget === undefined):
-          console.log('There was no valid target.');
-          break;
-      default:
-  };
+  if (reqTarget.username !== undefined){ Object.assign(finalTarget, { username: reqTarget.username }); }
+  if (reqTarget.id !== undefined) { Object.assign(finalTarget, { thirdPartyId: reqTarget.id }); }
+  if (reqTarget._id !== undefined) { Object.assign(finalTarget, { _id: reqTarget._id }); }
+  if (reqTarget.token !== undefined) { Object.assign(finalTarget, { deviceToken: reqTarget.token }); }
+  if (reqTarget.joinedBefore !== undefined) { Object.assign(finalTarget, { dateJoined: { $lte: new Date(joinedBefore) } }); }
+  if (reqTarget.joinedAfter !== undefined) { Object.assign(finalTarget, { dateJoined: { $gte: new Date(joinedAfter) } }); }
+  if (reqTarget.lastLoggedBefore !== undefined) {Object.assign(finalTarget, { lastLogin: { $lte: new Date(lastLoggedBefore) } }); }
+  if (reqTarget.lastLoggedAfter !== undefined) { Object.assign(finalTarget, { lastLogin: { $gte: new Date(lastLoggedAfter) } }); }
+  if (finalTarget === undefined) {console.log('There was no valid target.');}
   console.log('The target data will be:');
   console.log(finalTarget);
   return finalTarget;
@@ -390,39 +373,16 @@ function targetUser (reqTarget) {
 function updateUser (reqTarget, reqUpdate) {
     const finalTarget = targetUser(reqTarget);
     let finalUpdate = {};
-    switch (true) {
-        case (reqUpdate.username !== undefined):
-            Object.assign(finalUpdate, { username: reqUpdate.username });
-            break;
-        case (reqUpdate.token !== undefined):
-            Object.assign(finalUpdate, { deviceToken: reqUpdate.token });
-            break;
-        case (reqUpdate.pushToken !== undefined):
-            Object.assign(finalUpdate, { pushToken: reqUpdate.pushToken });
-            break;
-        case (reqUpdate.brandNewProduct !== undefined):
-            Object.assign(finalUpdate, { $push: { allProducts: reqUpdate.brandNewProduct } });
-            break;
-        case (reqUpdate.removeThisProduct !== undefined): // removeThisProduct has to be an array.
-          Object.assign(finalUpdate, { $pullAll:{ allProducts: reqUpdate.removeThisProduct } });
-          break;
-        case (reqUpdate.productObjId !== undefined):
-            Object.assign(finalUpdate, { $push:{ inventoryProducts: reqUpdate.productObjId } });
-            break;
-        case (reqUpdate.addExpired !== undefined):
-            Object.assign(finalUpdate, { $inc: { expiredFood: 1} });
-            break;
-        case (reqUpdate.throwExpired !== undefined):
-            Object.assign(finalUpdate, { $inc: { expiredFood: -1} });
-            break;
-        case (reqUpdate.justLogged !== undefined):
-            Object.assign(finalUpdate, { lastLogin: Date.now() });
-            break;
-        case (finalUpdate === undefined):
-            console.log('There was no valid update.');
-            break;
-        default:
-    };
+    if (reqUpdate.username !== undefined) { Object.assign(finalUpdate, { username: reqUpdate.username }); }
+    if (reqUpdate.token !== undefined) { Object.assign(finalUpdate, { deviceToken: reqUpdate.token }); }
+    if (reqUpdate.pushToken !== undefined) { Object.assign(finalUpdate, { pushToken: reqUpdate.pushToken }); }
+    if (reqUpdate.brandNewProduct !== undefined) { Object.assign(finalUpdate, { $push: { allProducts: reqUpdate.brandNewProduct } }); }
+    if (reqUpdate.removeThisProduct !== undefined) { Object.assign(finalUpdate, { $pullAll:{ allProducts: reqUpdate.removeThisProduct } }); }// removeThisProduct has to be an array.
+    if (reqUpdate.productObjId !== undefined) { Object.assign(finalUpdate, { $push:{ inventoryProducts: reqUpdate.productObjId } }); }
+    if (reqUpdate.addExpired !== undefined) { Object.assign(finalUpdate, { $inc: { expiredFood: 1} }); }
+    if (reqUpdate.throwExpired !== undefined) { Object.assign(finalUpdate, { $inc: { expiredFood: -1} }); }
+    if (reqUpdate.justLogged !== undefined) { Object.assign(finalUpdate, { lastLogin: Date.now() }); }
+    if (finalUpdate === undefined) { console.log('There was no valid update.'); }
     const now = Date.now()
     Object.assign(finalUpdate, {lastUpdated: now});
     console.log('The update data will be:');
@@ -444,51 +404,20 @@ function updateUser (reqTarget, reqUpdate) {
 function targetProduct (reqTarget) {
   console.log(reqTarget);
   let finalTarget = {};
-  switch (true) {
-      case (reqTarget.productname !== undefined):
-          Object.assign(finalTarget, { productname: reqTarget.productname });
-          break;
-      case (reqTarget.foodId !== undefined):
-          Object.assign(finalTarget, { foodId: reqTarget.foodId });
-          break;
-      case (reqTarget._id !== undefined):
-          Object.assign(finalTarget, { _id: reqTarget._id });
-          break;
-      case (reqTarget.expiringBefore !== undefined):
-          Object.assign(finalTarget, { expDate: { $lte: new Date(expiringBefore) } });
-          break;
-      case (reqTarget.expiringAfter !== undefined):
-          Object.assign(finalTarget, { expDate: { $gte: new Date(expiringAfter) } });
-          break;
-      case (reqTarget.lessThanQuantity !== undefined):
-          Object.assign(finalTarget, { quantity: { $lte: lessThanQuantity } });
-          break;
-      case (reqTarget.greaterThanQuantity !== undefined):
-          Object.assign(finalTarget, { quantity: { $gte: greaterThanQuantity } });
-          break;
-      case (reqTarget.expiredOrNot !== undefined):
-          Object.assign(finalTarget, { expiredOrNot: expiredOrNot });
-          break;
-      case (reqTarget.location !== undefined):
-          Object.assign(finalTarget, { location: location });
-          break;
-      case (reqTarget.owner !== undefined):
-          Object.assign(finalTarget, { owner: owner });
-          break;
-      case (reqTarget.recipe !== undefined):
-          Object.assign(finalTarget, { recipes: recipe });
-          break;
-      case (reqTarget.addedBefore !== undefined):
-          Object.assign(finalTarget, { dateAdded: { $lte: new Date(addedBefore) } });
-          break;
-      case (reqTarget.addedAfter !== undefined):
-          Object.assign(finalTarget, { dateAdded: { $gte: new Date(addedAfter) } });
-          break;
-      case (finalTarget === undefined):
-          console.log('There was no valid target.');
-          break;
-      default:
-  };
+  if (reqTarget.productname !== undefined) { Object.assign(finalTarget, { productname: reqTarget.productname }); };
+  if (reqTarget.foodId !== undefined) { Object.assign(finalTarget, { foodId: reqTarget.foodId }); };
+  if (reqTarget._id !== undefined) { Object.assign(finalTarget, { _id: reqTarget._id }); };
+  if (reqTarget.expiringBefore !== undefined) { Object.assign(finalTarget, { expDate: { $lte: new Date(expiringBefore) } }); };
+  if (reqTarget.expiringAfter !== undefined) { Object.assign(finalTarget, { expDate: { $gte: new Date(expiringAfter) } }); };
+  if (reqTarget.lessThanQuantity !== undefined) { Object.assign(finalTarget, { quantity: { $lte: lessThanQuantity } }); };
+  if (reqTarget.greaterThanQuantity !== undefined) { Object.assign(finalTarget, { quantity: { $gte: greaterThanQuantity } }); };
+  if (reqTarget.expiredOrNot !== undefined) { Object.assign(finalTarget, { expiredOrNot: expiredOrNot }); };
+  if (reqTarget.location !== undefined) { Object.assign(finalTarget, { location: location }); };
+  if (reqTarget.owner !== undefined) { Object.assign(finalTarget, { owner: owner }); };
+  if (reqTarget.recipe !== undefined) { Object.assign(finalTarget, { recipes: recipe }); };
+  if (reqTarget.addedBefore !== undefined) { Object.assign(finalTarget, { dateAdded: { $lte: new Date(addedBefore) } }); };
+  if (reqTarget.addedAfter !== undefined) { Object.assign(finalTarget, { dateAdded: { $gte: new Date(addedAfter) } }); }; 
+  if (finalTarget === undefined) { console.log('There was no valid target.'); };
   console.log('The target data will be:');
   console.log(finalTarget);
   return finalTarget;
@@ -500,44 +429,21 @@ function targetProduct (reqTarget) {
 function updateProduct (reqTarget, reqUpdate) {
     const finalTarget = targetProduct(reqTarget);
     let finalUpdate = {};
-    switch (true) {
-        case (reqUpdate.productname !== undefined):
-            Object.assign(finalUpdate, { productname: reqUpdate.productname });
-            break;
-        case (reqUpdate.category !== undefined):
-            Object.assign(finalUpdate, { category: reqUpdate.category } );
-            break;
-        case (reqUpdate.expDate !== undefined):
-            Object.assign(finalUpdate, { expDate: reqUpdate.expDate } );
-            Object.assign(finalUpdate, { sevenDayWarning: addDays(reqUpdate.expDate, 7) } );
-            Object.assign(finalUpdate, { twoDayWarning: addDays(reqUpdate.expDate, 2) } );
-            break;
-        case (reqUpdate.remove7DayWarning !== undefined):
-            Object.assign(finalUpdate, { sevenDayWarning: null } );
-            break;
-        case (reqUpdate.remove2DayWarning !== undefined):
-            Object.assign(finalUpdate, { twoDayWarning: null } );
-            break;
-        case (reqUpdate.expiredOrNot !== undefined):
-            Object.assign(finalUpdate, { expiredOrNot: reqUpdate.expiredOrNot });
-            break;
-        case (reqUpdate.location !== undefined):
-            Object.assign(finalUpdate, { location: reqUpdate.location } );
-            break;
-        case (reqUpdate.quantity !== undefined):
-            Object.assign(finalUpdate, { $inc: { quantity: reqUpdate.quantity} });
-            break;
-        case (reqUpdate.newRecipes !== undefined): //Recipes needs to be an array, regardless if there is only one or not.
-            Object.assign(finalUpdate, { $push:{ recipes: { $each: reqUpdate.newRecipes } } });
-            break;
-        case (reqUpdate.removeRecipes !== undefined): //Recipes needs to be an array, regardless if there is only one or not.
-            Object.assign(finalUpdate, { $pullAll:{ recipes: { $each: reqUpdate.removeRecipes } } });
-            break;
-        case (finalUpdate === undefined):
-            console.log('There was no valid update.');
-            break;
-        default:
-    };
+    if (reqUpdate.productname !== undefined) { Object.assign(finalUpdate, { productname: reqUpdate.productname }); };
+    if (reqUpdate.category !== undefined) { Object.assign(finalUpdate, { category: reqUpdate.category } ); };
+    if (reqUpdate.expDate !== undefined) { 
+        Object.assign(finalUpdate, { expDate: reqUpdate.expDate } );
+        Object.assign(finalUpdate, { sevenDayWarning: addDays(reqUpdate.expDate, 7) } );
+        Object.assign(finalUpdate, { twoDayWarning: addDays(reqUpdate.expDate, 2) } );
+    }; 
+    if (reqUpdate.remove7DayWarning !== undefined) { Object.assign(finalUpdate, { sevenDayWarning: null } ); };
+    if (reqUpdate.remove2DayWarning !== undefined) { Object.assign(finalUpdate, { twoDayWarning: null } ); };
+    if (reqUpdate.expiredOrNot !== undefined) { Object.assign(finalUpdate, { expiredOrNot: reqUpdate.expiredOrNot }); };
+    if (reqUpdate.location !== undefined) { Object.assign(finalUpdate, { location: reqUpdate.location } ); };
+    if (reqUpdate.quantity !== undefined) { Object.assign(finalUpdate, { $inc: { quantity: reqUpdate.quantity} }); };
+    if (reqUpdate.newRecipes !== undefined) { Object.assign(finalUpdate, { $push:{ recipes: { $each: reqUpdate.newRecipes } } }); };  //Recipes needs to be an array, regardless if there is only one or not.
+    if (reqUpdate.removeRecipes !== undefined) { Object.assign(finalUpdate, { $pullAll:{ recipes: { $each: reqUpdate.removeRecipes } } }); };  //Recipes needs to be an array, regardless if there is only one or not.
+    if (finalUpdate === undefined) { console.log('There was no valid update.'); };
     const now = Date.now()
     Object.assign(finalUpdate, {lastUpdated: now});
     console.log('The update data will be:');
