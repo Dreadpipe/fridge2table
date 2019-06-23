@@ -11,32 +11,9 @@ const styles = StyleSheet.create({
 		flexWrap: "wrap",
 		justifyContent: "center",
 		alignContent: "space-around",
-		alignItems: "center",
-		height: "100%",
-		width: "100%",
-		paddingTop: 110
-	},
-	iconDiv: {
-		position: "absolute",
-		top: 7,
-		left: 10,
-		zIndex: 1
-	},
-	icon: {
-		fontSize: 50,
-		color: "#0092D6"
-	},
-	solidIconDiv: {
-		position: "absolute",
-		top: 7,
-		left: 10
-	},
-	solidIcon: {
-		fontSize: 45,
-		color: "#FFFFFF"
+		alignItems: "flex-start"
 	},
 	banner: {
-		height: 175,
 		width: "60%"
 	},
 	bannerImg: {
@@ -48,17 +25,6 @@ const styles = StyleSheet.create({
 function Freezer(props) {
 	return (
 		<Content contentContainerStyle={styles.pageDiv}>
-			<View style={styles.iconDiv}>
-				<Icon
-					name="plus-circle"
-					type="FontAwesome"
-					style={styles.icon}
-					onPress={props.toAddProductScreen}
-				/>
-			</View>
-			<View style={styles.solidIconDiv}>
-				<Icon name="circle" type="FontAwesome" style={styles.solidIcon} />
-			</View>
 			<TouchableHighlight style={styles.banner}>
 				<Image
 					resizeMode="contain"

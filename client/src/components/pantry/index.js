@@ -8,39 +8,20 @@ const styles = StyleSheet.create({
 		display: "flex",
 		flex: 1,
 		flexDirection: "column",
-		justifyContent: "center",
+		justifyContent: "flex-start",
 		alignContent: "center",
 		alignItems: "center",
 		height: "100%",
 		width: "100%"
 	},
-	iconDiv: {
-		position: "absolute",
-		top: 7,
-		left: 10,
-		zIndex: 1
-	},
-	icon: {
-		fontSize: 50,
-		color: "#0092D6"
-	},
-	solidIconDiv: {
-		position: "absolute",
-		top: 7,
-		left: 10
-	},
-	solidIcon: {
-		fontSize: 45,
-		color: "#FFFFFF"
-	},
 	bannerDiv: {
 		display: "flex",
-		flex: 1,
 		flexDirection: "row",
 		flexWrap: "wrap",
 		justifyContent: "space-around",
-		alignContent: "stretch",
-		alignItems: "flex-end"
+		alignContent: "space-around",
+		alignItems: "flex-start",
+		height: "100%"
 	},
 	banner: {
 		width: "45%"
@@ -66,23 +47,19 @@ const styles = StyleSheet.create({
 function Pantry(props) {
 	return (
 		<Content contentContainerStyle={styles.pageDiv}>
-			<View style={styles.iconDiv}>
-				<Icon
-					name="plus-circle"
-					type="FontAwesome"
-					style={styles.icon}
-					onPress={props.toAddProductScreen}
-				/>
-			</View>
-			<View style={styles.solidIconDiv}>
-				<Icon name="circle" type="FontAwesome" style={styles.solidIcon} />
-			</View>
 			<View style={styles.bannerDiv}>
 				<TouchableHighlight style={styles.banner}>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/pantry_images/pantry_grains_banner.png")}
 						style={styles.grainsImg}
+					/>
+				</TouchableHighlight>
+				<TouchableHighlight style={styles.banner}>
+					<Image
+						resizeMode="stretch"
+						source={require("../../../assets/pantry_images/pantry_spices_banner.png")}
+						style={styles.spicesImg}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight style={styles.banner}>
@@ -97,13 +74,6 @@ function Pantry(props) {
 						resizeMode="stretch"
 						source={require("../../../assets/pantry_images/pantry_cans_banner.png")}
 						style={styles.bannerImg}
-					/>
-				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner}>
-					<Image
-						resizeMode="stretch"
-						source={require("../../../assets/pantry_images/pantry_spices_banner.png")}
-						style={styles.spicesImg}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight style={styles.banner}>

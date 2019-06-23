@@ -26,9 +26,7 @@ const userSchema = new Schema({
   inventoryProducts: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'currentInventory',
-      required: true,
-      default: null,
+      ref: 'product',
     },
   ],
   expiredFood: 
