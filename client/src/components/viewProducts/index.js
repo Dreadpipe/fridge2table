@@ -1,4 +1,5 @@
 import React from "react";
+import { FlatList, StyleSheet } from "react-native";
 import {
 	Content,
 	List,
@@ -9,55 +10,47 @@ import {
 	Body,
 	Right,
 	Switch,
-	Button
+	Button,
+	Thumbnail
 } from "native-base";
 
 function ViewProducts(props) {
 	return (
 		<Content>
-			<List>
-				<ListItem icon>
-					<Left>
-						<Button style={{ backgroundColor: "#FF9501" }}>
-							<Icon active name="airplane" />
-						</Button>
-					</Left>
-					<Body>
-						<Text>Airplane Mode</Text>
-					</Body>
-					<Right>
-						<Switch value={false} />
-					</Right>
-				</ListItem>
-				<ListItem icon>
-					<Left>
-						<Button style={{ backgroundColor: "#007AFF" }}>
-							<Icon active name="wifi" />
-						</Button>
-					</Left>
-					<Body>
-						<Text>Wi-Fi</Text>
-					</Body>
-					<Right>
-						<Text>GeekyAnts</Text>
-						<Icon active name="arrow-forward" />
-					</Right>
-				</ListItem>
-				<ListItem icon>
-					<Left>
-						<Button style={{ backgroundColor: "#007AFF" }}>
-							<Icon active name="bluetooth" />
-						</Button>
-					</Left>
-					<Body>
-						<Text>Bluetooth</Text>
-					</Body>
-					<Right>
-						<Text>On</Text>
-						<Icon active name="arrow-forward" />
-					</Right>
-				</ListItem>
-			</List>
+			<FlatList
+				data={props.products}
+				keyExtractor={item => item._id}
+				renderItem={({ item }) => {
+					return (
+						<ListItem icon>
+							<Left>
+								<Thumbnail
+									square
+									small
+									source={
+										item.pic
+											? item.pic
+											: require("../../../assets/general-food.png")
+									}
+								/>
+							</Left>
+							<Body>
+								<Text>{item.productname}</Text>
+								<Text note numberOfLines={1}>{item.location}</Text>
+							</Body>
+							<Right style={{marginRight: 10}}>
+									<Text>2d</Text>
+									<Icon name="hourglass-half" type="FontAwesome" />
+							</Right>
+							<Left>
+								<Button style={{ backgroundColor: "#FF9501", paddingLeft: 2 }}>
+									<Icon name="edit" type="FontAwesome" />
+								</Button>
+							</Left>
+						</ListItem>
+					);
+				}}
+			/>
 		</Content>
 	);
 }

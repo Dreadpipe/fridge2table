@@ -37,7 +37,6 @@ async function registerForPushNotifications() {
 	console.log(status, token);
 	expoToken = token;
 }
-
 class Home extends React.Component {
 	constructor(props) {
 		super(props);
@@ -210,6 +209,19 @@ class Home extends React.Component {
 		this.setState({ productName: name });
 	};
 
+	// View-Products Screen Sorting Functions
+
+	sortByCategoryAndLocation = (category, location) => {
+		const filteredArr = this.state.user.inventoryProducts.filter(product => {
+			if(product.location === location && product.category === category) {
+				return product
+			}
+		})
+		return filteredArr;
+	}
+
+	// sortByCategoryAndLocation('Produce', 'Fridge')
+
 	// Render function
 
 	render() {
@@ -252,8 +264,7 @@ class Home extends React.Component {
 							);
 							break;
 						case "viewProducts":
-							console.log(this.state.user.inventoryProducts);
-							return <ViewProducts />;
+							return <ViewProducts products={this.sortByCategoryAndLocation('Produce', 'Fridge')} />;
 							break;
 						case "scanner":
 							return (

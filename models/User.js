@@ -27,6 +27,8 @@ const userSchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: 'product',
+      required: true,
+      default: null,
     },
   ],
   expiredFood: 
