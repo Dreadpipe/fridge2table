@@ -19,7 +19,7 @@ function Foot(props) {
 					<Icon name="plus" type="FontAwesome" />
 					<Text>Add Product</Text>
 				</Button>
-				<Button vertical onPress={props.toViewProductsScreen}>
+				<Button vertical onPress={props.viewAllProducts}>
 					<Icon name="search" type="FontAwesome" />
 					<Text>All Products</Text>
 				</Button>

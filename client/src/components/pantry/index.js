@@ -48,35 +48,35 @@ function Pantry(props) {
 	return (
 		<Content contentContainerStyle={styles.pageDiv}>
 			<View style={styles.bannerDiv}>
-				<TouchableHighlight style={styles.banner}>
+				<TouchableHighlight style={styles.banner} onPress={props.viewGrains}>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/pantry_images/pantry_grains_banner.png")}
 						style={styles.grainsImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner}>
+				<TouchableHighlight style={styles.banner} onPress={props.viewSpices}>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/pantry_images/pantry_spices_banner.png")}
 						style={styles.spicesImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner}>
+				<TouchableHighlight style={styles.banner} onPress={props.viewProduce}>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/pantry_images/pantry_produce_banner.png")}
 						style={styles.bannerImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner}>
+				<TouchableHighlight style={styles.banner} onPress={props.viewCans}>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/pantry_images/pantry_cans_banner.png")}
 						style={styles.bannerImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner}>
+				<TouchableHighlight style={styles.banner} onPress={props.viewMisc}>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/pantry_images/pantry_misc_banner.png")}

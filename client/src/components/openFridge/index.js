@@ -47,42 +47,42 @@ function Fridge(props) {
 	return (
 		<Content contentContainerStyle={styles.pageDiv}>
 			<View style={styles.bannerDiv}>
-				<TouchableHighlight style={styles.banner}>
+				<TouchableHighlight style={styles.banner} onPress={props.viewGrains}>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/fridge_images/grains_banner.png")}
 						style={styles.grainsImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner}>
+				<TouchableHighlight style={styles.banner} onPress={props.viewDairy}>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/fridge_images/dairy_banner.png")}
 						style={styles.bannerImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner}>
+				<TouchableHighlight style={styles.banner} onPress={props.viewMeats}>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/fridge_images/meats_banner.png")}
 						style={styles.meatImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner}>
+				<TouchableHighlight style={styles.banner} onPress={props.viewProduce}>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/fridge_images/produce_banner.png")}
 						style={styles.produceImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner}>
+				<TouchableHighlight style={styles.banner} onPress={props.viewDrinks}>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/fridge_images/drinks_banner.png")}
 						style={styles.bannerImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner}>
+				<TouchableHighlight style={styles.banner} onPress={props.viewMisc}>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/fridge_images/misc_banner.png")}

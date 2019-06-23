@@ -43,6 +43,7 @@ class Home extends React.Component {
 		this.state = {
 			user: {},
 			view: "fridge",
+			productView: "all",
 			productName: "",
 			selectedLocation: "Fridge",
 			selectedCategory: "Dairy",
@@ -74,15 +75,17 @@ class Home extends React.Component {
 		this.setState({ notification: notification });
 	};
 
-  sendNotification = () => {
-    // POST the token to your backend server from where you can retrieve it to send push notifications.
-    axios.post(PUSH_ENDPOINT, {
-      pushToken: expoToken,
-      message: "Food is expiring",
-      productname: "Eggs!"
-    }).then(res => console.log(res))
-    .catch(err => console.error(err));
-  };
+	sendNotification = () => {
+		// POST the token to your backend server from where you can retrieve it to send push notifications.
+		axios
+			.post(PUSH_ENDPOINT, {
+				pushToken: expoToken,
+				message: "Food is expiring",
+				productname: "Eggs!"
+			})
+			.then(res => console.log(res))
+			.catch(err => console.error(err));
+	};
 
 	addPushToken = () => {
 		query = {
@@ -195,10 +198,6 @@ class Home extends React.Component {
 		this.setState({ view: "addProduct" });
 	};
 
-	toViewProductsScreen = () => {
-		this.setState({ view: "viewProducts" });
-	};
-
 	toScanner = () => {
 		this.setState({ view: "scanner" });
 	};
@@ -213,12 +212,12 @@ class Home extends React.Component {
 
 	sortByCategoryAndLocation = (category, location) => {
 		const filteredArr = this.state.user.inventoryProducts.filter(product => {
-			if(product.location === location && product.category === category) {
-				return product
+			if (product.location === location && product.category === category) {
+				return product;
 			}
-		})
+		});
 		return filteredArr;
-	}
+	};
 
 	// sortByCategoryAndLocation('Produce', 'Fridge')
 
@@ -235,13 +234,109 @@ class Home extends React.Component {
 				{(() => {
 					switch (this.state.view) {
 						case "fridge":
-							return <OpenFridge user={this.state.user} />;
+							return (
+								<OpenFridge
+									user={this.state.user}
+									viewMeats={() =>
+										this.setState({
+											view: "viewProducts",
+											productView: "fridgeMeats"
+										})
+									}
+									viewDairy={() =>
+										this.setState({
+											view: "viewProducts",
+											productView: "fridgeDairy"
+										})
+									}
+									viewProduce={() =>
+										this.setState({
+											view: "viewProducts",
+											productView: "fridgeProduce"
+										})
+									}
+									viewGrains={() =>
+										this.setState({
+											view: "viewProducts",
+											productView: "fridgeGrains"
+										})
+									}
+									viewDrinks={() =>
+										this.setState({
+											view: "viewProducts",
+											productView: "fridgeDrinks"
+										})
+									}
+									viewMisc={() =>
+										this.setState({
+											view: "viewProducts",
+											productView: "fridgeMisc"
+										})
+									}
+								/>
+							);
 							break;
 						case "pantry":
-							return <Pantry user={this.state.user} />;
+							return (
+								<Pantry
+									user={this.state.user}
+									viewGrains={() =>
+										this.setState({
+											view: "viewProducts",
+											productView: "pantryGrains"
+										})
+									}
+									viewCans={() =>
+										this.setState({
+											view: "viewProducts",
+											productView: "pantryCans"
+										})
+									}
+									viewProduce={() =>
+										this.setState({
+											view: "viewProducts",
+											productView: "pantryProduce"
+										})
+									}
+									viewSpices={() =>
+										this.setState({
+											view: "viewProducts",
+											productView: "pantrySpices"
+										})
+									}
+									viewMisc={() =>
+										this.setState({
+											view: "viewProducts",
+											productView: "pantryMisc"
+										})
+									}
+								/>
+							);
 							break;
 						case "freezer":
-							return <Freezer user={this.state.user} />;
+							return (
+								<Freezer
+									user={this.state.user}
+									viewMeats={() =>
+										this.setState({
+											view: "viewProducts",
+											productView: "freezerMeats"
+										})
+									}
+									viewProduce={() =>
+										this.setState({
+											view: "viewProducts",
+											productView: "freezerProduce"
+										})
+									}
+									viewMisc={() =>
+										this.setState({
+											view: "viewProducts",
+											productView: "freezerMisc"
+										})
+									}
+								/>
+							);
 							break;
 						case "addProduct":
 							return (
@@ -264,7 +359,95 @@ class Home extends React.Component {
 							);
 							break;
 						case "viewProducts":
-							return <ViewProducts products={this.sortByCategoryAndLocation('Produce', 'Fridge')} />;
+							return (
+								<ViewProducts
+									products={(() => {
+										switch (this.state.productView) {
+											case "all":
+												return this.state.user.inventoryProducts;
+												break;
+											case "fridgeProduce":
+												return this.sortByCategoryAndLocation(
+													"Produce",
+													"Fridge"
+												);
+												break;
+											case "fridgeGrains":
+												return this.sortByCategoryAndLocation(
+													"Grains",
+													"Fridge"
+												);
+												break;
+											case "fridgeDairy":
+												return this.sortByCategoryAndLocation(
+													"Dairy",
+													"Fridge"
+												);
+												break;
+											case "fridgeDrinks":
+												return this.sortByCategoryAndLocation(
+													"Drinks",
+													"Fridge"
+												);
+												break;
+											case "fridgeMisc":
+												return this.sortByCategoryAndLocation("Misc", "Fridge");
+												break;
+											case "fridgeMeats":
+												return this.sortByCategoryAndLocation(
+													"Meats",
+													"Fridge"
+												);
+												break;
+											case "freezerMeats":
+												return this.sortByCategoryAndLocation(
+													"Meats",
+													"Freezer"
+												);
+												break;
+											case "freezerProduce":
+												return this.sortByCategoryAndLocation(
+													"Produce",
+													"Freezer"
+												);
+												break;
+											case "freezerMisc":
+												return this.sortByCategoryAndLocation(
+													"Misc",
+													"Freezer"
+												);
+												break;
+											case "pantryProduce":
+												return this.sortByCategoryAndLocation(
+													"Produce",
+													"Pantry"
+												);
+												break;
+											case "pantryCans":
+												return this.sortByCategoryAndLocation(
+													"Canned Goods",
+													"Pantry"
+												);
+												break;
+											case "pantrySpices":
+												return this.sortByCategoryAndLocation(
+													"Spice Rack",
+													"Pantry"
+												);
+												break;
+											case "pantryGrains":
+												return this.sortByCategoryAndLocation(
+													"Grains",
+													"Pantry"
+												);
+												break;
+											case "pantryMisc":
+												return this.sortByCategoryAndLocation("Misc", "Pantry");
+												break;
+										}
+									})()}
+								/>
+							);
 							break;
 						case "scanner":
 							return (
@@ -279,7 +462,12 @@ class Home extends React.Component {
 				})()}
 				<Foot
 					toAddProductScreen={this.toAddProductScreen}
-					toViewProductsScreen={this.toViewProductsScreen}
+					viewAllProducts={() =>
+						this.setState({
+							view: "viewProducts",
+							productView: "all"
+						})
+					}
 				/>
 				{/* {this.state.notification.origin ? (
 					<View>
