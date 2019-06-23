@@ -268,7 +268,7 @@ class Home extends React.Component {
 							);
 							break;
 						case "viewProducts":
-							console.log(this.state.user);
+							console.log(this.state.user.inventoryProducts);
 							return <ViewProducts />;
 							break;
 						case "scanner":
