@@ -31,6 +31,7 @@ mongoose
 	});
 
 			//'0 0 0 1-31 * *' = Daily Check.
+			//'0,15,30,45 * * * * *' = every 15 seconds
 new CronJob('0,15,30,45 * * * * *', function() {
 	dailyCheck();
 }, null, true, 'America/Los_Angeles');
@@ -38,4 +39,4 @@ new CronJob('0,15,30,45 * * * * *', function() {
 //Start server
 app.listen(PORT, function() {
 	console.log(`🌎  ==> API Server now listening on PORT ${PORT} !`);
-});
+});     
