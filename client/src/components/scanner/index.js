@@ -64,7 +64,7 @@ export default class BarCodeScannerExample extends React.Component {
 				`https://api.edamam.com/api/food-database/parser?upc=${data}&app_id=2738ba89&app_key=18838a2aa6866b92497c8ebae315be66`
 			)
 			.then(response => {
-				this.props.addProductName(response.data.hints[0].food.label);
+				this.props.addProductNameAndPicURL(response.data.hints[0].food.label, response.data.hints[0].food.image);
 				this.props.toAddProductScreen();
 			});
 	};

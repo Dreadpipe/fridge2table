@@ -45,6 +45,7 @@ class Home extends React.Component {
 			view: "fridge",
 			productView: "all",
 			productName: "",
+			picURL: "",
 			selectedLocation: "Fridge",
 			selectedCategory: "Dairy",
 			selectedQuantity: 1,
@@ -159,16 +160,21 @@ class Home extends React.Component {
 				expDate: this.state.expDate,
 				userId: this.state.user._id
 			};
-			API.addFood(newProduct);
-			this.setState({
-				productName: "",
-				selectedCategory: "Dairy",
-				selectedLocation: "Fridge",
-				selectedQuantity: 1,
-				expDate: new Date()
+			if (this.state.picURL) {
+				newProduct.pic = this.state.picURL;
+			}
+			API.addFood(newProduct).then(() => {
+				this.setState({
+					productName: "",
+					picURL: "",
+					selectedCategory: "Dairy",
+					selectedLocation: "Fridge",
+					selectedQuantity: 1,
+					expDate: new Date()
+				});
+				this.updateUser();
+				return alert("Product added! Click OK to add more.");
 			});
-			this.updateUser();
-			return alert("Product added! Click OK to add more.");
 		} else {
 			return alert("Please make sure to fill out the entire product form");
 		}
@@ -204,8 +210,8 @@ class Home extends React.Component {
 
 	// Scanner functions
 
-	addProductName = name => {
-		this.setState({ productName: name });
+	addProductNameAndPicURL = (name, url) => {
+		this.setState({ productName: name, picURL: url });
 	};
 
 	// View-Products Screen Sorting Functions
@@ -453,7 +459,7 @@ class Home extends React.Component {
 							return (
 								<Scanner
 									user={this.state.user}
-									addProductName={this.addProductName}
+									addProductNameAndPicURL={this.addProductNameAndPicURL}
 									toAddProductScreen={this.toAddProductScreen}
 								/>
 							);

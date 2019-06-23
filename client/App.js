@@ -109,8 +109,10 @@ export default class App extends React.Component {
 			};
 		}
 
-		API.checkForOrCreateUser(user);
-		this.setState({ user });
+		API.checkForOrCreateUser(user).then(() => {
+			console.log("Setting user ...")
+			this.setState({ user });
+		});
 	};
 
 	render() {

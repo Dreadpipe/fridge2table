@@ -29,18 +29,20 @@ function ViewProducts(props) {
 									small
 									source={
 										item.pic
-											? item.pic
+											? { uri: item.pic }
 											: require("../../../assets/general-food.png")
 									}
 								/>
 							</Left>
 							<Body>
-								<Text>{item.productname}</Text>
-								<Text note numberOfLines={1}>{item.location}</Text>
+								<Text numberOfLines={1}>{item.productname}</Text>
+								<Text note numberOfLines={1}>
+									{item.location}
+								</Text>
 							</Body>
-							<Right style={{marginRight: 10}}>
-									<Text>2d</Text>
-									<Icon name="hourglass-half" type="FontAwesome" />
+							<Right style={{ marginRight: 10 }}>
+								<Text>2d</Text>
+								<Icon name="hourglass-half" type="FontAwesome" />
 							</Right>
 							<Left>
 								<Button style={{ backgroundColor: "#FF9501", paddingLeft: 2 }}>
