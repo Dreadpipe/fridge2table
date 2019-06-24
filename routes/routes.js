@@ -41,7 +41,7 @@ router.get("/findAllUsers", function(req, res) {
 // Find one User Route
 router.get("/findOneUser/:id", function(req, res) {
 	db.User.find({
-		_id: req.params.id
+		thirdPartyId: req.params.id
 	})
 		.populate("allProduct")
 		.populate("inventoryProducts")
