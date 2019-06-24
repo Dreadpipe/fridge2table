@@ -45,8 +45,17 @@ function ViewProducts(props) {
 								<Icon name="hourglass-half" type="FontAwesome" />
 							</Right>
 							<Left>
-								<Button style={{ backgroundColor: "#FF9501", paddingLeft: 2 }}>
+								<Button
+									style={{ backgroundColor: "#228B22", paddingLeft: 2 }}
+									onPress={() => props.editProduct(item._id)}
+								>
 									<Icon name="edit" type="FontAwesome" />
+								</Button>
+								<Button
+									style={{ backgroundColor: "#FF0000", marginLeft: 5 }}
+									onPress={() => props.deleteProduct(item._id)}
+								>
+									<Icon name="trash" type="FontAwesome" />
 								</Button>
 							</Left>
 						</ListItem>

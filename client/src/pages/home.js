@@ -214,7 +214,7 @@ class Home extends React.Component {
 		this.setState({ productName: name, picURL: url });
 	};
 
-	// View-Products Screen Sorting Functions
+	// View-Products Screen Functions
 
 	sortByCategoryAndLocation = (category, location) => {
 		const filteredArr = this.state.user.inventoryProducts.filter(product => {
@@ -225,7 +225,21 @@ class Home extends React.Component {
 		return filteredArr;
 	};
 
-	// sortByCategoryAndLocation('Produce', 'Fridge')
+	editProduct = (id) => {
+		const filteredProducts = this.state.user.inventoryProducts.filter(product => product._id === id);
+		console.log(filteredProducts[0])
+	}
+
+	deleteProduct = (id) => {
+		const filteredProducts = this.state.user.inventoryProducts.filter(product => product._id === id);
+		console.log(filteredProducts[0]);
+		const data = {
+			target: filteredProducts[0]
+		}
+		API.removeFood(data).then(() => {
+			this.updateUser();
+		});
+	}
 
 	// Render function
 
@@ -367,6 +381,8 @@ class Home extends React.Component {
 						case "viewProducts":
 							return (
 								<ViewProducts
+									editProduct={this.editProduct}
+									deleteProduct={this.deleteProduct}
 									products={(() => {
 										switch (this.state.productView) {
 											case "all":

@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 	container: {
 		width: vw(100),
 		height: vh(100) - getStatusBarHeight(),
-		paddingTop: Platform.OS === 'ios' ? 0 : getStatusBarHeight()
+		paddingTop: Platform.OS === "ios" ? 0 : getStatusBarHeight()
 	}
 });
 
@@ -110,7 +110,6 @@ export default class App extends React.Component {
 		}
 
 		API.checkForOrCreateUser(user).then(() => {
-			console.log("Setting user ...")
 			this.setState({ user });
 		});
 	};

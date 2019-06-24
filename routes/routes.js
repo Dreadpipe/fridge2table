@@ -337,9 +337,9 @@ router.delete("/removeUser", function(req, res) {
 //-------------------------------------
 
 //Remove Product
-router.delete("/removeProduct", function(req, res) {
+router.post("/removeProduct", function(req, res) {
 	const reqTarget = req.body.target;
-	const userId = { id: req.body.target.owner };
+	const userId = { _id: req.body.target.owner };
 	const removeFromUser = { removeThisProduct: [req.body.target._id] };
 	console.log(`I am removing ${removeFromUser}`);
 	if (req.body.target.owner && req.body.target._id) {
@@ -349,7 +349,7 @@ router.delete("/removeProduct", function(req, res) {
 				res.end();
 			})
 			.catch(err => {
-				console.log("We've got a problem deleing the product!");
+				console.log("We've got a problem deleting the product!");
 				//console.log(err);
 			});
 	} else {
@@ -426,7 +426,7 @@ function updateUser(reqTarget, reqUpdate) {
 	}
 	if (reqUpdate.removeThisProduct !== undefined) {
 		Object.assign(finalUpdate, {
-			$pullAll: { allProducts: reqUpdate.removeThisProduct }
+			$pullAll: { inventoryProducts: reqUpdate.removeThisProduct }
 		});
 	} // removeThisProduct has to be an array.
 	if (reqUpdate.productObjId !== undefined) {
@@ -491,13 +491,13 @@ function targetProduct(reqTarget) {
 		Object.assign(finalTarget, { quantity: { $gte: greaterThanQuantity } });
 	}
 	if (reqTarget.expiredOrNot !== undefined) {
-		Object.assign(finalTarget, { expiredOrNot: expiredOrNot });
+		Object.assign(finalTarget, { expiredOrNot: reqTarget.expiredOrNot });
 	}
 	if (reqTarget.location !== undefined) {
-		Object.assign(finalTarget, { location: location });
+		Object.assign(finalTarget, { location: reqTarget.location });
 	}
 	if (reqTarget.owner !== undefined) {
-		Object.assign(finalTarget, { owner: owner });
+		Object.assign(finalTarget, { owner: reqTarget.owner });
 	}
 	if (reqTarget.recipe !== undefined) {
 		Object.assign(finalTarget, { recipes: recipe });
