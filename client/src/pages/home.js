@@ -8,6 +8,7 @@ import Freezer from "../components/freezer";
 import Pantry from "../components/pantry";
 import AddProduct from "../components/addProduct";
 import ViewProducts from "../components/viewProducts";
+import UpdateProduct from "../components/updateProduct";
 import Scanner from "../components/scanner";
 import Foot from "../components/foot";
 import API from "../utils/API";
@@ -50,6 +51,7 @@ class Home extends React.Component {
 			selectedCategory: "Dairy",
 			selectedQuantity: 1,
 			expDate: new Date(),
+			productIDForUpdate: "",
 			notification: {}
 		};
 		this.setDate = this.setDate.bind(this);
@@ -201,7 +203,15 @@ class Home extends React.Component {
 	};
 
 	toAddProductScreen = () => {
-		this.setState({ view: "addProduct" });
+		this.setState({
+			view: "addProduct",
+			productName: "",
+			picURL: "",
+			selectedLocation: "Fridge",
+			selectedCategory: "Dairy",
+			selectedQuantity: 1,
+			expDate: new Date()
+		});
 	};
 
 	toScanner = () => {
@@ -225,21 +235,56 @@ class Home extends React.Component {
 		return filteredArr;
 	};
 
-	editProduct = (id) => {
-		const filteredProducts = this.state.user.inventoryProducts.filter(product => product._id === id);
-		console.log(filteredProducts[0])
-	}
+	editProduct = id => {
+		const filteredProducts = this.state.user.inventoryProducts.filter(
+			product => product._id === id
+		);
+		this.setState({
+			view: "updateProduct",
+			productName: filteredProducts[0].productname,
+			selectedLocation: filteredProducts[0].location,
+			selectedCategory: filteredProducts[0].category,
+			selectedQuantity: filteredProducts[0].quantity,
+			expDate: new Date(filteredProducts[0].expDate),
+			productIDForUpdate: filteredProducts[0]._id
+		});
+	};
 
-	deleteProduct = (id) => {
-		const filteredProducts = this.state.user.inventoryProducts.filter(product => product._id === id);
-		console.log(filteredProducts[0]);
+	deleteProduct = id => {
+		const filteredProducts = this.state.user.inventoryProducts.filter(
+			product => product._id === id
+		);
 		const data = {
 			target: filteredProducts[0]
-		}
+		};
 		API.removeFood(data).then(() => {
 			this.updateUser();
 		});
-	}
+	};
+
+	// Update-Product Screen Functions
+
+	updateProduct = id => {
+		const filteredProducts = this.state.user.inventoryProducts.filter(
+			product => product._id === id
+		);
+		const updatedProduct = { ...filteredProducts[0] };
+		updatedProduct.category = this.state.selectedCategory;
+		updatedProduct.expDate = this.state.expDate;
+		updatedProduct.location = this.state.selectedLocation;
+		updatedProduct.productname = this.state.productName;
+		updatedProduct.quantity = this.state.selectedQuantity;
+
+		const data = {
+			target: filteredProducts[0],
+			update: updatedProduct
+		};
+		API.updateFood(data).then(() => {
+			this.updateUser();
+			this.setState({ view: "viewProducts", productView: "all" });
+			return alert("Product updated! Click OK to view updated products");
+		});
+	};
 
 	// Render function
 
@@ -361,7 +406,6 @@ class Home extends React.Component {
 						case "addProduct":
 							return (
 								<AddProduct
-									consoleState={this.consoleState}
 									user={this.state.user}
 									onNameChange={this.onNameChange.bind(this)}
 									productName={this.state.productName}
@@ -468,6 +512,25 @@ class Home extends React.Component {
 												break;
 										}
 									})()}
+								/>
+							);
+							break;
+						case "updateProduct":
+							return (
+								<UpdateProduct
+									user={this.state.user}
+									onNameChange={this.onNameChange.bind(this)}
+									productName={this.state.productName}
+									onLocationChange={this.onLocationChange.bind(this)}
+									location={this.state.selectedLocation}
+									onCategoryChange={this.onCategoryChange.bind(this)}
+									category={this.state.selectedCategory}
+									onQuantityChange={this.onQuantityChange.bind(this)}
+									quantity={this.state.selectedQuantity}
+									setDate={this.setDate}
+									date={this.state.expDate}
+									productID={this.state.productIDForUpdate}
+									updateProduct={this.updateProduct}
 								/>
 							);
 							break;
