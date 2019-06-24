@@ -58,6 +58,26 @@ router.get("/findOneUser/:id", function(req, res) {
 
 //-------------------------------------
 
+// Find Product Owner Route
+router.get("/findProductOwner/:id", function(req, res) {
+	db.User.find({
+		_id: req.params.id
+	})
+		.populate("allProduct")
+		.populate("inventoryProducts")
+		.then(data => {
+			res.json(data);
+		})
+		.catch(err => {
+			console.log(
+				"We ran into a problem finding one of our Users.\n------------------------"
+			);
+			//console.log(err);
+		});
+});
+
+//-------------------------------------
+
 // Find all Products Route
 router.get("/findAllProducts", function(req, res) {
 	db.Product.find({})

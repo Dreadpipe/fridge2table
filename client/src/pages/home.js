@@ -568,8 +568,8 @@ class Home extends React.Component {
 						<Text>Expo Notifications Test!</Text>
 						<Button title="Test Notification" onPress={this.sendNotification} />
 					</View>
-				)}
-			</View> */}
+				)} */}
+			</View>
 		);
 	}
 }

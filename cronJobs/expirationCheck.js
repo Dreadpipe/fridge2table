@@ -12,7 +12,7 @@ console.log('Daily Check');
 			allProducts.forEach( product => {
 				if (product.sevenDayWarning !== null && product.sevenDayWarning <= today) {
                     console.log('Seven day warning!');
-                    axios.get(`http://${process.env.IP_ADDRESS}:3001/findOneUser/${product.owner}`)
+                    axios.get(`http://${process.env.IP_ADDRESS}:3001/findProductOwner/${product.owner}`)
                         .then( response => {
                           console.log("HERE IS THE USER?!!");
                           console.log(response.data);
@@ -53,7 +53,7 @@ console.log('Daily Check');
 							// console.log(err);
 						})
 				} else if (product.sevenDayWarning === null && product.twoDayWarning !== null && product.twoDayWarning <= today) {
-                    axios.get(`http://${process.env.IP_ADDRESS}:3001/findOneUser/${product.owner}`)
+                    axios.get(`http://${process.env.IP_ADDRESS}:3001/findProductOwner/${product.owner}`)
                         .then( response => {
                           console.log("HERE IS THE USER?!!");
                           console.log(response.data);
@@ -88,7 +88,7 @@ console.log('Daily Check');
 							// console.log(err);
 						})
 				} else if (product.sevenDayWarning === null && product.twoDayWarning === null && product.expDate !== null && product.expDate <= today && product.expiredOrNot === false) {
-                    axios.get(`http://${process.env.IP_ADDRESS}:3001/findOneUser/${product.owner}`)
+                    axios.get(`http://${process.env.IP_ADDRESS}:3001/findProductOwner/${product.owner}`)
                         .then( response => {
                           console.log("HERE IS THE USER?!!");
                           console.log(response.data);
