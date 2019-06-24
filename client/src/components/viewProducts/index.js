@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import {
 	Content,
 	List,
@@ -14,9 +14,38 @@ import {
 	Thumbnail
 } from "native-base";
 
+const styles = StyleSheet.create({
+	content: {
+		flex: 1
+	},
+	sortDiv: {
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+		padding: 10,
+		backgroundColor: "#f6f6f6",
+		borderStyle: 'solid',
+		borderTopColor: '#DBDBDB',
+		borderTopWidth: 1
+	},
+	sortText: {
+		marginBottom: 10,
+		fontSize: 20
+	},
+	buttonDiv: {
+		display: "flex",
+		flexDirection: "row",
+		justifyContent: "center"
+	},
+	btn: {
+		marginLeft: 5,
+		marginRight: 5
+	}
+});
+
 function ViewProducts(props) {
 	return (
-		<Content>
+		<Content contentContainerStyle={styles.content}>
 			<FlatList
 				data={props.products}
 				keyExtractor={item => item._id}
@@ -68,7 +97,11 @@ function ViewProducts(props) {
 								if (difference <= 0) {
 									return (
 										<Right style={{ marginRight: 10 }}>
-											<Icon name="skull" type="MaterialCommunityIcons" style={{ color: "#000000" }} />
+											<Icon
+												name="skull"
+												type="MaterialCommunityIcons"
+												style={{ color: "#000000" }}
+											/>
 										</Right>
 									);
 								} else if (difference > 0 && difference <= 2) {
@@ -109,6 +142,23 @@ function ViewProducts(props) {
 					);
 				}}
 			/>
+			<View style={styles.sortDiv}>
+				<Text style={styles.sortText}>Sort</Text>
+				<View style={styles.buttonDiv}>
+					<Button small style={styles.btn}>
+						<Icon name="hourglass-half" type="FontAwesome" />
+					</Button>
+					<Button small style={styles.btn}>
+					<Icon name="sort-alphabetical" type="MaterialCommunityIcons" />
+					</Button>
+					<Button small style={styles.btn}>
+						<Text>Category</Text>
+					</Button>
+					<Button small style={styles.btn}>
+						<Text>Location</Text>
+					</Button>
+				</View>
+			</View>
 		</Content>
 	);
 }
