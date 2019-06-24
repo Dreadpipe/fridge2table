@@ -551,7 +551,7 @@ function updateProduct(reqTarget, reqUpdate) {
 		Object.assign(finalUpdate, { location: reqUpdate.location });
 	}
 	if (reqUpdate.quantity !== undefined) {
-		Object.assign(finalUpdate, { $inc: { quantity: reqUpdate.quantity } });
+		Object.assign(finalUpdate, { $set: { quantity: reqUpdate.quantity } });
 	}
 	if (reqUpdate.newRecipes !== undefined) {
 		Object.assign(finalUpdate, {
