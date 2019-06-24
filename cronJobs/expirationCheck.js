@@ -14,6 +14,8 @@ console.log('Daily Check');
                     console.log('Seven day warning!');
                     axios.get(`http://${process.env.IP_ADDRESS}:3001/findOneUser/${product.owner}`)
                         .then( response => {
+                          console.log("HERE IS THE USER?!!");
+                          console.log(response.data);
                             const pushObj = {
                                 productname: product.productname,
                                 pushToken: response.data[0].pushToken,
@@ -53,9 +55,11 @@ console.log('Daily Check');
 				} else if (product.sevenDayWarning === null && product.twoDayWarning !== null && product.twoDayWarning <= today) {
                     axios.get(`http://${process.env.IP_ADDRESS}:3001/findOneUser/${product.owner}`)
                         .then( response => {
+                          console.log("HERE IS THE USER?!!");
+                          console.log(response.data);
                             const pushObj = {
                                 productname: product.productname,
-                                pushToken: response.pushToken,
+                                pushToken: response.data[0].pushToken,
                                 message: 'One of your items is expiring within two days.'
                             }
                             axios.post(`http://${process.env.IP_ADDRESS}:3001/users/push-token`, pushObj)
@@ -86,9 +90,11 @@ console.log('Daily Check');
 				} else if (product.sevenDayWarning === null && product.twoDayWarning === null && product.expDate !== null && product.expDate <= today && product.expiredOrNot === false) {
                     axios.get(`http://${process.env.IP_ADDRESS}:3001/findOneUser/${product.owner}`)
                         .then( response => {
+                          console.log("HERE IS THE USER?!!");
+                          console.log(response.data);
                             const pushObj = {
                                 productname: product.productname,
-                                pushToken: response.pushToken,
+                                pushToken: response.data[0].pushToken,
                                 message: 'One of your items just expired!'
                             }
                             axios.post(`http://${process.env.IP_ADDRESS}:3001/users/push-token`, pushObj)

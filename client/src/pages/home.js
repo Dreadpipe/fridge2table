@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Platform } from "react-native";
+import { StyleSheet, View, Platform, Text, Button } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 import Head from "../components/head";
@@ -568,8 +568,8 @@ class Home extends React.Component {
 						<Text>Expo Notifications Test!</Text>
 						<Button title="Test Notification" onPress={this.sendNotification} />
 					</View>
-				)} */}
-			</View>
+				)}
+			</View> */}
 		);
 	}
 }
