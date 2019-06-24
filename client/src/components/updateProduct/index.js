@@ -39,17 +39,13 @@ const styles = StyleSheet.create({
 	iconDiv: {
 		textAlign: "center"
 	},
-	barcodeIcon: {
-		fontSize: 90,
-		textAlign: "center"
-	},
-	plusIcon: {
+	pencilIcon: {
 		fontSize: 90,
 		textAlign: "center"
 	}
 });
 
-class AddProduct extends React.Component {
+class UpdateProduct extends React.Component {
 	render() {
 		return (
 			<Content contentContainerStyle={styles.content}>
@@ -136,7 +132,7 @@ class AddProduct extends React.Component {
 						</Picker>
 					</Item>
 					<DatePicker
-						defaultDate={new Date()}
+						defaultDate={this.props.date}
 						locale={"en"}
 						timeZoneOffsetInMinutes={undefined}
 						modalTransparent={false}
@@ -152,25 +148,16 @@ class AddProduct extends React.Component {
 				</Form>
 				<View style={styles.iconDiv}>
 					<Icon
-						name="barcode-scan"
-						type="MaterialCommunityIcons"
-						style={styles.barcodeIcon}
-						onPress={this.props.toScanner}
-					/>
-					<Text style={{ textAlign: "center" }}>Scan Barcode</Text>
-				</View>
-				<View style={styles.iconDiv}>
-					<Icon
-						name="plus"
+						name="pencil"
 						type="FontAwesome"
-						style={styles.plusIcon}
-						onPress={this.props.addProduct}
+						style={styles.pencilIcon}
+						onPress={() => this.props.updateProduct(this.props.productID)}
 					/>
-					<Text>Add Product</Text>
+					<Text style={{ textAlign: "center" }}>Update Product</Text>
 				</View>
 			</Content>
 		);
 	}
 }
 
-export default AddProduct;
+export default UpdateProduct;

@@ -304,6 +304,7 @@ router.put("/updateProduct", function(req, res) {
 	const reqTarget = req.body.target;
 	const reqUpdate = req.body.update;
 	updateProduct(reqTarget, reqUpdate);
+	res.end()
 });
 
 //++++++++++++++++++++++
