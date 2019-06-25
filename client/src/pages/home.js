@@ -204,7 +204,7 @@ class Home extends React.Component {
 
 	toAddProductScreen = () => {
 		this.setState({ view: "addProduct" });
-	}
+	};
 
 	toAddProductScreenClear = () => {
 		this.setState({
@@ -291,7 +291,6 @@ class Home extends React.Component {
 
 		const { inventoryProducts, ...rest } = this.state.user;
 		rest.inventoryProducts = sortedArray;
-		console.log(rest);
 		this.setState({ view: "viewProducts", user: rest });
 	};
 
@@ -308,7 +307,6 @@ class Home extends React.Component {
 
 		const { inventoryProducts, ...rest } = this.state.user;
 		rest.inventoryProducts = sortedArray;
-		console.log(rest);
 		this.setState({ view: "viewProducts", user: rest });
 	};
 
@@ -325,7 +323,6 @@ class Home extends React.Component {
 
 		const { inventoryProducts, ...rest } = this.state.user;
 		rest.inventoryProducts = sortedArray;
-		console.log(rest);
 		this.setState({ view: "viewProducts", user: rest });
 	};
 
