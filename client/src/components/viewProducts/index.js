@@ -48,6 +48,7 @@ function ViewProducts(props) {
 		<Content contentContainerStyle={styles.content}>
 			<FlatList
 				data={props.products}
+				extraData={props.extraData}
 				keyExtractor={item => item._id}
 				renderItem={({ item }) => {
 					return (
@@ -145,16 +146,13 @@ function ViewProducts(props) {
 			<View style={styles.sortDiv}>
 				<Text style={styles.sortText}>Sort</Text>
 				<View style={styles.buttonDiv}>
-					<Button small style={styles.btn}>
+					<Button small style={styles.btn} onPress={props.sortByExpDate}>
 						<Icon name="hourglass-half" type="FontAwesome" />
 					</Button>
-					<Button small style={styles.btn}>
+					<Button small style={styles.btn} onPress={props.sortAlphabetically}>
 					<Icon name="sort-alphabetical" type="MaterialCommunityIcons" />
 					</Button>
-					<Button small style={styles.btn}>
-						<Text>Category</Text>
-					</Button>
-					<Button small style={styles.btn}>
+					<Button small style={styles.btn} onPress={props.sortByLocation}>
 						<Text>Location</Text>
 					</Button>
 				</View>

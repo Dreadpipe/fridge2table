@@ -262,6 +262,69 @@ class Home extends React.Component {
 		});
 	};
 
+	sortByExpDate = () => {
+		const sortedArray = this.state.user.inventoryProducts.sort((a, b) => {
+			// Function to calculate difference between dates taken in part from this resource: https://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript
+			const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+			function dateDiffInDays(a, b) {
+				// Discarding time and time-zone info
+				const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+				const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+				return Math.floor((utc1 - utc2) / _MS_PER_DAY);
+			}
+
+			// test it
+			const aExp = new Date(a.expDate);
+			const bExp = new Date(b.expDate);
+			const today = new Date();
+			const aDifference = dateDiffInDays(aExp, today);
+			const bDifference = dateDiffInDays(bExp, today);
+
+			return aDifference - bDifference;
+		});
+
+		const { inventoryProducts, ...rest } = this.state.user;
+		rest.inventoryProducts = sortedArray;
+		console.log(rest);
+		this.setState({ view: "viewProducts", user: rest });
+	};
+
+	sortAlphabetically = () => {
+		const sortedArray = this.state.user.inventoryProducts.sort((a, b) => {
+			if (a.productname < b.productname) {
+				return -1;
+			}
+			if (a.productname > b.productname) {
+				return 1;
+			}
+			return 0;
+		});
+
+		const { inventoryProducts, ...rest } = this.state.user;
+		rest.inventoryProducts = sortedArray;
+		console.log(rest);
+		this.setState({ view: "viewProducts", user: rest });
+	};
+
+	sortByLocation = () => {
+		const sortedArray = this.state.user.inventoryProducts.sort((a, b) => {
+			if (a.location < b.location) {
+				return -1;
+			}
+			if (a.location > b.location) {
+				return 1;
+			}
+			return 0;
+		});
+
+		const { inventoryProducts, ...rest } = this.state.user;
+		rest.inventoryProducts = sortedArray;
+		console.log(rest);
+		this.setState({ view: "viewProducts", user: rest });
+	};
+
 	// Update-Product Screen Functions
 
 	updateProduct = id => {
@@ -425,8 +488,12 @@ class Home extends React.Component {
 						case "viewProducts":
 							return (
 								<ViewProducts
+									sortByExpDate={this.sortByExpDate}
+									sortAlphabetically={this.sortAlphabetically}
+									sortByLocation={this.sortByLocation}
 									editProduct={this.editProduct}
 									deleteProduct={this.deleteProduct}
+									extraData={this.state.user}
 									products={(() => {
 										switch (this.state.productView) {
 											case "all":
