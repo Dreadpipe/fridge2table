@@ -9,13 +9,11 @@ console.log('Daily Check');
     .then(response => {
 			const allProducts = response;
 			const today = Date.now();
-			allProducts.forEach( product => {
+			allProducts.forEach( product => { // Date ( PUT  VARIABLES HERE)
 				if (product.sevenDayWarning !== null && product.sevenDayWarning <= today) {
                     console.log('Seven day warning!');
                     axios.get(`http://${process.env.IP_ADDRESS}:3001/findProductOwner/${product.owner}`)
                         .then( response => {
-                          console.log("HERE IS THE USER?!!");
-                          console.log(response.data);
                             const pushObj = {
                                 productname: product.productname,
                                 pushToken: response.data[0].pushToken,
@@ -55,8 +53,6 @@ console.log('Daily Check');
 				} else if (product.sevenDayWarning === null && product.twoDayWarning !== null && product.twoDayWarning <= today) {
                     axios.get(`http://${process.env.IP_ADDRESS}:3001/findProductOwner/${product.owner}`)
                         .then( response => {
-                          console.log("HERE IS THE USER?!!");
-                          console.log(response.data);
                             const pushObj = {
                                 productname: product.productname,
                                 pushToken: response.data[0].pushToken,
@@ -87,11 +83,9 @@ console.log('Daily Check');
 							console.log("We ran into a problem removing the two day warning.\n------------------------");
 							// console.log(err);
 						})
-				} else if (product.sevenDayWarning === null && product.twoDayWarning === null && product.expDate !== null && product.expDate <= today && product.expiredOrNot === false) {
+				} else if (product.sevenDayWarning === null && product.twoDayWarning === null && product.expDate !== null && Date(product.expDate) <= Date(today) && product.expiredOrNot === false) {
                     axios.get(`http://${process.env.IP_ADDRESS}:3001/findProductOwner/${product.owner}`)
                         .then( response => {
-                          console.log("HERE IS THE USER?!!");
-                          console.log(response.data);
                             const pushObj = {
                                 productname: product.productname,
                                 pushToken: response.data[0].pushToken,
