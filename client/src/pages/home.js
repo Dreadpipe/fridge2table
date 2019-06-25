@@ -203,6 +203,10 @@ class Home extends React.Component {
 	};
 
 	toAddProductScreen = () => {
+		this.setState({ view: "addProduct" });
+	}
+
+	toAddProductScreenClear = () => {
 		this.setState({
 			view: "addProduct",
 			productName: "",
@@ -613,7 +617,7 @@ class Home extends React.Component {
 					}
 				})()}
 				<Foot
-					toAddProductScreen={this.toAddProductScreen}
+					toAddProductScreenClear={this.toAddProductScreenClear}
 					viewAllProducts={() =>
 						this.setState({
 							view: "viewProducts",

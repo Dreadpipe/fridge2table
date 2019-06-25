@@ -15,7 +15,7 @@ function Foot(props) {
 	return (
 		<Footer>
 			<FooterTab>
-				<Button vertical onPress={props.toAddProductScreen}>
+				<Button vertical onPress={props.toAddProductScreenClear}>
 					<Icon name="plus" type="FontAwesome" />
 					<Text>Add Product</Text>
 				</Button>
