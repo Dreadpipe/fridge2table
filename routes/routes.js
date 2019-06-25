@@ -569,10 +569,10 @@ function updateProduct(reqTarget, reqUpdate) {
 	if (reqUpdate.expDate !== undefined) {
 		Object.assign(finalUpdate, { expDate: reqUpdate.expDate });
 		Object.assign(finalUpdate, {
-			sevenDayWarning: addDays(reqUpdate.expDate, 7)
+			sevenDayWarning: subtractDays(reqUpdate.expDate, 7)
 		});
 		Object.assign(finalUpdate, {
-			twoDayWarning: addDays(reqUpdate.expDate, 2)
+			twoDayWarning: subtractDays(reqUpdate.expDate, 2)
 		});
 	}
 	if (reqUpdate.remove7DayWarning !== undefined) {
