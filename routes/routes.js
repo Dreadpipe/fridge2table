@@ -175,11 +175,30 @@ router.post("/newProduct", function(req, res) {
 		owner: req.body.userId
 	};
 	if (req.body.expDate) {
-		Object.assign(newProduct, {
-			expDate: req.body.expDate,
-			sevenDayWarning: addDays(req.body.expDate, 7),
-			twoDayWarning: addDays(req.body.expDate, 2)
-		});
+		const today = Date.now();
+		const twoDays = addDays(today, 2);
+		const sevenDays = addDays(today, 7);
+		console.log(Date(req.body.expDate))
+		console.log(Date(twoDays));
+		if ( req.body.expDate >= Date(sevenDays) ) {
+			Object.assign(newProduct, {
+				expDate: req.body.expDate,
+				sevenDayWarning: addDays(today, 7),
+				twoDayWarning: addDays(today, 2)
+			});
+		} else if ( Date(req.body.expDate) >= Date(twoDays) ) {
+			Object.assign(newProduct, {
+				expDate: req.body.expDate,
+				sevenDayWarning: null,
+				twoDayWarning: addDays(today, 2)
+			});
+		} else {
+			Object.assign(newProduct, {
+				sevenDayWarning: null,
+				twoDayWarning: null,
+				expDate: req.body.expDate
+			});
+		}
 	}
 	new Product(newProduct).save().then(newProduct => {
 		console.log(`Product added! \nDetails: ${newProduct}`);
