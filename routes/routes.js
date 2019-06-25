@@ -178,19 +178,17 @@ router.post("/newProduct", function(req, res) {
 		const today = Date.now();
 		const twoDays = addDays(today, 2);
 		const sevenDays = addDays(today, 7);
-		console.log(Date(req.body.expDate))
-		console.log(Date(twoDays));
-		if ( req.body.expDate >= Date(sevenDays) ) {
+		if (new Date(req.body.expDate) >= new Date(sevenDays)) {
 			Object.assign(newProduct, {
 				expDate: req.body.expDate,
-				sevenDayWarning: addDays(today, 7),
-				twoDayWarning: addDays(today, 2)
+				sevenDayWarning: subtractDays(req.body.expDate, 7),
+				twoDayWarning: subtractDays(req.body.expDate, 2)
 			});
-		} else if ( Date(req.body.expDate) >= Date(twoDays) ) {
+		} else if (new Date(req.body.expDate) >= new Date(twoDays)) {
 			Object.assign(newProduct, {
 				expDate: req.body.expDate,
 				sevenDayWarning: null,
-				twoDayWarning: addDays(today, 2)
+				twoDayWarning: subtractDays(req.body.expDate, 2)
 			});
 		} else {
 			Object.assign(newProduct, {
@@ -343,7 +341,7 @@ router.put("/updateProduct", function(req, res) {
 	const reqTarget = req.body.target;
 	const reqUpdate = req.body.update;
 	updateProduct(reqTarget, reqUpdate);
-	res.end()
+	res.end();
 });
 
 //++++++++++++++++++++++
@@ -628,6 +626,12 @@ function updateProduct(reqTarget, reqUpdate) {
 function addDays(date, days) {
 	const result = new Date(date);
 	result.setDate(result.getDate() + days);
+	return result;
+}
+
+function subtractDays(date, days) {
+	const result = new Date(date);
+	result.setDate(result.getDate() - days);
 	return result;
 }
 
