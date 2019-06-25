@@ -10,12 +10,6 @@ const dailyCheck = function() {
 			const allProducts = response;
 			const today = Date.now();
 			allProducts.forEach(product => {
-				// Date ( PUT  VARIABLES HERE)
-				console.log(today);
-				console.log(product);
-				console.log(product.sevenDayWarning <= new Date(today));
-				console.log(product.twoDayWarning <= new Date(today));
-				console.log(product.expDate <= new Date(today));
 				if (
 					product.sevenDayWarning !== null &&
 					product.sevenDayWarning <= new Date(today)
@@ -202,7 +196,9 @@ const dailyCheck = function() {
 					console.log(`The ${product.productname} is expired!!!`);
 				} else {
 					console.log(
-						`There's not a seven-day, two-day, or expiration warning to send for the ${product.productname}!`
+						`There's not a seven-day, two-day, or expiration warning to send for the ${
+							product.productname
+						}!`
 					);
 				}
 			});
