@@ -10,9 +10,9 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/fridge2table-chrome.png",
+    "icon": "./assets/fridge2table-chrome.jpg",
     "splash": {
-      "image": "./assets/fridge2table-chrome.png",
+      "image": "./assets/fridge2table-chrome.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
