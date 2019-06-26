@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Platform, Text, Button } from "react-native";
+import { Toast, Root } from "native-base";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 import Head from "../components/head";
@@ -75,7 +76,8 @@ class Home extends React.Component {
 	//Notification functions
 
 	_handleNotification = notification => {
-		this.setState({ notification: notification });
+    this.setState({ notification: notification });
+    setTimeout(() => this.setState({notification: {}}), 6000);
 	};
 
 	sendNotification = () => {
@@ -354,6 +356,7 @@ class Home extends React.Component {
 
 	render() {
 		return (
+      <Root>
 			<View style={styles.container}>
 				<Head
 					toFridge={this.toFridgeScreen}
@@ -622,22 +625,15 @@ class Home extends React.Component {
 						})
 					}
 				/>
-				{/* {this.state.notification.origin ? (
-					<View>
-						<Text>Origin: {this.state.notification.origin}</Text>
-						{this.state.notification.data ? (
-							<Text>Data: {JSON.stringify(this.state.notification.data)}</Text>
-						) : (
-							<Text>No Data</Text>
-						)}
-					</View>
-				) : (
-					<View>
-						<Text>Expo Notifications Test!</Text>
-						<Button title="Test Notification" onPress={this.sendNotification} />
-					</View>
-				)} */}
+				{this.state.notification.origin ? (
+						Toast.show({
+              text: `Check the expiration for ${this.state.notification.data.expFood}!`,
+              buttonText: 'Okay!',
+              duration: 3000
+            })
+        ) : (null)}
 			</View>
+    </Root>
 		);
 	}
 }
