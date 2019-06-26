@@ -161,7 +161,7 @@ class AddProduct extends React.Component {
 				</View>
 				<View style={styles.iconDiv}>
 					<Icon
-						name="plus"
+						name="check"
 						type="FontAwesome"
 						style={styles.plusIcon}
 						onPress={this.props.addProduct}
