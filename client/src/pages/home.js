@@ -76,8 +76,12 @@ class Home extends React.Component {
 	//Notification functions
 
 	_handleNotification = notification => {
-    this.setState({ notification: notification });
-    setTimeout(() => this.setState({notification: {}}), 6000);
+		this.setState({ notification: notification });
+		Toast.show({
+			text: `Check the expiration for ${notification.data.expFood}!`,
+			buttonText: "Okay!",
+			duration: 3000
+		});
 	};
 
 	sendNotification = () => {
@@ -101,7 +105,11 @@ class Home extends React.Component {
 				pushToken: expoToken
 			}
 		};
-		axios.put(`https://immense-ravine-93808.herokuapp.com/updateUser`, query, {});
+		axios.put(
+			`https://immense-ravine-93808.herokuapp.com/updateUser`,
+			query,
+			{}
+		);
 	};
 
 	// Input-form functions:
@@ -356,284 +364,283 @@ class Home extends React.Component {
 
 	render() {
 		return (
-      <Root>
-			<View style={styles.container}>
-				<Head
-					toFridge={this.toFridgeScreen}
-					toFreezer={this.toFreezerScreen}
-					toPantry={this.toPantryScreen}
-				/>
-				{(() => {
-					switch (this.state.view) {
-						case "fridge":
-							return (
-								<OpenFridge
-									user={this.state.user}
-									viewMeats={() =>
-										this.setState({
-											view: "viewProducts",
-											productView: "fridgeMeats"
-										})
-									}
-									viewDairy={() =>
-										this.setState({
-											view: "viewProducts",
-											productView: "fridgeDairy"
-										})
-									}
-									viewProduce={() =>
-										this.setState({
-											view: "viewProducts",
-											productView: "fridgeProduce"
-										})
-									}
-									viewGrains={() =>
-										this.setState({
-											view: "viewProducts",
-											productView: "fridgeGrains"
-										})
-									}
-									viewDrinks={() =>
-										this.setState({
-											view: "viewProducts",
-											productView: "fridgeDrinks"
-										})
-									}
-									viewMisc={() =>
-										this.setState({
-											view: "viewProducts",
-											productView: "fridgeMisc"
-										})
-									}
-								/>
-							);
-							break;
-						case "pantry":
-							return (
-								<Pantry
-									user={this.state.user}
-									viewGrains={() =>
-										this.setState({
-											view: "viewProducts",
-											productView: "pantryGrains"
-										})
-									}
-									viewCans={() =>
-										this.setState({
-											view: "viewProducts",
-											productView: "pantryCans"
-										})
-									}
-									viewProduce={() =>
-										this.setState({
-											view: "viewProducts",
-											productView: "pantryProduce"
-										})
-									}
-									viewSpices={() =>
-										this.setState({
-											view: "viewProducts",
-											productView: "pantrySpices"
-										})
-									}
-									viewMisc={() =>
-										this.setState({
-											view: "viewProducts",
-											productView: "pantryMisc"
-										})
-									}
-								/>
-							);
-							break;
-						case "freezer":
-							return (
-								<Freezer
-									user={this.state.user}
-									viewMeats={() =>
-										this.setState({
-											view: "viewProducts",
-											productView: "freezerMeats"
-										})
-									}
-									viewProduce={() =>
-										this.setState({
-											view: "viewProducts",
-											productView: "freezerProduce"
-										})
-									}
-									viewMisc={() =>
-										this.setState({
-											view: "viewProducts",
-											productView: "freezerMisc"
-										})
-									}
-								/>
-							);
-							break;
-						case "addProduct":
-							return (
-								<AddProduct
-									user={this.state.user}
-									onNameChange={this.onNameChange.bind(this)}
-									productName={this.state.productName}
-									onLocationChange={this.onLocationChange.bind(this)}
-									location={this.state.selectedLocation}
-									onCategoryChange={this.onCategoryChange.bind(this)}
-									category={this.state.selectedCategory}
-									onQuantityChange={this.onQuantityChange.bind(this)}
-									quantity={this.state.selectedQuantity}
-									setDate={this.setDate}
-									date={this.state.expDate}
-									toScanner={this.toScanner}
-									addProduct={this.addProduct}
-								/>
-							);
-							break;
-						case "viewProducts":
-							return (
-								<ViewProducts
-									sortByExpDate={this.sortByExpDate}
-									sortAlphabetically={this.sortAlphabetically}
-									sortByLocation={this.sortByLocation}
-									editProduct={this.editProduct}
-									deleteProduct={this.deleteProduct}
-									extraData={this.state.user}
-									products={(() => {
-										switch (this.state.productView) {
-											case "all":
-												return this.state.user.inventoryProducts;
-												break;
-											case "fridgeProduce":
-												return this.sortByCategoryAndLocation(
-													"Produce",
-													"Fridge"
-												);
-												break;
-											case "fridgeGrains":
-												return this.sortByCategoryAndLocation(
-													"Grains",
-													"Fridge"
-												);
-												break;
-											case "fridgeDairy":
-												return this.sortByCategoryAndLocation(
-													"Dairy",
-													"Fridge"
-												);
-												break;
-											case "fridgeDrinks":
-												return this.sortByCategoryAndLocation(
-													"Drinks",
-													"Fridge"
-												);
-												break;
-											case "fridgeMisc":
-												return this.sortByCategoryAndLocation("Misc", "Fridge");
-												break;
-											case "fridgeMeats":
-												return this.sortByCategoryAndLocation(
-													"Meats",
-													"Fridge"
-												);
-												break;
-											case "freezerMeats":
-												return this.sortByCategoryAndLocation(
-													"Meats",
-													"Freezer"
-												);
-												break;
-											case "freezerProduce":
-												return this.sortByCategoryAndLocation(
-													"Produce",
-													"Freezer"
-												);
-												break;
-											case "freezerMisc":
-												return this.sortByCategoryAndLocation(
-													"Misc",
-													"Freezer"
-												);
-												break;
-											case "pantryProduce":
-												return this.sortByCategoryAndLocation(
-													"Produce",
-													"Pantry"
-												);
-												break;
-											case "pantryCans":
-												return this.sortByCategoryAndLocation(
-													"Canned Goods",
-													"Pantry"
-												);
-												break;
-											case "pantrySpices":
-												return this.sortByCategoryAndLocation(
-													"Spice Rack",
-													"Pantry"
-												);
-												break;
-											case "pantryGrains":
-												return this.sortByCategoryAndLocation(
-													"Grains",
-													"Pantry"
-												);
-												break;
-											case "pantryMisc":
-												return this.sortByCategoryAndLocation("Misc", "Pantry");
-												break;
+			<Root>
+				<View style={styles.container}>
+					<Head
+						toFridge={this.toFridgeScreen}
+						toFreezer={this.toFreezerScreen}
+						toPantry={this.toPantryScreen}
+					/>
+					{(() => {
+						switch (this.state.view) {
+							case "fridge":
+								return (
+									<OpenFridge
+										user={this.state.user}
+										viewMeats={() =>
+											this.setState({
+												view: "viewProducts",
+												productView: "fridgeMeats"
+											})
 										}
-									})()}
-								/>
-							);
-							break;
-						case "updateProduct":
-							return (
-								<UpdateProduct
-									user={this.state.user}
-									onNameChange={this.onNameChange.bind(this)}
-									productName={this.state.productName}
-									onLocationChange={this.onLocationChange.bind(this)}
-									location={this.state.selectedLocation}
-									onCategoryChange={this.onCategoryChange.bind(this)}
-									category={this.state.selectedCategory}
-									onQuantityChange={this.onQuantityChange.bind(this)}
-									quantity={this.state.selectedQuantity}
-									setDate={this.setDate}
-									date={this.state.expDate}
-									productID={this.state.productIDForUpdate}
-									updateProduct={this.updateProduct}
-								/>
-							);
-							break;
-						case "scanner":
-							return (
-								<Scanner
-									user={this.state.user}
-									addProductNameAndPicURL={this.addProductNameAndPicURL}
-									toAddProductScreen={this.toAddProductScreen}
-								/>
-							);
-							break;
-					}
-				})()}
-				<Foot
-					toAddProductScreenClear={this.toAddProductScreenClear}
-					viewAllProducts={() =>
-						this.setState({
-							view: "viewProducts",
-							productView: "all"
-						})
-					}
-				/>
-				{this.state.notification.origin ? (
-						Toast.show({
-              text: `Check the expiration for ${this.state.notification.data.expFood}!`,
-              buttonText: 'Okay!',
-              duration: 3000
-            })
-        ) : (null)}
-			</View>
-    </Root>
+										viewDairy={() =>
+											this.setState({
+												view: "viewProducts",
+												productView: "fridgeDairy"
+											})
+										}
+										viewProduce={() =>
+											this.setState({
+												view: "viewProducts",
+												productView: "fridgeProduce"
+											})
+										}
+										viewGrains={() =>
+											this.setState({
+												view: "viewProducts",
+												productView: "fridgeGrains"
+											})
+										}
+										viewDrinks={() =>
+											this.setState({
+												view: "viewProducts",
+												productView: "fridgeDrinks"
+											})
+										}
+										viewMisc={() =>
+											this.setState({
+												view: "viewProducts",
+												productView: "fridgeMisc"
+											})
+										}
+									/>
+								);
+								break;
+							case "pantry":
+								return (
+									<Pantry
+										user={this.state.user}
+										viewGrains={() =>
+											this.setState({
+												view: "viewProducts",
+												productView: "pantryGrains"
+											})
+										}
+										viewCans={() =>
+											this.setState({
+												view: "viewProducts",
+												productView: "pantryCans"
+											})
+										}
+										viewProduce={() =>
+											this.setState({
+												view: "viewProducts",
+												productView: "pantryProduce"
+											})
+										}
+										viewSpices={() =>
+											this.setState({
+												view: "viewProducts",
+												productView: "pantrySpices"
+											})
+										}
+										viewMisc={() =>
+											this.setState({
+												view: "viewProducts",
+												productView: "pantryMisc"
+											})
+										}
+									/>
+								);
+								break;
+							case "freezer":
+								return (
+									<Freezer
+										user={this.state.user}
+										viewMeats={() =>
+											this.setState({
+												view: "viewProducts",
+												productView: "freezerMeats"
+											})
+										}
+										viewProduce={() =>
+											this.setState({
+												view: "viewProducts",
+												productView: "freezerProduce"
+											})
+										}
+										viewMisc={() =>
+											this.setState({
+												view: "viewProducts",
+												productView: "freezerMisc"
+											})
+										}
+									/>
+								);
+								break;
+							case "addProduct":
+								return (
+									<AddProduct
+										user={this.state.user}
+										onNameChange={this.onNameChange.bind(this)}
+										productName={this.state.productName}
+										onLocationChange={this.onLocationChange.bind(this)}
+										location={this.state.selectedLocation}
+										onCategoryChange={this.onCategoryChange.bind(this)}
+										category={this.state.selectedCategory}
+										onQuantityChange={this.onQuantityChange.bind(this)}
+										quantity={this.state.selectedQuantity}
+										setDate={this.setDate}
+										date={this.state.expDate}
+										toScanner={this.toScanner}
+										addProduct={this.addProduct}
+									/>
+								);
+								break;
+							case "viewProducts":
+								return (
+									<ViewProducts
+										sortByExpDate={this.sortByExpDate}
+										sortAlphabetically={this.sortAlphabetically}
+										sortByLocation={this.sortByLocation}
+										editProduct={this.editProduct}
+										deleteProduct={this.deleteProduct}
+										extraData={this.state.user}
+										products={(() => {
+											switch (this.state.productView) {
+												case "all":
+													return this.state.user.inventoryProducts;
+													break;
+												case "fridgeProduce":
+													return this.sortByCategoryAndLocation(
+														"Produce",
+														"Fridge"
+													);
+													break;
+												case "fridgeGrains":
+													return this.sortByCategoryAndLocation(
+														"Grains",
+														"Fridge"
+													);
+													break;
+												case "fridgeDairy":
+													return this.sortByCategoryAndLocation(
+														"Dairy",
+														"Fridge"
+													);
+													break;
+												case "fridgeDrinks":
+													return this.sortByCategoryAndLocation(
+														"Drinks",
+														"Fridge"
+													);
+													break;
+												case "fridgeMisc":
+													return this.sortByCategoryAndLocation(
+														"Misc",
+														"Fridge"
+													);
+													break;
+												case "fridgeMeats":
+													return this.sortByCategoryAndLocation(
+														"Meats",
+														"Fridge"
+													);
+													break;
+												case "freezerMeats":
+													return this.sortByCategoryAndLocation(
+														"Meats",
+														"Freezer"
+													);
+													break;
+												case "freezerProduce":
+													return this.sortByCategoryAndLocation(
+														"Produce",
+														"Freezer"
+													);
+													break;
+												case "freezerMisc":
+													return this.sortByCategoryAndLocation(
+														"Misc",
+														"Freezer"
+													);
+													break;
+												case "pantryProduce":
+													return this.sortByCategoryAndLocation(
+														"Produce",
+														"Pantry"
+													);
+													break;
+												case "pantryCans":
+													return this.sortByCategoryAndLocation(
+														"Canned Goods",
+														"Pantry"
+													);
+													break;
+												case "pantrySpices":
+													return this.sortByCategoryAndLocation(
+														"Spice Rack",
+														"Pantry"
+													);
+													break;
+												case "pantryGrains":
+													return this.sortByCategoryAndLocation(
+														"Grains",
+														"Pantry"
+													);
+													break;
+												case "pantryMisc":
+													return this.sortByCategoryAndLocation(
+														"Misc",
+														"Pantry"
+													);
+													break;
+											}
+										})()}
+									/>
+								);
+								break;
+							case "updateProduct":
+								return (
+									<UpdateProduct
+										user={this.state.user}
+										onNameChange={this.onNameChange.bind(this)}
+										productName={this.state.productName}
+										onLocationChange={this.onLocationChange.bind(this)}
+										location={this.state.selectedLocation}
+										onCategoryChange={this.onCategoryChange.bind(this)}
+										category={this.state.selectedCategory}
+										onQuantityChange={this.onQuantityChange.bind(this)}
+										quantity={this.state.selectedQuantity}
+										setDate={this.setDate}
+										date={this.state.expDate}
+										productID={this.state.productIDForUpdate}
+										updateProduct={this.updateProduct}
+									/>
+								);
+								break;
+							case "scanner":
+								return (
+									<Scanner
+										user={this.state.user}
+										addProductNameAndPicURL={this.addProductNameAndPicURL}
+										toAddProductScreen={this.toAddProductScreen}
+									/>
+								);
+								break;
+						}
+					})()}
+					<Foot
+						toAddProductScreenClear={this.toAddProductScreenClear}
+						viewAllProducts={() =>
+							this.setState({
+								view: "viewProducts",
+								productView: "all"
+							})
+						}
+					/>
+				</View>
+			</Root>
 		);
 	}
 }
