@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "990760545371",
+    "firebase_url": "https://fridge2table-push.firebaseio.com",
+    "project_id": "fridge2table-push",
+    "storage_bucket": "fridge2table-push.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990760545371:android:ea695828e0ea56df",
+        "android_client_info": {
+          "package_name": "com.dreamteamdesigns.fridge2table"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "990760545371-c1b4he9na0mmdhlkqc4q0gaghu90vsk7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-NoXAF02O_6sXsd_NwzIdRuhWNDZxkXo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "990760545371-c1b4he9na0mmdhlkqc4q0gaghu90vsk7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

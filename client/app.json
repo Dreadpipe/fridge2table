@@ -19,10 +19,12 @@
 		},
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
-			"supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.dreamteamdesigns.fridge2table"
 		},
 		"android": {
-			"package": "com.dreamteamdesigns.fridge2table"
+      "package": "com.dreamteamdesigns.fridge2table",
+      "googleServicesFile": "./google-services.json"
 		},
 		"description": "",
 		"githubUrl": "https://github.com/Dreadpipe/fridge2table"
