@@ -10,6 +10,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
+    "scheme": "dreamteamdesigns",
     "icon": "./assets/fridge2table-chrome.jpg",
     "splash": {
       "image": "./assets/fridge2table-chrome.jpg",

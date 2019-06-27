@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 // Platform.OS === 'ios' ? vh(100) : vh(100) - getStatusBarHeight()
 
 let expoToken = "";
-const PUSH_ENDPOINT = `http://${env.IP_ADDRESS}:3001/users/push-token`;
+const PUSH_ENDPOINT = `https://immense-ravine-93808.herokuapp.com/users/push-token`;
 
 async function registerForPushNotifications() {
 	const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
@@ -101,7 +101,7 @@ class Home extends React.Component {
 				pushToken: expoToken
 			}
 		};
-		axios.put(`http://${env.IP_ADDRESS}:3001/updateUser`, query, {});
+		axios.put(`https://immense-ravine-93808.herokuapp.com/updateUser`, query, {});
 	};
 
 	// Input-form functions:
