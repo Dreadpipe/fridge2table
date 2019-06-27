@@ -12,8 +12,8 @@ import env from "./env";
 import { Font, AppLoading } from "expo";
 import { Ionicons } from "@expo/vector-icons";
 
-const auth0ClientId = "8OB0bI6tHfr1wK9PbnOefzFGqOWkr45J";
-const auth0Domain = "https://geoffdgeorge.auth0.com";
+const auth0ClientId = env.AUTH0_CLIENT_ID;
+const auth0Domain = env.AUTH0_DOMAIN;
 
 const styles = StyleSheet.create({
 	container: {
