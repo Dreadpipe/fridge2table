@@ -364,7 +364,7 @@ class Home extends React.Component {
 
 	render() {
 		return (
-			<Root>
+			
 				<View style={styles.container}>
 					<Head
 						toFridge={this.toFridgeScreen}
@@ -640,7 +640,7 @@ class Home extends React.Component {
 						}
 					/>
 				</View>
-			</Root>
+			
 		);
 	}
 }

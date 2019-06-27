@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Platform } from "react-native";
-import { Container } from "native-base";
+import { Container, Root} from "native-base";
 import { AuthSession } from "expo";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 import { getStatusBarHeight } from "react-native-status-bar-height";
@@ -120,9 +120,11 @@ export default class App extends React.Component {
 		}
 		const { user } = this.state;
 		return (
-			<Container style={styles.container}>
-				{user.name ? <Home user={user} /> : <FullFridge login={this.login} />}
-			</Container>
+			<Root>
+				<Container style={styles.container}>
+					{user.name ? <Home user={user} /> : <FullFridge login={this.login} />}
+				</Container>
+			</Root>
 		);
 	}
 }

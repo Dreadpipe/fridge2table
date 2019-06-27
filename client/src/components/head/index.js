@@ -3,16 +3,19 @@ import { StyleSheet, Image, Platform } from "react-native";
 import { Header, Left, Right, Button, Title, Text } from "native-base";
 
 const styles = StyleSheet.create({
+	header: {
+		backgroundColor: "#193652"
+	},
 	logo: {
-		height: '100%',
-		width: Platform.OS === "ios" ? "70%" : "100%",
+		height: "100%",
+		width: Platform.OS === "ios" ? "70%" : "100%"
 	}
 });
 
 export default class Head extends Component {
 	render() {
 		return (
-			<Header style={styles.header}>
+			<Header style={styles.header} iosBarStyle='light-content'>
 				<Left>
 					<Image
 						resizeMode="contain"
@@ -22,13 +25,13 @@ export default class Head extends Component {
 				</Left>
 				<Right>
 					<Button hasText transparent onPress={this.props.toFridge}>
-						<Text>Fridge</Text>
+						<Text style={{color: '#EBF5FF'}}>Fridge</Text>
 					</Button>
 					<Button hasText transparent onPress={this.props.toFreezer}>
-						<Text>Freezer</Text>
+						<Text style={{color: '#EBF5FF'}}>Freezer</Text>
 					</Button>
 					<Button hasText transparent onPress={this.props.toPantry}>
-						<Text>Pantry</Text>
+						<Text style={{color: '#EBF5FF'}}>Pantry</Text>
 					</Button>
 				</Right>
 			</Header>

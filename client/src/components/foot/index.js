@@ -11,17 +11,26 @@ import {
 	Text
 } from "native-base";
 
+const styles = StyleSheet.create({
+	footer: {
+		backgroundColor: "#193652"
+	},
+	footerTab: {
+		backgroundColor: "#193652"
+	}
+});
+
 function Foot(props) {
 	return (
-		<Footer>
-			<FooterTab>
+		<Footer style={styles.footer}>
+			<FooterTab style={styles.footerTab}>
 				<Button vertical onPress={props.toAddProductScreenClear}>
-					<Icon name="plus" type="FontAwesome" />
-					<Text>Add Product</Text>
+					<Icon name="plus" type="FontAwesome" style={{color: '#EBF5FF'}} />
+					<Text style={{color: '#EBF5FF'}}>Add Product</Text>
 				</Button>
 				<Button vertical onPress={props.viewAllProducts}>
-					<Icon name="search" type="FontAwesome" />
-					<Text>All Products</Text>
+					<Icon name="search" type="FontAwesome" style={{color: '#EBF5FF'}} />
+					<Text style={{color: '#EBF5FF'}}>All Products</Text>
 				</Button>
 			</FooterTab>
 		</Footer>

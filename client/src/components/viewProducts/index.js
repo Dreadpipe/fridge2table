@@ -16,7 +16,8 @@ import {
 
 const styles = StyleSheet.create({
 	content: {
-		flex: 1
+		flex: 1,
+		backgroundColor: "#EBF5FF"
 	},
 	sortDiv: {
 		display: "flex",
@@ -24,8 +25,8 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		padding: 10,
 		backgroundColor: "#f6f6f6",
-		borderStyle: 'solid',
-		borderTopColor: '#DBDBDB',
+		borderStyle: "solid",
+		borderTopColor: "#DBDBDB",
 		borderTopWidth: 1
 	},
 	sortText: {
@@ -64,9 +65,9 @@ function ViewProducts(props) {
 									}
 								/>
 							</Left>
-							<Body>
+							<Body style={{ borderColor: "#8F8F8F", borderBottomWidth: 1 }}>
 								<Text numberOfLines={1}>{item.productname}</Text>
-								<Text note numberOfLines={1}>
+								<Text note numberOfLines={1} style={{color: '#8F8F8F'}}>
 									{item.location}
 								</Text>
 							</Body>
@@ -97,7 +98,13 @@ function ViewProducts(props) {
 
 								if (difference <= 0) {
 									return (
-										<Right style={{ marginRight: 10 }}>
+										<Right
+											style={{
+												marginRight: 10,
+												borderColor: "#8F8F8F",
+												borderBottomWidth: 1
+											}}
+										>
 											<Icon
 												name="skull"
 												type="MaterialCommunityIcons"
@@ -107,7 +114,13 @@ function ViewProducts(props) {
 									);
 								} else if (difference > 0 && difference <= 2) {
 									return (
-										<Right style={{ marginRight: 10 }}>
+										<Right
+											style={{
+												marginRight: 10,
+												borderColor: "#8F8F8F",
+												borderBottomWidth: 1
+											}}
+										>
 											<Text style={{ color: "#FF0000" }}>{difference}d</Text>
 											<Icon
 												name="hourglass-half"
@@ -118,9 +131,15 @@ function ViewProducts(props) {
 									);
 								} else {
 									return (
-										<Right style={{ marginRight: 10 }}>
-											<Text>{difference}d</Text>
-											<Icon name="hourglass-half" type="FontAwesome" />
+										<Right
+											style={{
+												marginRight: 10,
+												borderColor: "#8F8F8F",
+												borderBottomWidth: 1
+											}}
+										>
+											<Text style={{color: '#8F8F8F'}}>{difference}d</Text>
+											<Icon name="hourglass-half" type="FontAwesome" style={{color: '#8F8F8F'}} />
 										</Right>
 									);
 								}
@@ -150,7 +169,7 @@ function ViewProducts(props) {
 						<Icon name="hourglass-half" type="FontAwesome" />
 					</Button>
 					<Button small style={styles.btn} onPress={props.sortAlphabetically}>
-					<Icon name="sort-alphabetical" type="MaterialCommunityIcons" />
+						<Icon name="sort-alphabetical" type="MaterialCommunityIcons" />
 					</Button>
 					<Button small style={styles.btn} onPress={props.sortByLocation}>
 						<Text>Location</Text>

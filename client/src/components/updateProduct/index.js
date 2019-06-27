@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
 		justifyContent: "space-around",
 		alignItems: "center",
 		width: "100%",
-		height: "100%"
+		height: "100%",
+		backgroundColor: "#EBF5FF"
 	},
 	form: {
 		width: "95%"
@@ -140,7 +141,7 @@ class UpdateProduct extends React.Component {
 						androidMode={"default"}
 						placeHolderText="Select expiration date"
 						textStyle={{ color: "green" }}
-						placeHolderTextStyle={{ color: "#d3d3d3" }}
+						placeHolderTextStyle={{ color: "#8F8F8F" }}
 						onDateChange={this.props.setDate}
 						disabled={false}
 					/>
