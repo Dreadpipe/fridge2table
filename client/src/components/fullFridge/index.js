@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center"
 	},
 	logo: {
-		height: vh(13)
+		height: vh(6)
 	},
 	magnetDiv: {
 		flex: 1,
