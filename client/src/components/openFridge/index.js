@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		justifyContent: "flex-start",
 		alignContent: "center",
-		alignItems: "center"
+		alignItems: "center",
+		backgroundColor: '#EBF5FF'
 	},
 	bannerDiv: {
 		display: "flex",

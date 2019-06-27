@@ -10,7 +10,7 @@
 		"scheme": "dreamteamdesigns",
 		"icon": "./assets/fridge2table-chrome.jpg",
 		"splash": {
-			"image": "./assets/fridge2table-chrome.jpg",
+			"image": "./assets/fridge2table_logo.png",
 			"resizeMode": "contain",
 			"backgroundColor": "#ffffff"
 		},

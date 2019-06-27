@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
 		justifyContent: "space-around",
 		alignItems: "center",
 		width: "100%",
-		height: "100%"
+		height: "100%",
+		backgroundColor: "#EBF5FF"
 	},
 	form: {
 		width: "95%"
@@ -39,12 +40,28 @@ const styles = StyleSheet.create({
 	iconDiv: {
 		textAlign: "center"
 	},
+	scanBtn: {
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: "center",
+		height: vh(13),
+		width: 200,
+		backgroundColor: "#193652"
+	},
+	addBtn: {
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: "center",
+		height: vh(13),
+		width: 200,
+		backgroundColor: "#83b8b6"
+	},
 	barcodeIcon: {
-		fontSize: 90,
+		fontSize: 60,
 		textAlign: "center"
 	},
 	plusIcon: {
-		fontSize: 90,
+		fontSize: 60,
 		textAlign: "center"
 	}
 });
@@ -144,29 +161,33 @@ class AddProduct extends React.Component {
 						androidMode={"default"}
 						placeHolderText="Select expiration date"
 						textStyle={{ color: "green" }}
-						placeHolderTextStyle={{ color: "#d3d3d3" }}
+						placeHolderTextStyle={{ color: "#8F8F8F" }}
 						onDateChange={this.props.setDate}
 						disabled={false}
 					/>
 					<Text>Date: {this.props.date.toString().substr(4, 12)}</Text>
 				</Form>
 				<View style={styles.iconDiv}>
-					<Icon
-						name="barcode-scan"
-						type="MaterialCommunityIcons"
-						style={styles.barcodeIcon}
-						onPress={this.props.toScanner}
-					/>
-					<Text style={{ textAlign: "center" }}>Scan Barcode</Text>
+					<Button large style={styles.scanBtn}>
+						<Icon
+							name="barcode-scan"
+							type="MaterialCommunityIcons"
+							style={styles.barcodeIcon}
+							onPress={this.props.toScanner}
+						/>
+						<Text style={{ textAlign: "center", fontSize: 18 }}>Scan Barcode</Text>
+					</Button>
 				</View>
 				<View style={styles.iconDiv}>
-					<Icon
-						name="check"
-						type="FontAwesome"
-						style={styles.plusIcon}
-						onPress={this.props.addProduct}
-					/>
-					<Text>Add Product</Text>
+					<Button large success style={styles.addBtn}>
+						<Icon
+							name="check"
+							type="FontAwesome"
+							style={styles.plusIcon}
+							onPress={this.props.addProduct}
+						/>
+						<Text style={{ textAlign: "center", fontSize: 18 }}>Add Product</Text>
+					</Button>
 				</View>
 			</Content>
 		);

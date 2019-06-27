@@ -12,7 +12,8 @@ const styles = StyleSheet.create({
 		alignContent: "center",
 		alignItems: "center",
 		height: "100%",
-		width: "100%"
+		width: "100%",
+		backgroundColor: '#EBF5FF'
 	},
 	bannerDiv: {
 		display: "flex",

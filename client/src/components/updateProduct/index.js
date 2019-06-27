@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
 		justifyContent: "space-around",
 		alignItems: "center",
 		width: "100%",
-		height: "100%"
+		height: "100%",
+		backgroundColor: "#EBF5FF"
 	},
 	form: {
 		width: "95%"
@@ -39,8 +40,16 @@ const styles = StyleSheet.create({
 	iconDiv: {
 		textAlign: "center"
 	},
+	pencilBtn: {
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: "center",
+		height: vh(13),
+		width: 200,
+		backgroundColor: "#83b8b6"
+	},
 	pencilIcon: {
-		fontSize: 90,
+		fontSize: 60,
 		textAlign: "center"
 	}
 });
@@ -140,20 +149,22 @@ class UpdateProduct extends React.Component {
 						androidMode={"default"}
 						placeHolderText="Select expiration date"
 						textStyle={{ color: "green" }}
-						placeHolderTextStyle={{ color: "#d3d3d3" }}
+						placeHolderTextStyle={{ color: "#8F8F8F" }}
 						onDateChange={this.props.setDate}
 						disabled={false}
 					/>
 					<Text>Date: {this.props.date.toString().substr(4, 12)}</Text>
 				</Form>
 				<View style={styles.iconDiv}>
-					<Icon
-						name="pencil"
-						type="FontAwesome"
-						style={styles.pencilIcon}
-						onPress={() => this.props.updateProduct(this.props.productID)}
-					/>
-					<Text style={{ textAlign: "center" }}>Update Product</Text>
+					<Button style={styles.pencilBtn}>
+						<Icon
+							name="pencil"
+							type="FontAwesome"
+							style={styles.pencilIcon}
+							onPress={() => this.props.updateProduct(this.props.productID)}
+						/>
+						<Text style={{ textAlign: "center" }}>Update Product</Text>
+					</Button>
 				</View>
 			</Content>
 		);

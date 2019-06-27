@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
 		flexWrap: "wrap",
 		justifyContent: "center",
 		alignContent: "space-around",
-		alignItems: "flex-start"
+		alignItems: "flex-start",
+		backgroundColor: "#EBF5FF"
 	},
 	banner: {
 		width: "60%"
