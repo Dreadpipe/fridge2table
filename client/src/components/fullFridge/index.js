@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
 	loginDiv: {
 		flex: 1,
 		flexDirection: "row",
-		alignItems: "center"
+		alignItems: "center",
+		backgroundColor: "#EBF5FF"
 	},
 	backgroundImage: {
 		top: 20,
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center"
 	},
 	loginBtn: {
-		backgroundColor: "#0092D6"
+		backgroundColor: "#193652"
 	}
 });
 // require("./fullFridge_smaller.jpg")
