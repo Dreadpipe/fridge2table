@@ -91,4 +91,8 @@ env.js
 # Mac files
 .DS_Store
 
+#Local Keys and Files
 /client/env.js
+
+#API Keys
+/client/google-services.json
