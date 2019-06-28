@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
 		justifyContent: "flex-start",
 		alignContent: "center",
 		alignItems: "center",
-		backgroundColor: '#EBF5FF'
+		backgroundColor: "#EBF5FF"
 	},
 	bannerDiv: {
 		display: "flex",
@@ -48,42 +48,72 @@ function Fridge(props) {
 	return (
 		<Content contentContainerStyle={styles.pageDiv}>
 			<View style={styles.bannerDiv}>
-				<TouchableHighlight style={styles.banner} onPress={props.viewGrains}>
+				<TouchableHighlight
+					style={styles.banner}
+					underlayColor="#EBF5FF"
+					activeOpacity={0.5}
+					onPress={props.viewGrains}
+				>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/fridge_images/grains_banner.png")}
 						style={styles.grainsImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner} onPress={props.viewDairy}>
+				<TouchableHighlight
+					style={styles.banner}
+					underlayColor="#EBF5FF"
+					activeOpacity={0.5}
+					onPress={props.viewDairy}
+				>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/fridge_images/dairy_banner.png")}
 						style={styles.bannerImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner} onPress={props.viewMeats}>
+				<TouchableHighlight
+					style={styles.banner}
+					underlayColor="#EBF5FF"
+					activeOpacity={0.5}
+					onPress={props.viewMeats}
+				>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/fridge_images/meats_banner.png")}
 						style={styles.meatImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner} onPress={props.viewProduce}>
+				<TouchableHighlight
+					style={styles.banner}
+					underlayColor="#EBF5FF"
+					activeOpacity={0.5}
+					onPress={props.viewProduce}
+				>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/fridge_images/produce_banner.png")}
 						style={styles.produceImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner} onPress={props.viewDrinks}>
+				<TouchableHighlight
+					style={styles.banner}
+					underlayColor="#EBF5FF"
+					activeOpacity={0.5}
+					onPress={props.viewDrinks}
+				>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/fridge_images/drinks_banner.png")}
 						style={styles.bannerImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner} onPress={props.viewMisc}>
+				<TouchableHighlight
+					style={styles.banner}
+					underlayColor="#EBF5FF"
+					activeOpacity={0.5}
+					onPress={props.viewMisc}
+				>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/fridge_images/misc_banner.png")}

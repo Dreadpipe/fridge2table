@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		height: "100%",
 		width: "100%",
-		backgroundColor: '#EBF5FF'
+		backgroundColor: "#EBF5FF"
 	},
 	bannerDiv: {
 		display: "flex",
@@ -49,35 +49,60 @@ function Pantry(props) {
 	return (
 		<Content contentContainerStyle={styles.pageDiv}>
 			<View style={styles.bannerDiv}>
-				<TouchableHighlight style={styles.banner} onPress={props.viewGrains}>
+				<TouchableHighlight
+					style={styles.banner}
+					underlayColor="#EBF5FF"
+					activeOpacity={0.5}
+					onPress={props.viewGrains}
+				>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/pantry_images/pantry_grains_banner.png")}
 						style={styles.grainsImg}
 					/>
-				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner} onPress={props.viewSpices}>
+				</TouchableHighlight>c
+				<TouchableHighlight
+					style={styles.banner}
+					underlayColor="#EBF5FF"
+					activeOpacity={0.5}
+					onPress={props.viewSpices}
+				>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/pantry_images/pantry_spices_banner.png")}
 						style={styles.spicesImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner} onPress={props.viewProduce}>
+				<TouchableHighlight
+					style={styles.banner}
+					underlayColor="#EBF5FF"
+					activeOpacity={0.5}
+					onPress={props.viewProduce}
+				>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/pantry_images/pantry_produce_banner.png")}
 						style={styles.bannerImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner} onPress={props.viewCans}>
+				<TouchableHighlight
+					style={styles.banner}
+					underlayColor="#EBF5FF"
+					activeOpacity={0.5}
+					onPress={props.viewCans}
+				>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/pantry_images/pantry_cans_banner.png")}
 						style={styles.bannerImg}
 					/>
 				</TouchableHighlight>
-				<TouchableHighlight style={styles.banner} onPress={props.viewMisc}>
+				<TouchableHighlight
+					style={styles.banner}
+					underlayColor="#EBF5FF"
+					activeOpacity={0.5}
+					onPress={props.viewMisc}
+				>
 					<Image
 						resizeMode="stretch"
 						source={require("../../../assets/pantry_images/pantry_misc_banner.png")}
