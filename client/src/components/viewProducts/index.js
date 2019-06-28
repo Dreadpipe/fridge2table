@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		alignItems: "center",
 		padding: 10,
-		backgroundColor: "#f6f6f6",
+		backgroundColor: "#83b8b6",
 		borderStyle: "solid",
 		borderTopColor: "#DBDBDB",
 		borderTopWidth: 1
@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
 	},
 	btn: {
 		marginLeft: 5,
-		marginRight: 5
+		marginRight: 5,
+		backgroundColor: "#193652"
 	}
 });
 
@@ -67,7 +68,7 @@ function ViewProducts(props) {
 							</Left>
 							<Body style={{ borderColor: "#8F8F8F", borderBottomWidth: 1 }}>
 								<Text numberOfLines={1}>{item.productname}</Text>
-								<Text note numberOfLines={1} style={{color: '#8F8F8F'}}>
+								<Text note numberOfLines={1} style={{ color: "#8F8F8F" }}>
 									{item.location}
 								</Text>
 							</Body>
@@ -138,21 +139,27 @@ function ViewProducts(props) {
 												borderBottomWidth: 1
 											}}
 										>
-											<Text style={{color: '#8F8F8F'}}>{difference}d</Text>
-											<Icon name="hourglass-half" type="FontAwesome" style={{color: '#8F8F8F'}} />
+											<Text style={{ color: "#8F8F8F" }}>{difference}d</Text>
+											<Icon
+												name="hourglass-half"
+												type="FontAwesome"
+												style={{ color: "#8F8F8F" }}
+											/>
 										</Right>
 									);
 								}
 							})()}
 							<Left>
 								<Button
-									style={{ backgroundColor: "#228B22", paddingLeft: 2 }}
+									success
+									style={{ paddingLeft: 2 }}
 									onPress={() => props.editProduct(item._id)}
 								>
 									<Icon name="edit" type="FontAwesome" />
 								</Button>
 								<Button
-									style={{ backgroundColor: "#FF0000", marginLeft: 5 }}
+									danger
+									style={{ marginLeft: 5 }}
 									onPress={() => props.deleteProduct(item._id)}
 								>
 									<Icon name="trash" type="FontAwesome" />
@@ -165,13 +172,13 @@ function ViewProducts(props) {
 			<View style={styles.sortDiv}>
 				<Text style={styles.sortText}>Sort</Text>
 				<View style={styles.buttonDiv}>
-					<Button small style={styles.btn} onPress={props.sortByExpDate}>
+					<Button small rounded style={styles.btn} onPress={props.sortByExpDate}>
 						<Icon name="hourglass-half" type="FontAwesome" />
 					</Button>
-					<Button small style={styles.btn} onPress={props.sortAlphabetically}>
+					<Button small rounded style={styles.btn} onPress={props.sortAlphabetically}>
 						<Icon name="sort-alphabetical" type="MaterialCommunityIcons" />
 					</Button>
-					<Button small style={styles.btn} onPress={props.sortByLocation}>
+					<Button small rounded style={styles.btn} onPress={props.sortByLocation}>
 						<Text>Location</Text>
 					</Button>
 				</View>
