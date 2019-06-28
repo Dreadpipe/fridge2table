@@ -68,7 +68,7 @@ class Home extends React.Component {
 			});
 			if (response.data[0].inventoryProducts.length === 0) {
 				Toast.show({
-					text: `Welcome to Fridge2Table! Looks like you haven't added any products. Click "Add Product" down here!`,
+					text: `Welcome to Fridge2Table! Looks like you don't have any products. Click "Add Product" down here!`,
 					buttonText: "Okay",
 					position: "bottom",
 					type: "warning",
