@@ -56,11 +56,11 @@ function Pantry(props) {
 					onPress={props.viewGrains}
 				>
 					<Image
-						resizeMode="stretch"
+						resizeMode="contain"
 						source={require("../../../assets/pantry_images/pantry_grains_banner.png")}
 						style={styles.grainsImg}
 					/>
-				</TouchableHighlight>c
+				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.banner}
 					underlayColor="#EBF5FF"
@@ -68,7 +68,7 @@ function Pantry(props) {
 					onPress={props.viewSpices}
 				>
 					<Image
-						resizeMode="stretch"
+						resizeMode="contain"
 						source={require("../../../assets/pantry_images/pantry_spices_banner.png")}
 						style={styles.spicesImg}
 					/>
@@ -80,7 +80,7 @@ function Pantry(props) {
 					onPress={props.viewProduce}
 				>
 					<Image
-						resizeMode="stretch"
+						resizeMode="contain"
 						source={require("../../../assets/pantry_images/pantry_produce_banner.png")}
 						style={styles.bannerImg}
 					/>
@@ -92,7 +92,7 @@ function Pantry(props) {
 					onPress={props.viewCans}
 				>
 					<Image
-						resizeMode="stretch"
+						resizeMode="contain"
 						source={require("../../../assets/pantry_images/pantry_cans_banner.png")}
 						style={styles.bannerImg}
 					/>
@@ -104,7 +104,7 @@ function Pantry(props) {
 					onPress={props.viewMisc}
 				>
 					<Image
-						resizeMode="stretch"
+						resizeMode="contain"
 						source={require("../../../assets/pantry_images/pantry_misc_banner.png")}
 						style={styles.bannerImg}
 					/>

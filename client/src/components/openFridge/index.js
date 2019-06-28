@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
 		width: "100%"
 	},
 	grainsImg: {
-		height: 125,
+		height: 132,
 		width: "100%"
 	},
 	meatImg: {
-		height: 105,
+		height: 110,
 		width: "100%"
 	},
 	produceImg: {
@@ -55,7 +55,7 @@ function Fridge(props) {
 					onPress={props.viewGrains}
 				>
 					<Image
-						resizeMode="stretch"
+						resizeMode="contain"
 						source={require("../../../assets/fridge_images/grains_banner.png")}
 						style={styles.grainsImg}
 					/>
@@ -67,7 +67,7 @@ function Fridge(props) {
 					onPress={props.viewDairy}
 				>
 					<Image
-						resizeMode="stretch"
+						resizeMode="contain"
 						source={require("../../../assets/fridge_images/dairy_banner.png")}
 						style={styles.bannerImg}
 					/>
@@ -79,7 +79,7 @@ function Fridge(props) {
 					onPress={props.viewMeats}
 				>
 					<Image
-						resizeMode="stretch"
+						resizeMode="contain"
 						source={require("../../../assets/fridge_images/meats_banner.png")}
 						style={styles.meatImg}
 					/>
@@ -91,7 +91,7 @@ function Fridge(props) {
 					onPress={props.viewProduce}
 				>
 					<Image
-						resizeMode="stretch"
+						resizeMode="contain"
 						source={require("../../../assets/fridge_images/produce_banner.png")}
 						style={styles.produceImg}
 					/>
@@ -103,7 +103,7 @@ function Fridge(props) {
 					onPress={props.viewDrinks}
 				>
 					<Image
-						resizeMode="stretch"
+						resizeMode="contain"
 						source={require("../../../assets/fridge_images/drinks_banner.png")}
 						style={styles.bannerImg}
 					/>
@@ -115,7 +115,7 @@ function Fridge(props) {
 					onPress={props.viewMisc}
 				>
 					<Image
-						resizeMode="stretch"
+						resizeMode="contain"
 						source={require("../../../assets/fridge_images/misc_banner.png")}
 						style={styles.bannerImg}
 					/>
