@@ -1,8 +1,9 @@
 require("dotenv").config();
 const db = require("../models");
 const { Expo } = require("expo-server-sdk");
-const updateProduct = require("../routes/routes").updateProduct;
-const updateUser = require("../routes/routes").updateUser;
+const { updateProduct } = require("../routes/productFunctions");
+const { updateUser } = require("../routes/userFunctions");
+
 
 const dailyCheck = function() {
 	console.log("\nDaily Check");
