@@ -20,6 +20,11 @@ const styles = StyleSheet.create({
 	bannerImg: {
 		height: 110,
 		width: "100%"
+	},
+	disabledBannerImg: {
+		height: 110,
+		width: "100%",
+		opacity: 0.3
 	}
 });
 
@@ -30,36 +35,44 @@ function Freezer(props) {
 				style={styles.banner}
 				underlayColor="#EBF5FF"
 				activeOpacity={0.5}
-				onPress={props.viewProduce}
+				onPress={props.countProduce === 0 ? null : props.viewProduce}
 			>
 				<Image
 					resizeMode="contain"
 					source={require("../../../assets/freezer_images/frozen_produce_banner.png")}
-					style={styles.bannerImg}
+					style={
+						props.countProduce === 0
+							? styles.disabledBannerImg
+							: styles.bannerImg
+					}
 				/>
 			</TouchableHighlight>
 			<TouchableHighlight
 				style={styles.banner}
 				underlayColor="#EBF5FF"
 				activeOpacity={0.5}
-				onPress={props.viewMeats}
+				onPress={props.countMeats === 0 ? null : props.viewMeats}
 			>
 				<Image
 					resizeMode="contain"
 					source={require("../../../assets/freezer_images/frozen_meats_banner.png")}
-					style={styles.bannerImg}
+					style={
+						props.countMeats === 0 ? styles.disabledBannerImg : styles.bannerImg
+					}
 				/>
 			</TouchableHighlight>
 			<TouchableHighlight
 				style={styles.banner}
 				underlayColor="#EBF5FF"
 				activeOpacity={0.5}
-				onPress={props.viewMisc}
+				onPress={props.countMisc === 0 ? null : props.viewMisc}
 			>
 				<Image
 					resizeMode="contain"
 					source={require("../../../assets/freezer_images/frozen_misc_banner.png")}
-					style={styles.bannerImg}
+					style={
+						props.countMisc === 0 ? styles.disabledBannerImg : styles.bannerImg
+					}
 				/>
 			</TouchableHighlight>
 		</Content>

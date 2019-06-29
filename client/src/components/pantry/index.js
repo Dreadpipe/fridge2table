@@ -31,18 +31,38 @@ const styles = StyleSheet.create({
 		height: 135,
 		width: "100%"
 	},
+	disabledBannerImg: {
+		height: 135,
+		width: "100%",
+		opacity: 0.3
+	},
 	grainsImg: {
 		height: 120,
 		width: "100%"
+	},
+	disabledGrainsImg: {
+		height: 120,
+		width: "100%",
+		opacity: 0.3
 	},
 	produceImg: {
 		height: 140,
 		width: "100%"
 	},
+	disabledProduceImg: {
+		height: 140,
+		width: "100%",
+		opacity: 0.3
+	},
 	spicesImg: {
 		height: 120,
 		width: "100%"
-	}
+	},
+	disabledSpicesImg: {
+		height: 120,
+		width: "100%",
+		opacity: 0.3
+	},
 });
 
 function Pantry(props) {
@@ -53,60 +73,60 @@ function Pantry(props) {
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.viewGrains}
+					onPress={props.countGrains === 0 ? null : props.viewGrains}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/pantry_images/pantry_grains_banner.png")}
-						style={styles.grainsImg}
+						style={props.countGrains === 0 ? styles. disabledGrainsImg : styles.grainsImg}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.viewSpices}
+					onPress={props.countSpices === 0 ? null : props.viewSpices}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/pantry_images/pantry_spices_banner.png")}
-						style={styles.spicesImg}
+						style={props.countSpices === 0 ? styles. disabledSpicesImg : styles.spicesImg}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.viewProduce}
+					onPress={props.countProduce === 0 ? null : props.viewProduce}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/pantry_images/pantry_produce_banner.png")}
-						style={styles.bannerImg}
+						style={props.countProduce === 0 ? styles. disabledProduceImg : styles.produceImg}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.viewCans}
+					onPress={props.countCans === 0 ? null : props.viewCans}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/pantry_images/pantry_cans_banner.png")}
-						style={styles.bannerImg}
+						style={props.countCans === 0 ? styles. disabledBannerImg : styles.bannerImg}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.viewMisc}
+					onPress={props.countMisc === 0 ? null : props.viewMisc}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/pantry_images/pantry_misc_banner.png")}
-						style={styles.bannerImg}
+						style={props.countMisc === 0 ? styles. disabledBannerImg : styles.bannerImg}
 					/>
 				</TouchableHighlight>
 			</View>
