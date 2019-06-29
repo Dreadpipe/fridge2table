@@ -30,17 +30,37 @@ const styles = StyleSheet.create({
 		height: 125,
 		width: "100%"
 	},
+	disabledBannerImg: {
+		height: 125,
+		width: "100%",
+		opacity: 0.3
+	},
 	grainsImg: {
 		height: 132,
-		width: "100%"
+		width: "100%",
+	},
+	disabledGrainsImg: {
+		height: 132,
+		width: "100%",
+		opacity: 0.3
 	},
 	meatImg: {
 		height: 110,
 		width: "100%"
 	},
+	disabledMeatImg: {
+		height: 110,
+		width: "100%",
+		opacity: 0.3
+	},
 	produceImg: {
 		height: 105,
 		width: "100%"
+	},
+	disabledProduceImg: {
+		height: 105,
+		width: "100%",
+		opacity: 0.3
 	}
 });
 
@@ -52,72 +72,72 @@ function Fridge(props) {
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.viewGrains}
+					onPress={props.countGrains === 0 ? null : props.viewGrains}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/fridge_images/grains_banner.png")}
-						style={styles.grainsImg}
+						style={props.countGrains === 0 ? styles. disabledGrainsImg : styles.grainsImg}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.viewDairy}
+					onPress={props.countDairy === 0 ? null : props.viewDairy}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/fridge_images/dairy_banner.png")}
-						style={styles.bannerImg}
+						style={props.countDairy === 0 ? styles. disabledBannerImg : styles.bannerImg}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.viewMeats}
+					onPress={props.countMeats === 0 ? null : props.viewMeats}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/fridge_images/meats_banner.png")}
-						style={styles.meatImg}
+						style={props.countMeats === 0 ? styles. disabledMeatImg : styles.meatImg}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.viewProduce}
+					onPress={props.countProduce === 0 ? null : props.viewProduce}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/fridge_images/produce_banner.png")}
-						style={styles.produceImg}
+						style={props.countProduce === 0 ? styles. disabledProduceImg : styles.produceImg}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.viewDrinks}
+					onPress={props.countDrinks === 0 ? null : props.viewDrinks}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/fridge_images/drinks_banner.png")}
-						style={styles.bannerImg}
+						style={props.countDrinks === 0 ? styles. disabledBannerImg : styles.bannerImg}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.viewMisc}
+					onPress={props.countMisc === 0 ? null : props.viewMisc}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/fridge_images/misc_banner.png")}
-						style={styles.bannerImg}
+						style={props.countMisc === 0 ? styles. disabledBannerImg : styles.bannerImg}
 					/>
 				</TouchableHighlight>
 			</View>

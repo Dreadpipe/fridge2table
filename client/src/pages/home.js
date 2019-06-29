@@ -44,7 +44,7 @@ class Home extends React.Component {
 		super(props);
 		this.state = {
 			user: {},
-			view: "fridge",
+			view: "spinner",
 			productView: "all",
 			productName: "",
 			picURL: "",
@@ -62,7 +62,7 @@ class Home extends React.Component {
 
 	componentDidMount() {
 		API.getCurrentUser(this.props.user.id).then(response => {
-			this.setState({ user: response.data[0] }, () => {
+			this.setState({ user: response.data[0], view: "fridge" }, () => {
 				registerForPushNotifications().then(() => {
 					this.addPushToken();
         }).catch(err => console.error(err));
@@ -173,7 +173,7 @@ class Home extends React.Component {
 			this.state.selectedCategory &&
 			this.state.selectedQuantity
 		) {
-			this.setState({view: 'spinner'});
+			this.setState({ view: "spinner" });
 			const newProduct = {
 				name: this.state.productName,
 				location: this.state.selectedLocation,
@@ -187,7 +187,7 @@ class Home extends React.Component {
 			}
 			API.addFood(newProduct).then(() => {
 				this.setState({
-					view: 'addProduct',
+					view: "addProduct",
 					productName: "",
 					picURL: "",
 					selectedCategory: "Dairy",
@@ -258,6 +258,15 @@ class Home extends React.Component {
 			}
 		});
 		return filteredArr;
+	};
+
+	countByCategoryAndLocation = (category, location) => {
+		const filteredArr = this.state.user.inventoryProducts.filter(product => {
+			if (product.location === location && product.category === category) {
+				return product;
+			}
+		});
+		return filteredArr.length;
 	};
 
 	editProduct = id => {
@@ -368,7 +377,7 @@ class Home extends React.Component {
 	// Update-Product Screen Functions
 
 	updateProduct = id => {
-		this.setState({view: 'spinner'})
+		this.setState({ view: "spinner" });
 		const filteredProducts = this.state.user.inventoryProducts.filter(
 			product => product._id === id
 		);
@@ -412,36 +421,60 @@ class Home extends React.Component {
 											productView: "fridgeMeats"
 										})
 									}
+									countMeats={this.countByCategoryAndLocation(
+										"Meats",
+										"Fridge"
+									)}
 									viewDairy={() =>
 										this.setState({
 											view: "viewProducts",
 											productView: "fridgeDairy"
 										})
 									}
+									countDairy={this.countByCategoryAndLocation(
+										"Dairy",
+										"Fridge"
+									)}
 									viewProduce={() =>
 										this.setState({
 											view: "viewProducts",
 											productView: "fridgeProduce"
 										})
 									}
+									countProduce={this.countByCategoryAndLocation(
+										"Produce",
+										"Fridge"
+									)}
 									viewGrains={() =>
 										this.setState({
 											view: "viewProducts",
 											productView: "fridgeGrains"
 										})
 									}
+									countGrains={this.countByCategoryAndLocation(
+										"Grains",
+										"Fridge"
+									)}
 									viewDrinks={() =>
 										this.setState({
 											view: "viewProducts",
 											productView: "fridgeDrinks"
 										})
 									}
+									countDrinks={this.countByCategoryAndLocation(
+										"Drinks",
+										"Fridge"
+									)}
 									viewMisc={() =>
 										this.setState({
 											view: "viewProducts",
 											productView: "fridgeMisc"
 										})
 									}
+									countMisc={this.countByCategoryAndLocation(
+										"Misc",
+										"Fridge"
+									)}
 								/>
 							);
 							break;
@@ -455,30 +488,50 @@ class Home extends React.Component {
 											productView: "pantryGrains"
 										})
 									}
+									countMeats={this.countByCategoryAndLocation(
+										"Grains",
+										"Pantry"
+									)}
 									viewCans={() =>
 										this.setState({
 											view: "viewProducts",
 											productView: "pantryCans"
 										})
 									}
+									countCans={this.countByCategoryAndLocation(
+										"Canned Goods",
+										"Pantry"
+									)}
 									viewProduce={() =>
 										this.setState({
 											view: "viewProducts",
 											productView: "pantryProduce"
 										})
 									}
+									countProduce={this.countByCategoryAndLocation(
+										"Produce",
+										"Pantry"
+									)}
 									viewSpices={() =>
 										this.setState({
 											view: "viewProducts",
 											productView: "pantrySpices"
 										})
 									}
+									countSpices={this.countByCategoryAndLocation(
+										"Spice Rack",
+										"Pantry"
+									)}
 									viewMisc={() =>
 										this.setState({
 											view: "viewProducts",
 											productView: "pantryMisc"
 										})
 									}
+									countMisc={this.countByCategoryAndLocation(
+										"Misc",
+										"Pantry"
+									)}
 								/>
 							);
 							break;
@@ -492,18 +545,30 @@ class Home extends React.Component {
 											productView: "freezerMeats"
 										})
 									}
+									countMeats={this.countByCategoryAndLocation(
+										"Meats",
+										"Freezer"
+									)}
 									viewProduce={() =>
 										this.setState({
 											view: "viewProducts",
 											productView: "freezerProduce"
 										})
 									}
+									countProduce={this.countByCategoryAndLocation(
+										"Produce",
+										"Freezer"
+									)}
 									viewMisc={() =>
 										this.setState({
 											view: "viewProducts",
 											productView: "freezerMisc"
 										})
 									}
+									countMisc={this.countByCategoryAndLocation(
+										"Misc",
+										"Freezer"
+									)}
 								/>
 							);
 							break;
@@ -653,7 +718,10 @@ class Home extends React.Component {
 							break;
 						case "spinner":
 							return (
-								<Spinner color='#193652' style={{flex: 1, backgroundColor: "#EBF5FF"}} />
+								<Spinner
+									color="#193652"
+									style={{ flex: 1, backgroundColor: "#EBF5FF" }}
+								/>
 							);
 							break;
 					}
