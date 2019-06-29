@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Platform } from "react-native";
-import { Container, Root} from "native-base";
+import { Container, Root, Spinner } from "native-base";
 import { AuthSession } from "expo";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 import { getStatusBarHeight } from "react-native-status-bar-height";
@@ -42,7 +42,8 @@ function toQueryString(params) {
 export default class App extends React.Component {
 	state = {
 		user: {},
-		isReady: false
+		isReady: false,
+		spinnerOrNo: false
 	};
 
 	componentWillMount() {
@@ -61,6 +62,7 @@ export default class App extends React.Component {
 	}
 
 	login = async () => {
+		this.setState({spinnerOrNo: true})
 		// Retrieve the redirect URL, add this to the callback URL list
 		// of your Auth0 application.
 		const redirectUrl = AuthSession.getRedirectUrl();
@@ -111,7 +113,7 @@ export default class App extends React.Component {
 		}
 
 		API.checkForOrCreateUser(user).then(() => {
-			this.setState({ user });
+			this.setState({ user, spinnerOrNo: false });
 		});
 	};
 
@@ -123,7 +125,20 @@ export default class App extends React.Component {
 		return (
 			<Root>
 				<Container style={styles.container}>
-					{user.name ? <Home user={user} /> : <FullFridge login={this.login} />}
+					{(() => {
+						if (user.name && !this.state.spinnerOrNo) {
+							return <Home user={user} />;
+						} else if (!this.state.spinnerOrNo) {
+							return <FullFridge login={this.login} />;
+						} else {
+							return (
+								<Spinner
+									color="#193652"
+									style={{ flex: 1, backgroundColor: "#EBF5FF" }}
+								/>
+							);
+						}
+					})()}
 				</Container>
 			</Root>
 		);

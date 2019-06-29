@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Platform, Alert, Text, Button } from "react-native";
-import { Toast, Root } from "native-base";
+import { Toast, Spinner, Root } from "native-base";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 import Head from "../components/head";
@@ -12,7 +12,7 @@ import ViewProducts from "../components/viewProducts";
 import UpdateProduct from "../components/updateProduct";
 import Scanner from "../components/scanner";
 import Foot from "../components/foot";
-// import API from "../utils/API-dev";  // REMOVE FOR FINAL DEPLOYMENT
+// import API from "../utils/API-dev"; // REMOVE FOR FINAL DEPLOYMENT
 import API from "../utils/API";
 import { Notifications, Permissions } from "expo";
 import axios from "axios";
@@ -176,6 +176,7 @@ class Home extends React.Component {
 			this.state.selectedCategory &&
 			this.state.selectedQuantity
 		) {
+			this.setState({view: 'spinner'});
 			const newProduct = {
 				name: this.state.productName,
 				location: this.state.selectedLocation,
@@ -189,6 +190,7 @@ class Home extends React.Component {
 			}
 			API.addFood(newProduct).then(() => {
 				this.setState({
+					view: 'addProduct',
 					productName: "",
 					picURL: "",
 					selectedCategory: "Dairy",
@@ -369,6 +371,7 @@ class Home extends React.Component {
 	// Update-Product Screen Functions
 
 	updateProduct = id => {
+		this.setState({view: 'spinner'})
 		const filteredProducts = this.state.user.inventoryProducts.filter(
 			product => product._id === id
 		);
@@ -649,6 +652,11 @@ class Home extends React.Component {
 									addProductNameAndPicURL={this.addProductNameAndPicURL}
 									toAddProductScreen={this.toAddProductScreen}
 								/>
+							);
+							break;
+						case "spinner":
+							return (
+								<Spinner color='#193652' style={{flex: 1, backgroundColor: "#EBF5FF"}} />
 							);
 							break;
 					}
