@@ -20,7 +20,6 @@ const dailyCheck = function() {
 					product.sevenDayWarning !== null &&
 					product.sevenDayWarning <= new Date(today)
 				) {
-					console.log("Seven day warning!");
 					// Find the item's owner, construct a push object for a seven day warning, and send it into the SendPushNote function
 					User.find({
 						_id: product.owner
@@ -101,7 +100,7 @@ const dailyCheck = function() {
 				} else if (product.expiredOrNot === true) {
 					console.log(`The ${product.productname} is expired!!!`);
 				} else {
-					console.log(
+					console.log( 
 						`There's not a seven-day, two-day, or expiration warning to send for the ${
 							product.productname
 						}!`
