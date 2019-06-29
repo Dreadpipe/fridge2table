@@ -81,7 +81,8 @@ export default class BarCodeScannerExample extends React.Component {
 					response.data.hints[0].food.label,
 					response.data.hints[0].food.image
 				);
-				this.props.toAddProductScreen();
+        this.props.toAddProductScreen();
+        alert("Product name found!");x
 			})
 			.catch(err => {
 				if (err) {
