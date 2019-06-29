@@ -36,7 +36,7 @@ async function registerForPushNotifications() {
 		alert("You did not grant notifications permissions");
 		return;
 	}
-	console.log(status, token);
+	// console.log(status, token);
 	expoToken = token;
 }
 class Home extends React.Component {
@@ -65,7 +65,7 @@ class Home extends React.Component {
 			this.setState({ user: response.data[0] }, () => {
 				registerForPushNotifications().then(() => {
 					this.addPushToken();
-				});
+        }).catch(err => console.error(err));
 			});
 			if (response.data[0].inventoryProducts.length === 0) {
 				Toast.show({
@@ -77,10 +77,8 @@ class Home extends React.Component {
 					style: { marginBottom: vh(9) }
 				});
 			}
-		});
-		this._notificationSubscription = Notifications.addListener(
-			this._handleNotification
-		);
+    }).catch(err => console.error(err));
+		this._notificationSubscription = Notifications.addListener(this._handleNotification);
 	}
 
 	//Notification functions
@@ -96,17 +94,16 @@ class Home extends React.Component {
 		});
 	};
 
-	sendNotification = () => {
-		// POST the token to your backend server from where you can retrieve it to send push notifications.
-		axios
-			.post(PUSH_ENDPOINT, {
-				pushToken: expoToken,
-				message: "Food is expiring",
-				productname: "Eggs!"
-			})
-			.then(res => console.log(res))
-			.catch(err => console.error(err));
-	};
+  // // POST the token to your backend server from where you can retrieve it to send push notifications.
+	// sendNotification = () => {
+	// 	axios
+	// 		.post(PUSH_ENDPOINT, {
+	// 			pushToken: expoToken,
+	// 			message: "Food is expiring",
+	// 			productname: "Eggs!"
+	// 		})
+	// 		.then(res => console.log(res)).catch(err => console.error(err));
+	// };
 
 	addPushToken = () => {
 		query = {
@@ -198,7 +195,7 @@ class Home extends React.Component {
 				});
 				this.updateUser();
 				return alert("Product added! Click OK to add more.");
-			});
+      }).catch(err => console.error(err));
 		} else {
 			return alert("Please make sure to fill out the entire product form");
 		}
@@ -207,7 +204,7 @@ class Home extends React.Component {
 	updateUser = () => {
 		API.getCurrentUser(this.state.user.thirdPartyId).then(response => {
 			this.setState({ user: response.data[0] });
-		});
+    }).catch(err => console.error(err));
 	};
 
 	// Navigation functions
@@ -292,7 +289,7 @@ class Home extends React.Component {
 					onPress: () => {
 						API.removeFood(data).then(() => {
 							this.updateUser();
-						});
+            }).catch(err => console.error(err));
 					}
 				},
 				{
@@ -387,7 +384,7 @@ class Home extends React.Component {
 			this.updateUser();
 			this.setState({ view: "viewProducts", productView: "all" });
 			return alert("Product updated! Click OK to view updated products");
-		});
+    }).catch(err => console.error(err));
 	};
 
 	// Render function

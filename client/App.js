@@ -112,7 +112,7 @@ export default class App extends React.Component {
 
 		API.checkForOrCreateUser(user).then(() => {
 			this.setState({ user });
-		});
+		}).catch(err => console.error(err));
 	};
 
 	render() {

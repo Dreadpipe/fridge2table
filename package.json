@@ -24,7 +24,6 @@
 	},
 	"homepage": "https://github.com/Dreadpipe/fridge2table#readme",
 	"dependencies": {
-		"axios": "^0.19.0",
 		"cron": "^1.7.1",
 		"dotenv": "^8.0.0",
 		"expo-server-sdk": "^3.3.0",
