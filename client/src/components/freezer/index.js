@@ -26,21 +26,36 @@ const styles = StyleSheet.create({
 function Freezer(props) {
 	return (
 		<Content contentContainerStyle={styles.pageDiv}>
-			<TouchableHighlight style={styles.banner} onPress={props.viewProduce}>
+			<TouchableHighlight
+				style={styles.banner}
+				underlayColor="#EBF5FF"
+				activeOpacity={0.5}
+				onPress={props.viewProduce}
+			>
 				<Image
 					resizeMode="contain"
 					source={require("../../../assets/freezer_images/frozen_produce_banner.png")}
 					style={styles.bannerImg}
 				/>
 			</TouchableHighlight>
-			<TouchableHighlight style={styles.banner} onPress={props.viewMeats}>
+			<TouchableHighlight
+				style={styles.banner}
+				underlayColor="#EBF5FF"
+				activeOpacity={0.5}
+				onPress={props.viewMeats}
+			>
 				<Image
 					resizeMode="contain"
 					source={require("../../../assets/freezer_images/frozen_meats_banner.png")}
 					style={styles.bannerImg}
 				/>
 			</TouchableHighlight>
-			<TouchableHighlight style={styles.banner} onPress={props.viewMisc}>
+			<TouchableHighlight
+				style={styles.banner}
+				underlayColor="#EBF5FF"
+				activeOpacity={0.5}
+				onPress={props.viewMisc}
+			>
 				<Image
 					resizeMode="contain"
 					source={require("../../../assets/freezer_images/frozen_misc_banner.png")}

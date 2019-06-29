@@ -12,10 +12,10 @@ import ViewProducts from "../components/viewProducts";
 import UpdateProduct from "../components/updateProduct";
 import Scanner from "../components/scanner";
 import Foot from "../components/foot";
+// import API from "../utils/API-dev";  // REMOVE FOR FINAL DEPLOYMENT
 import API from "../utils/API";
 import { Notifications, Permissions } from "expo";
 import axios from "axios";
-import env from "../../env";
 
 const styles = StyleSheet.create({
 	container: {
@@ -67,6 +67,16 @@ class Home extends React.Component {
 					this.addPushToken();
 				});
 			});
+			if (response.data[0].inventoryProducts.length === 0) {
+				Toast.show({
+					text: `Welcome to Fridge2Table! Looks like you don't have any products. Click "Add Product" down here!`,
+					buttonText: "Okay",
+					position: "bottom",
+					type: "warning",
+					duration: 30000,
+					style: { marginBottom: vh(9) }
+				});
+			}
 		});
 		this._notificationSubscription = Notifications.addListener(
 			this._handleNotification
@@ -80,7 +90,9 @@ class Home extends React.Component {
 		Toast.show({
 			text: `Check the expiration for ${notification.data.expFood}!`,
 			buttonText: "Okay!",
-			duration: 3000
+			position: "bottom",
+			duration: 10000,
+			style: { marginBottom: vh(9) }
 		});
 	};
 

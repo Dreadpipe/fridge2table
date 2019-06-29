@@ -1,6 +1,5 @@
 require("dotenv").config();
 const db = require("../models");
-const axios = require("axios");
 const { Expo } = require("expo-server-sdk");
 const updateProduct = require("../routes/routes").updateProduct;
 const updateUser = require("../routes/routes").updateUser;
