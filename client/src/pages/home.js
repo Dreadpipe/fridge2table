@@ -488,7 +488,7 @@ class Home extends React.Component {
 											productView: "pantryGrains"
 										})
 									}
-									countMeats={this.countByCategoryAndLocation(
+									countGrains={this.countByCategoryAndLocation(
 										"Grains",
 										"Pantry"
 									)}

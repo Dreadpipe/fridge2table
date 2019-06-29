@@ -62,7 +62,7 @@ export default class App extends React.Component {
 	}
 
 	login = async () => {
-		this.setState({spinnerOrNo: true})
+		this.setState({ spinnerOrNo: true });
 		// Retrieve the redirect URL, add this to the callback URL list
 		// of your Auth0 application.
 		const redirectUrl = AuthSession.getRedirectUrl();
@@ -83,6 +83,8 @@ export default class App extends React.Component {
 
 		if (response.type === "success") {
 			this.handleResponse(response.params);
+		} else {
+			this.setState({ spinnerOrNo: false });
 		}
 	};
 
@@ -92,6 +94,7 @@ export default class App extends React.Component {
 				"Authentication error",
 				response.error_description || "something went wrong"
 			);
+			this.setState({ spinnerOrNo: false });
 			return;
 		}
 
