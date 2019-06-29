@@ -131,8 +131,8 @@ function ViewProducts(props) {
 										</Right>
 									);
 								} else if (difference > 2 && difference <= 7) {
-                  return (
-                    <Right
+									return (
+										<Right
 											style={{
 												marginRight: 10,
 												borderColor: "#8F8F8F",
@@ -146,8 +146,8 @@ function ViewProducts(props) {
 												style={{ color: "#ffa200" }}
 											/>
 										</Right>
-                  )
-                } else {
+									);
+								} else {
 									return (
 										<Right
 											style={{
@@ -189,13 +189,28 @@ function ViewProducts(props) {
 			<View style={styles.sortDiv}>
 				<Text style={styles.sortText}>Sort</Text>
 				<View style={styles.buttonDiv}>
-					<Button small rounded style={styles.btn} onPress={props.sortByExpDate}>
+					<Button
+						small
+						rounded
+						style={styles.btn}
+						onPress={props.sortByExpDate}
+					>
 						<Icon name="hourglass-half" type="FontAwesome" />
 					</Button>
-					<Button small rounded style={styles.btn} onPress={props.sortAlphabetically}>
+					<Button
+						small
+						rounded
+						style={styles.btn}
+						onPress={props.sortAlphabetically}
+					>
 						<Icon name="sort-alphabetical" type="MaterialCommunityIcons" />
 					</Button>
-					<Button small rounded style={styles.btn} onPress={props.sortByLocation}>
+					<Button
+						small
+						rounded
+						style={styles.btn}
+						onPress={props.sortByLocation}
+					>
 						<Text>Location</Text>
 					</Button>
 				</View>
