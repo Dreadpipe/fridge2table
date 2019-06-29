@@ -1,6 +1,7 @@
 // Bring in the database models and modular functions
 const { Product } = require("../models");
 const { addDays, subtractDays } = require("./dateFunctions");
+const { targetUser, updateUser } = require("./userFunctions");
 
 // Target Product Function
 const targetProduct = function(reqTarget) {
@@ -98,6 +99,10 @@ const updateProduct = function(reqTarget, reqUpdate) {
 				twoDayWarning: subtractDays(reqUpdate.expDate, 2),
 				expiredOrNot: false
 			});
+			// If the product is newly expired, increment the amount of expired food in the user's inventory
+			if(reqTarget.expiredOrNot === true) {
+				updateUser({ _id: reqTarget.owner }, { throwExpired: true });
+			};
 		// If the expiration date is less than seven days away, but more than two days away, add an expiration date and a two day warning.
 		} else if (new Date(reqUpdate.expDate) >= new Date(twoDays)) {
 			console.log('The expiration date is less than seven, but more than two days away!');
@@ -107,7 +112,11 @@ const updateProduct = function(reqTarget, reqUpdate) {
 				twoDayWarning: subtractDays(reqUpdate.expDate, 2),
 				expiredOrNot: false
 			});
-				// If the expiration date is less than seven days away, but more than two days away, add an expiration date and a two day warning.
+			// If the product is newly expired, increment the amount of expired food in the user's inventory
+			if(reqTarget.expiredOrNot === true) {
+				updateUser({ _id: reqTarget.owner }, { throwExpired: true });
+			}; 
+		// If the expiration date is less than seven days away, but more than two days away, add an expiration date and a two day warning.
 		} else if ((new Date(reqUpdate.expDate) <= new Date(twoDays)) && (new Date(reqUpdate.expDate) >= new Date(today))) {
 			console.log('The expiration date is less than two days away!');
 			Object.assign(finalUpdate, {
@@ -116,6 +125,10 @@ const updateProduct = function(reqTarget, reqUpdate) {
 				twoDayWarning: null,
 				expiredOrNot: false
 			});
+			// If the product is newly expired, increment the amount of expired food in the user's inventory
+			if(reqTarget.expiredOrNot === true) {
+				updateUser({ _id: reqTarget.owner }, { throwExpired: true });
+			} ;
 		// If the expiration date is older than today, then mark the food as expired.
 		} else {
 			console.log('The expiration date is older than toay!');
@@ -125,6 +138,10 @@ const updateProduct = function(reqTarget, reqUpdate) {
 				expDate: reqUpdate.expDate,
 				expiredOrNot: true
 			});
+			// If the product is newly expired, increment the amount of expired food in the user's inventory
+			if(reqTarget.expiredOrNot === false) {
+				updateUser({ _id: reqTarget.owner }, { addExpired: true });
+			};
 		}
 	}
 	// Update the product's 7-day warning by removing it (Use Boolean - True)
