@@ -130,7 +130,24 @@ function ViewProducts(props) {
 											/>
 										</Right>
 									);
-								} else {
+								} else if (difference > 2 && difference <= 7) {
+                  return (
+                    <Right
+											style={{
+												marginRight: 10,
+												borderColor: "#8F8F8F",
+												borderBottomWidth: 1
+											}}
+										>
+											<Text style={{ color: "#ffa200" }}>{difference}d</Text>
+											<Icon
+												name="hourglass-half"
+												type="FontAwesome"
+												style={{ color: "#ffa200" }}
+											/>
+										</Right>
+                  )
+                } else {
 									return (
 										<Right
 											style={{
