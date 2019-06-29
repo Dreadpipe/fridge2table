@@ -12,7 +12,8 @@ import ViewProducts from "../components/viewProducts";
 import UpdateProduct from "../components/updateProduct";
 import Scanner from "../components/scanner";
 import Foot from "../components/foot";
-import API from "../utils/API";
+import API from "../utils/API-dev";  // REMOVE FOR FINAL DEPLOYMENT
+// import API from "../utils/API";
 import { Notifications, Permissions } from "expo";
 import axios from "axios";
 
