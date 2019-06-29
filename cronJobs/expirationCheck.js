@@ -1,24 +1,28 @@
 require("dotenv").config();
-const db = require("../models");
+const { User, Product } = require("../models");
 const { Expo } = require("expo-server-sdk");
 const { updateProduct } = require("../routes/productFunctions");
-const { updateUser } = require("../routes/userFunctions");
 
-
+// This function is called by the cron job in server.js to check for the expiration status of all food in the database. 
+// Depending on the results, it triggers push notifications for our users.
 const dailyCheck = function() {
-	console.log("\nDaily Check");
-	db.Product.find({})
+	console.log("\nDaily Check"); // REMOVE FOR FINAL DEPLOYMENT
+	// Find all Products
+	Product.find({})
 		.populate("associatedRecipes")
 		.then(response => {
 			const allProducts = response;
 			const today = Date.now();
+			// Iterate over all of our products and check their date
 			allProducts.forEach(product => {
+				// If there is a seven day check that hasn't been triggered, and it has passed...
 				if (
 					product.sevenDayWarning !== null &&
 					product.sevenDayWarning <= new Date(today)
 				) {
 					console.log("Seven day warning!");
-					db.User.find({
+					// Find the item's owner, construct a push object for a seven day warning, and send it into the SendPushNote function
+					User.find({
 						_id: product.owner
 					})
 						.populate("allProduct")
@@ -35,16 +39,17 @@ const dailyCheck = function() {
 							console.log(
 								"We ran into a problem finding a user to send the seven day warning to.\n------------------------"
 							);
-							//console.log(err);
 						});
-
+					// Remove the sent seven-day warning from the item.
 					updateProduct({ _id: product._id }, { remove7DayWarning: true });
+				// If there is no seven day warning, but there is a remaining two day warning that has passed...
 				} else if (
 					product.sevenDayWarning === null &&
 					product.twoDayWarning !== null &&
 					product.twoDayWarning <= new Date(today)
 				) {
-					db.User.find({
+					// Find the item's owner, construct a push object for a two day warning, and send it into the SendPushNote function
+					User.find({
 						_id: product.owner
 					})
 						.populate("allProduct")
@@ -61,10 +66,10 @@ const dailyCheck = function() {
 							console.log(
 								"We ran into a problem finding a user to send the two day warning to.\n------------------------"
 							);
-							//console.log(err);
 						});
-
+					// Remove the sent two-day warning from the item.
 					updateProduct({ _id: product._id }, { remove2DayWarning: true });
+				// If there are no warnings left to send, and the expiration day has passed...
 				} else if (
 					product.sevenDayWarning === null &&
 					product.twoDayWarning === null &&
@@ -72,7 +77,8 @@ const dailyCheck = function() {
 					product.expDate <= new Date(today) &&
 					product.expiredOrNot === false
 				) {
-					db.User.find({
+					// Find the item's owner, construct a push object for an expired warning and send it into the SendPushNote function
+					User.find({
 						_id: product.owner
 					})
 						.populate("allProduct")
@@ -89,12 +95,9 @@ const dailyCheck = function() {
 							console.log(
 								"We ran into a problem finding a user to send the expiration warning to.\n------------------------"
 							);
-							//console.log(err);
 						});
-
-					updateProduct({ _id: product._id }, { expiredOrNot: true });
-
-					updateUser({ _id: product.owner }, { addExpired: true });
+					// Mark the item as expired.
+					updateProduct({ _id: product._id, owner: product.owner }, { expiredOrNot: true });
 				} else if (product.expiredOrNot === true) {
 					console.log(`The ${product.productname} is expired!!!`);
 				} else {
@@ -110,7 +113,6 @@ const dailyCheck = function() {
 			console.log(
 				"We ran into a problem finding our products.\n------------------------"
 			);
-			console.log(err);
 		});
 };
 
