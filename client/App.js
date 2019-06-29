@@ -113,7 +113,7 @@ export default class App extends React.Component {
 		}
 
 		API.checkForOrCreateUser(user).then(() => {
-			this.setState({ user });
+			this.setState({ user, spinnerOrNo: false });
 		}).catch(err => console.error(err));
 	};
 
