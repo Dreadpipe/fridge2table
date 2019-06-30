@@ -61,24 +61,30 @@ class Home extends React.Component {
 	// Mounting function
 
 	componentDidMount() {
-		API.getCurrentUser(this.props.user.id).then(response => {
-			this.setState({ user: response.data[0], view: "fridge" }, () => {
-				registerForPushNotifications().then(() => {
-					this.addPushToken();
-        }).catch(err => console.error(err));
-			});
-			if (response.data[0].inventoryProducts.length === 0) {
-				Toast.show({
-					text: `Welcome to Fridge2Table! Looks like you don't have any products. Click "Add Product" down here!`,
-					buttonText: "Okay",
-					position: "bottom",
-					type: "warning",
-					duration: 30000,
-					style: { marginBottom: vh(9) }
+		API.getCurrentUser(this.props.user.id)
+			.then(response => {
+				this.setState({ user: response.data[0], view: "fridge" }, () => {
+					registerForPushNotifications()
+						.then(() => {
+							this.addPushToken();
+						})
+						.catch(err => console.log(err));
 				});
-			}
-    }).catch(err => console.error(err));
-		this._notificationSubscription = Notifications.addListener(this._handleNotification);
+				if (response.data[0].inventoryProducts.length === 0) {
+					Toast.show({
+						text: `Welcome to Fridge2Table! Looks like you don't have any products. Click "Add Product" down here!`,
+						buttonText: "Okay",
+						position: "bottom",
+						type: "warning",
+						duration: 30000,
+						style: { marginBottom: vh(9) }
+					});
+				}
+			})
+			.catch(err => console.log(err));
+		this._notificationSubscription = Notifications.addListener(
+			this._handleNotification
+		);
 	}
 
 	//Notification functions
@@ -94,7 +100,7 @@ class Home extends React.Component {
 		});
 	};
 
-  // // POST the token to your backend server from where you can retrieve it to send push notifications.
+	// // POST the token to your backend server from where you can retrieve it to send push notifications.
 	// sendNotification = () => {
 	// 	axios
 	// 		.post(PUSH_ENDPOINT, {
@@ -102,7 +108,7 @@ class Home extends React.Component {
 	// 			message: "Food is expiring",
 	// 			productname: "Eggs!"
 	// 		})
-	// 		.then(res => console.log(res)).catch(err => console.error(err));
+	// 		.then(res => console.log(res)).catch(err => console.log(err));
 	// };
 
 	addPushToken = () => {
@@ -185,28 +191,32 @@ class Home extends React.Component {
 			if (this.state.picURL) {
 				newProduct.pic = this.state.picURL;
 			}
-			API.addFood(newProduct).then(() => {
-				this.setState({
-					view: "addProduct",
-					productName: "",
-					picURL: "",
-					selectedCategory: "Dairy",
-					selectedLocation: "Fridge",
-					selectedQuantity: 1,
-					expDate: new Date()
-				});
-				this.updateUser();
-				return alert("Product added! Click OK to add more.");
-      }).catch(err => console.error(err));
+			API.addFood(newProduct)
+				.then(() => {
+					this.setState({
+						view: "addProduct",
+						productName: "",
+						picURL: "",
+						selectedCategory: "Dairy",
+						selectedLocation: "Fridge",
+						selectedQuantity: 1,
+						expDate: new Date()
+					});
+					this.updateUser();
+					return alert("Product added! Click OK to add more.");
+				})
+				.catch(err => console.log(err));
 		} else {
 			return alert("Please make sure to fill out the entire product form");
 		}
 	};
 
 	updateUser = () => {
-		API.getCurrentUser(this.state.user.thirdPartyId).then(response => {
-			this.setState({ user: response.data[0] });
-    }).catch(err => console.error(err));
+		API.getCurrentUser(this.state.user.thirdPartyId)
+			.then(response => {
+				this.setState({ user: response.data[0] });
+			})
+			.catch(err => console.log(err));
 	};
 
 	// Navigation functions
@@ -298,9 +308,11 @@ class Home extends React.Component {
 				{
 					text: "Yes",
 					onPress: () => {
-						API.removeFood(data).then(() => {
-							this.updateUser();
-            }).catch(err => console.error(err));
+						API.removeFood(data)
+							.then(() => {
+								this.updateUser();
+							})
+							.catch(err => console.log(err));
 					}
 				},
 				{
@@ -392,11 +404,13 @@ class Home extends React.Component {
 			target: filteredProducts[0],
 			update: updatedProduct
 		};
-		API.updateFood(data).then(() => {
-			this.updateUser();
-			this.setState({ view: "viewProducts", productView: "all" });
-			return alert("Product updated! Click OK to view updated products");
-    }).catch(err => console.error(err));
+		API.updateFood(data)
+			.then(() => {
+				this.updateUser();
+				this.setState({ view: "viewProducts", productView: "all" });
+				return alert("Product updated! Click OK to view updated products");
+			})
+			.catch(err => console.log(err));
 	};
 
 	// Render function
@@ -471,10 +485,7 @@ class Home extends React.Component {
 											productView: "fridgeMisc"
 										})
 									}
-									countMisc={this.countByCategoryAndLocation(
-										"Misc",
-										"Fridge"
-									)}
+									countMisc={this.countByCategoryAndLocation("Misc", "Fridge")}
 								/>
 							);
 							break;
@@ -528,10 +539,7 @@ class Home extends React.Component {
 											productView: "pantryMisc"
 										})
 									}
-									countMisc={this.countByCategoryAndLocation(
-										"Misc",
-										"Pantry"
-									)}
+									countMisc={this.countByCategoryAndLocation("Misc", "Pantry")}
 								/>
 							);
 							break;
@@ -565,10 +573,7 @@ class Home extends React.Component {
 											productView: "freezerMisc"
 										})
 									}
-									countMisc={this.countByCategoryAndLocation(
-										"Misc",
-										"Freezer"
-									)}
+									countMisc={this.countByCategoryAndLocation("Misc", "Freezer")}
 								/>
 							);
 							break;
