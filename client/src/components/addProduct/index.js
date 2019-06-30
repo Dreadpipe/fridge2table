@@ -159,7 +159,7 @@ class AddProduct extends React.Component {
 						modalTransparent={false}
 						animationType={"fade"}
 						androidMode={"default"}
-						placeHolderText="Select expiration date"
+						placeHolderText="Press here to select expiration date"
 						textStyle={{ color: "green" }}
 						placeHolderTextStyle={{ color: "#8F8F8F" }}
 						onDateChange={this.props.setDate}

@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, TouchableHighlight, View, Image } from "react-native";
-import { Icon, Content } from "native-base";
+import { Icon, Content, Toast } from "native-base";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 
 const styles = StyleSheet.create({
@@ -28,6 +28,17 @@ const styles = StyleSheet.create({
 	}
 });
 
+const noItemsToast = () => {
+	Toast.show({
+		text: `You haven't added any items in this category. Click "Add New Product" below!`,
+		buttonText: "Okay",
+		position: "bottom",
+		type: "warning",
+		duration: 30000,
+		style: { marginBottom: vh(9) }
+	});
+};
+
 function Freezer(props) {
 	return (
 		<Content contentContainerStyle={styles.pageDiv}>
@@ -35,7 +46,7 @@ function Freezer(props) {
 				style={styles.banner}
 				underlayColor="#EBF5FF"
 				activeOpacity={0.5}
-				onPress={props.countProduce === 0 ? null : props.viewProduce}
+				onPress={props.countProduce === 0 ? noItemsToast : props.viewProduce}
 			>
 				<Image
 					resizeMode="contain"
@@ -51,7 +62,7 @@ function Freezer(props) {
 				style={styles.banner}
 				underlayColor="#EBF5FF"
 				activeOpacity={0.5}
-				onPress={props.countMeats === 0 ? null : props.viewMeats}
+				onPress={props.countMeats === 0 ? noItemsToast : props.viewMeats}
 			>
 				<Image
 					resizeMode="contain"
@@ -65,7 +76,7 @@ function Freezer(props) {
 				style={styles.banner}
 				underlayColor="#EBF5FF"
 				activeOpacity={0.5}
-				onPress={props.countMisc === 0 ? null : props.viewMisc}
+				onPress={props.countMisc === 0 ? noItemsToast : props.viewMisc}
 			>
 				<Image
 					resizeMode="contain"

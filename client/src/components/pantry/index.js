@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, TouchableHighlight, Image } from "react-native";
-import { Content, Icon } from "native-base";
+import { Content, Toast, Icon } from "native-base";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 
 const styles = StyleSheet.create({
@@ -65,6 +65,17 @@ const styles = StyleSheet.create({
 	},
 });
 
+const noItemsToast = () => {
+	Toast.show({
+		text: `You haven't added any items in this category. Click "Add New Product" below!`,
+		buttonText: "Okay",
+		position: "bottom",
+		type: "warning",
+		duration: 30000,
+		style: { marginBottom: vh(9) }
+	});
+};
+
 function Pantry(props) {
 	return (
 		<Content contentContainerStyle={styles.pageDiv}>
@@ -73,7 +84,7 @@ function Pantry(props) {
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.countGrains === 0 ? null : props.viewGrains}
+					onPress={props.countGrains === 0 ? noItemsToast : props.viewGrains}
 				>
 					<Image
 						resizeMode="contain"
@@ -85,7 +96,7 @@ function Pantry(props) {
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.countSpices === 0 ? null : props.viewSpices}
+					onPress={props.countSpices === 0 ? noItemsToast : props.viewSpices}
 				>
 					<Image
 						resizeMode="contain"
@@ -97,7 +108,7 @@ function Pantry(props) {
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.countProduce === 0 ? null : props.viewProduce}
+					onPress={props.countProduce === 0 ? noItemsToast : props.viewProduce}
 				>
 					<Image
 						resizeMode="contain"
@@ -109,7 +120,7 @@ function Pantry(props) {
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.countCans === 0 ? null : props.viewCans}
+					onPress={props.countCans === 0 ? noItemsToast : props.viewCans}
 				>
 					<Image
 						resizeMode="contain"
@@ -121,7 +132,7 @@ function Pantry(props) {
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.countMisc === 0 ? null : props.viewMisc}
+					onPress={props.countMisc === 0 ? noItemsToast : props.viewMisc}
 				>
 					<Image
 						resizeMode="contain"

@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, TouchableHighlight, View, Image } from "react-native";
-import { Content, Icon } from "native-base";
+import { Content, Toast, Icon } from "native-base";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 
 const styles = StyleSheet.create({
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 	},
 	grainsImg: {
 		height: 132,
-		width: "100%",
+		width: "100%"
 	},
 	disabledGrainsImg: {
 		height: 132,
@@ -64,6 +64,17 @@ const styles = StyleSheet.create({
 	}
 });
 
+const noItemsToast = () => {
+	Toast.show({
+		text: `You haven't added any items in this category. Click "Add New Product" below!`,
+		buttonText: "Okay",
+		position: "bottom",
+		type: "warning",
+		duration: 30000,
+		style: { marginBottom: vh(9) }
+	});
+};
+
 function Fridge(props) {
 	return (
 		<Content contentContainerStyle={styles.pageDiv}>
@@ -72,72 +83,94 @@ function Fridge(props) {
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.countGrains === 0 ? null : props.viewGrains}
+					onPress={props.countGrains === 0 ? noItemsToast : props.viewGrains}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/fridge_images/grains_banner.png")}
-						style={props.countGrains === 0 ? styles. disabledGrainsImg : styles.grainsImg}
+						style={
+							props.countGrains === 0
+								? styles.disabledGrainsImg
+								: styles.grainsImg
+						}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.countDairy === 0 ? null : props.viewDairy}
+					onPress={props.countDairy === 0 ? noItemsToast : props.viewDairy}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/fridge_images/dairy_banner.png")}
-						style={props.countDairy === 0 ? styles. disabledBannerImg : styles.bannerImg}
+						style={
+							props.countDairy === 0
+								? styles.disabledBannerImg
+								: styles.bannerImg
+						}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.countMeats === 0 ? null : props.viewMeats}
+					onPress={props.countMeats === 0 ? noItemsToast : props.viewMeats}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/fridge_images/meats_banner.png")}
-						style={props.countMeats === 0 ? styles. disabledMeatImg : styles.meatImg}
+						style={
+							props.countMeats === 0 ? styles.disabledMeatImg : styles.meatImg
+						}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.countProduce === 0 ? null : props.viewProduce}
+					onPress={props.countProduce === 0 ? noItemsToast : props.viewProduce}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/fridge_images/produce_banner.png")}
-						style={props.countProduce === 0 ? styles. disabledProduceImg : styles.produceImg}
+						style={
+							props.countProduce === 0
+								? styles.disabledProduceImg
+								: styles.produceImg
+						}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.countDrinks === 0 ? null : props.viewDrinks}
+					onPress={props.countDrinks === 0 ? noItemsToast : props.viewDrinks}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/fridge_images/drinks_banner.png")}
-						style={props.countDrinks === 0 ? styles. disabledBannerImg : styles.bannerImg}
+						style={
+							props.countDrinks === 0
+								? styles.disabledBannerImg
+								: styles.bannerImg
+						}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.banner}
 					underlayColor="#EBF5FF"
 					activeOpacity={0.5}
-					onPress={props.countMisc === 0 ? null : props.viewMisc}
+					onPress={props.countMisc === 0 ? noItemsToast : props.viewMisc}
 				>
 					<Image
 						resizeMode="contain"
 						source={require("../../../assets/fridge_images/misc_banner.png")}
-						style={props.countMisc === 0 ? styles. disabledBannerImg : styles.bannerImg}
+						style={
+							props.countMisc === 0
+								? styles.disabledBannerImg
+								: styles.bannerImg
+						}
 					/>
 				</TouchableHighlight>
 			</View>

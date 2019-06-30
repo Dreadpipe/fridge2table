@@ -26,7 +26,7 @@ function Foot(props) {
 			<FooterTab style={styles.footerTab}>
 				<Button vertical onPress={props.toAddProductScreenClear}>
 					<Icon name="plus" type="FontAwesome" style={{color: '#EBF5FF'}} />
-					<Text style={{color: '#EBF5FF'}}>Add Product</Text>
+					<Text style={{color: '#EBF5FF'}}>Add New Product</Text>
 				</Button>
 				<Button vertical onPress={props.viewAllProducts}>
 					<Icon name="search" type="FontAwesome" style={{color: '#EBF5FF'}} />
