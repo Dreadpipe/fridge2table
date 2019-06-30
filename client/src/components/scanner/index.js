@@ -5,6 +5,7 @@ import Constants from "expo-constants";
 import { Permissions } from "expo-permissions";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import axios from "axios";
+import _ from "lodash";
 import API from "../../utils/API";
 
 styles = StyleSheet.create({
@@ -72,13 +73,20 @@ export default class BarCodeScannerExample extends React.Component {
 		// API.scanFood(data, this.props.user.thirdPartyId);
 
 		// Version in which a product is scanned to update the input form
+
 		axios
 			.get(
 				`https://api.edamam.com/api/food-database/parser?upc=${data}&app_id=2738ba89&app_key=18838a2aa6866b92497c8ebae315be66`
 			)
 			.then(response => {
+				function toTitleCase(str) {
+					return str.replace(/\w\S*/g, function(txt) {
+						return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+					});
+				}
+
 				this.props.addProductNameAndPicURL(
-					response.data.hints[0].food.label,
+					toTitleCase(response.data.hints[0].food.label),
 					response.data.hints[0].food.image
 				);
 				alert("Product name found!");
