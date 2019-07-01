@@ -24,8 +24,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-// Platform.OS === 'ios' ? vh(100) : vh(100) - getStatusBarHeight()
-
 let expoToken = "";
 const PUSH_ENDPOINT = `https://immense-ravine-93808.herokuapp.com/users/push-token`;
 
@@ -61,6 +59,7 @@ class Home extends React.Component {
 	// Mounting function
 
 	componentDidMount() {
+		// Once user is fully loaded through API call, view is switched from the spinner to the fridge
 		API.getCurrentUser(this.props.user.id)
 			.then(response => {
 				this.setState({ user: response.data[0], view: "fridge" }, () => {
@@ -71,6 +70,7 @@ class Home extends React.Component {
 						.catch(err => console.log(err));
 				});
 				if (response.data[0].inventoryProducts.length === 0) {
+					// Toast that pops up if user doesn't have any products
 					Toast.show({
 						text: `Welcome to Fridge2Table! Looks like you don't have any products. Click "Add New Product" down here!`,
 						buttonText: "Okay",
@@ -91,6 +91,7 @@ class Home extends React.Component {
 
 	_handleNotification = notification => {
 		this.setState({ notification: notification });
+		// Toast that pops up when the notification is sent to the user's device
 		Toast.show({
 			text: `Check the expiration for ${notification.data.expFood}!`,
 			buttonText: "Okay!",
@@ -99,17 +100,6 @@ class Home extends React.Component {
 			style: { marginBottom: vh(9) }
 		});
 	};
-
-	// // POST the token to your backend server from where you can retrieve it to send push notifications.
-	// sendNotification = () => {
-	// 	axios
-	// 		.post(PUSH_ENDPOINT, {
-	// 			pushToken: expoToken,
-	// 			message: "Food is expiring",
-	// 			productname: "Eggs!"
-	// 		})
-	// 		.then(res => console.log(res)).catch(err => console.log(err));
-	// };
 
 	addPushToken = () => {
 		query = {
@@ -179,7 +169,10 @@ class Home extends React.Component {
 			this.state.selectedCategory &&
 			this.state.selectedQuantity
 		) {
+			// View is set to "spinner" while the addProduct function is being processed
+
 			this.setState({ view: "spinner" });
+			// A new product object is created to be sent to the database
 			const newProduct = {
 				name: this.state.productName,
 				location: this.state.selectedLocation,
@@ -188,11 +181,16 @@ class Home extends React.Component {
 				expDate: this.state.expDate,
 				userId: this.state.user._id
 			};
+
+			// PicURL is only added to the newProduct object if the user scans a barcode and Edamam provides a picURL
 			if (this.state.picURL) {
 				newProduct.pic = this.state.picURL;
 			}
+
+			// The newProduct object is sent up to the database
 			API.addFood(newProduct)
 				.then(() => {
+					// The product's info is cleared from state object after the product is added
 					this.setState({
 						view: "addProduct",
 						productName: "",
@@ -202,11 +200,13 @@ class Home extends React.Component {
 						selectedQuantity: 1,
 						expDate: new Date()
 					});
+					// A new call to get the user is made, to get their updated list of products for display
 					this.updateUser();
 					return alert("Product added! Click OK to add more.");
 				})
 				.catch(err => console.log(err));
 		} else {
+			// An alert that pops up if the user fails to fill out the entire input form to add a product
 			return alert("Please make sure to fill out the entire product form");
 		}
 	};
@@ -349,6 +349,7 @@ class Home extends React.Component {
 			return aDifference - bDifference;
 		});
 
+		// Inventory products array is pulled out of the user object via ES6 destructuring, then the sorted array is added back in its place
 		const { inventoryProducts, ...rest } = this.state.user;
 		rest.inventoryProducts = sortedArray;
 		this.setState({ view: "viewProducts", user: rest });
@@ -365,6 +366,7 @@ class Home extends React.Component {
 			return 0;
 		});
 
+		// Inventory products array is pulled out of the user object via ES6 destructuring, then the sorted array is added back in its place
 		const { inventoryProducts, ...rest } = this.state.user;
 		rest.inventoryProducts = sortedArray;
 		this.setState({ view: "viewProducts", user: rest });
@@ -381,6 +383,7 @@ class Home extends React.Component {
 			return 0;
 		});
 
+		// Inventory products array is pulled out of the user object via ES6 destructuring, then the sorted array is added back in its place
 		const { inventoryProducts, ...rest } = this.state.user;
 		rest.inventoryProducts = sortedArray;
 		this.setState({ view: "viewProducts", user: rest });
@@ -389,10 +392,13 @@ class Home extends React.Component {
 	// Update-Product Screen Functions
 
 	updateProduct = id => {
+		// View is set to "spinner" while the updateProduct function is processed
 		this.setState({ view: "spinner" });
+		// Filter call that returns only the product with the matching id
 		const filteredProducts = this.state.user.inventoryProducts.filter(
 			product => product._id === id
 		);
+		// The key-value pairs of the filtered product are spread into a new object, and the necessary key-value pairs are then updated
 		const updatedProduct = { ...filteredProducts[0] };
 		updatedProduct.category = this.state.selectedCategory;
 		updatedProduct.expDate = this.state.expDate;
@@ -400,13 +406,16 @@ class Home extends React.Component {
 		updatedProduct.productname = this.state.productName;
 		updatedProduct.quantity = this.state.selectedQuantity;
 
+		// The appropriate data object is built for the updateFood API call and plugged into the call
 		const data = {
 			target: filteredProducts[0],
 			update: updatedProduct
 		};
 		API.updateFood(data)
 			.then(() => {
+				// A new call to get the user is made, to get the list of products with the updated product details
 				this.updateUser();
+				// The view is switched to "viewProducts," with the updated product on display
 				this.setState({ view: "viewProducts", productView: "all" });
 				return alert("Product updated! Click OK to view updated products");
 			})
@@ -424,6 +433,7 @@ class Home extends React.Component {
 					toPantry={this.toPantryScreen}
 				/>
 				{(() => {
+					// Switch statement that displays the appropriate page view, depending on what's set as "view" in the state object
 					switch (this.state.view) {
 						case "fridge":
 							return (

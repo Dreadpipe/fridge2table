@@ -24,9 +24,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-/**
- * Converts an object to a query string.
- */
+// Converts an object to a query string
 function toQueryString(params) {
 	return (
 		"?" +
@@ -62,13 +60,13 @@ export default class App extends React.Component {
 	}
 
 	login = async () => {
+		// Spinner is displayed in the view while the login function is processed
 		this.setState({ spinnerOrNo: true });
-		// Retrieve the redirect URL, add this to the callback URL list
-		// of your Auth0 application.
+		// Variable to retrieve the redirect URL that gets put into the query parameters that are sent to Auth0
 		const redirectUrl = AuthSession.getRedirectUrl();
 		console.log(`Redirect URL: ${redirectUrl}`);
 
-		// Structure the auth parameters and URL
+		// Object with all the query parameters to add to the authUrl below, fed through the toQueryString function, which takes them and turns them into a legitimate single query string
 		const queryParams = toQueryString({
 			client_id: auth0ClientId,
 			redirect_uri: redirectUrl,
@@ -78,9 +76,10 @@ export default class App extends React.Component {
 		});
 		const authUrl = `${auth0Domain}/authorize` + queryParams;
 
-		// Perform the authentication
+		// The authentication is performed by feeding the authUrl into AuthSession.startAsync
 		const response = await AuthSession.startAsync({ authUrl });
 
+		// If the response is successful, login function fires the handleResponse function; if it's unsuccessful, the spinner view is dropped and the user is brought back to the login view
 		if (response.type === "success") {
 			this.handleResponse(response.params);
 		} else {
@@ -98,11 +97,12 @@ export default class App extends React.Component {
 			return;
 		}
 
-		// Retrieve the JWT token and decode it
+		// The JWT token from the response is received and decoded
 		const jwtToken = response.id_token;
 		const decoded = jwtDecode(jwtToken);
 		let user;
 
+		// Necessary details about the user are pulled from the decoded JWT token, depending on whether the user signs in with just a name and e-mail address or through third-part authentication via Google or Facebook
 		if (decoded.sub.split("|")[0] === "auth0") {
 			user = {
 				name: decoded.nickname,
@@ -115,9 +115,12 @@ export default class App extends React.Component {
 			};
 		}
 
-		API.checkForOrCreateUser(user).then(() => {
-			this.setState({ user, spinnerOrNo: false });
-		}).catch(err => console.error(err));
+		// The user's details are fed into checkForOrCreateUser to determine whether they've signed into the site before, then the user is set in the state object
+		API.checkForOrCreateUser(user)
+			.then(() => {
+				this.setState({ user, spinnerOrNo: false });
+			})
+			.catch(err => console.error(err));
 	};
 
 	render() {
