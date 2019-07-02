@@ -79,5 +79,5 @@ When looking to the future of "Fridge2Table," we want to furthur our goal of hel
 ## Developed by DreamTeamDesigns
 * Benjamin Harris - (Project Manager) - [Portfolio](https://dreadpipe.github.io/v2) | [Github Repository](https://github.com/Dreadpipe)
 * Edward Cheever (Database Manager) - [Portfolio](https://edwardcheever.herokuapp.com/) | [Github Repository](https://github.com/Druidan)
-* Geoff George - [Portfolio](http://www.geoffdgeorge.com/) | [Github Repository](https://github.com/geoffdgeorge)
+* Geoff George - (Authentication Lead) [Portfolio](http://www.geoffdgeorge.com/) | [Github Repository](https://github.com/geoffdgeorge)
 * Robert Hardin - (Research Monkey) - [Portfolio](https://rhardin94.github.io/) | [Github Repository](https://github.com/Rhardin94)
