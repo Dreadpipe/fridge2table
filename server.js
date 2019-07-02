@@ -31,6 +31,7 @@ mongoose
 	});
 
 			//'0 0 0 1-31 * *' = Daily Check.
+			//'0 0 0-23 1-31 * *' = Hourly Check.
 			//'0,15,30,45 * * * * *' = every 15 seconds
 			//'0 * * * * *' = once a minute
 new CronJob('0,15,30,45 * * * * *', function() {
