@@ -114,7 +114,6 @@ router.get("/findOneProduct/:objid", function(req, res) {
 
 // Create new User
 router.post("/newUser", function(req, res) {
-	console.log(req.body); // REMOVE FOR FINAL DEPLOYMENT
 	// Check for existence of user in database
 	User.findOne({
 		thirdPartyId: req.body.id // Using the id provided by the login service they are using (third-party id).
@@ -132,7 +131,6 @@ router.post("/newUser", function(req, res) {
 				// Send the target object and update object into the updateUser function.
 				updateUser(target, update); 
 				res.json(currentUser); // Notify in the response data that the user already registered.
-				console.log(`Existing User is: \n${currentUser}`); // REMOVE FOR FINAL DEPLOYMENT
 			} else {
 				// If the user doesn't exist, create them as a collection.
 				new User({
@@ -144,7 +142,6 @@ router.post("/newUser", function(req, res) {
 				})
 					.save() // Save the collection to the Mongo Database
 					.then(newUser => {
-						console.log(`User added! \nDetails: ${newUser}`); // REMOVE FOR FINAL DEPLOYMENT
 						res.json(newUser);
 					})
 					.catch(err => {
@@ -216,7 +213,6 @@ router.post("/newProduct", function(req, res) {
 	}
 	// use the newProduct object to create and then save the new product to the Mongo database.
 	new Product(newProduct).save().then(newProduct => {
-		console.log(`Product added! \nDetails: ${newProduct}`); // REMOVE FOR FINAL DEPLOYMENT
 		//Create a target and update object for a new query to update the user who added the product.
 		const target = {
 			_id: newProduct.owner
@@ -229,7 +225,6 @@ router.post("/newProduct", function(req, res) {
 		if(newProduct.expiredOrNot === true) {
 			Object.assign(update, { addExpired: true })
 		}
-		console.log(update); // REMOVE FOR FINAL DEPLOYMENT
 		// Send the data to the user so that their array of products includes the new product.
 		updateUser(target, update);
 		res.json(newProduct);
@@ -301,8 +296,6 @@ router.post("/removeProduct", function(req, res) {
 	if (reqTarget.expiredOrNot === true) {
 		Object.assign(removeFromUser, { throwExpired: true })
 	};
-	console.log('I am removing\n'); // REMOVE FOR FINAL DEPLOYMENT
-	console.log(removeFromUser) // REMOVE FOR FINAL DEPLOYMENT
 	// If the response has both the product's owner's id, and the product id, proceed with deleting the item.
 	if (reqTarget.owner && reqTarget._id) {
 		Product.deleteOne(targetProduct(reqTarget))

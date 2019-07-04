@@ -6,7 +6,6 @@ const { updateProduct } = require("../routes/productFunctions");
 // This function is called by the cron job in server.js to check for the expiration status of all food in the database. 
 // Depending on the results, it triggers push notifications for our users.
 const dailyCheck = function() {
-	console.log("\nDaily Check"); // REMOVE FOR FINAL DEPLOYMENT
 	// Find all Products
 	Product.find({})
 		.populate("associatedRecipes")

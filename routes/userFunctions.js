@@ -43,8 +43,6 @@ const targetUser = function(reqTarget) {
 	if (finalTarget === undefined) {
 		console.log("There was no valid target.");
 	}
-	console.log("The target data will be:"); // REMOVE FOR FINAL DEPLOYMENT
-	console.log(finalTarget); // REMOVE FOR FINAL DEPLOYMENT
 	// Return the final target object that includes all the targetting parameters.
 	return finalTarget;
 }
