@@ -53,7 +53,6 @@ const targetUser = function(reqTarget) {
 
 // Update User Function
 const updateUser = function(reqTarget, reqUpdate) {
-	console.log(reqTarget)
 	const finalTarget = targetUser(reqTarget); // Create a target object for the update by sending the requested target data through the targetUser function.
 	let finalUpdate = {}; // Establish an object that will be filled with the update parameters.
 	// If any of the following parameters exist, add them to the update object.
@@ -103,12 +102,9 @@ const updateUser = function(reqTarget, reqUpdate) {
 	// Update their lastUpdated date
 	const now = Date.now();
 	Object.assign(finalUpdate, { lastUpdated: now });
-	console.log("The update data will be:"); // REMOVE FOR FINAL DEPLOYMENT
-	console.log(finalUpdate); // REMOVE FOR FINAL DEPLOYMENT
 	// Take the target and update objects and feed them to the database call
 	User.findOneAndUpdate(finalTarget, finalUpdate)
 		.then(data => {
-			console.log(data); // REMOVE FOR FINAL DEPLOYMENT
 			console.log("Update has been sent to the targeted User!");
 		})
 		.catch(err => {
