@@ -7,14 +7,16 @@ import { getStatusBarHeight } from "react-native-status-bar-height";
 import FullFridge from "./src/components/fullFridge";
 import Home from "./src/pages/home";
 import jwtDecode from "jwt-decode";
-import API from "./src/utils/API-dev"; // REMOVE FOR FINAL DEPLOYMENT
-// import API from "./src/utils/API";
-import env from "./env";
+import API from "./src/utils/API";
+import getEnvVars from "./env";
 import { Font, AppLoading } from "expo";
 import { Ionicons } from "@expo/vector-icons";
 
-const auth0ClientId = env.AUTH0_CLIENT_ID;
-const auth0Domain = env.AUTH0_DOMAIN;
+const { AUTH0_CLIENT_ID } = getEnvVars();
+const { AUTH0_DOMAIN } = getEnvVars();
+
+const auth0ClientId = AUTH0_CLIENT_ID;
+const auth0Domain = AUTH0_DOMAIN;
 
 const styles = StyleSheet.create({
 	container: {
