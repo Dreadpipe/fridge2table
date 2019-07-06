@@ -9,7 +9,8 @@
 		"start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
 		"client": "cd client && npm run start",
 		"install": "cd client && npm install",
-		"build": "cd client && npm run build",
+    "build": "cd client && npm run build",
+    "publish": "cd client && npm run publish",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {
