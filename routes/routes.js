@@ -284,7 +284,6 @@ router.delete("/removeUser", function(req, res) {
 			console.log("We've got a problem deleing the user!");
 		});
 });
-
 //-------------------------------------
 
 //Remove Product
@@ -313,15 +312,6 @@ router.post("/removeProduct", function(req, res) {
 		);
 	}
 });
-
-//++++++++++++++++++++++
-// All Modular Functions Below ------------
-//++++++++++++++++++++++
-
-
-
-
-
 
 module.exports = {
 	router,
