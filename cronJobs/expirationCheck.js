@@ -161,6 +161,8 @@ const SendPushNote = obj => {
         tickets.push(...ticketChunk);
         // Log any errors.
 				console.error(error);
+			} catch (error) {
+				console.error(error);
 			}
 		}
   })();
