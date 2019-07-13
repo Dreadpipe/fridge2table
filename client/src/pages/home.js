@@ -9,6 +9,7 @@ import Freezer from "../components/freezer";
 import Pantry from "../components/pantry";
 import AddProduct from "../components/addProduct";
 import ViewProducts from "../components/viewProducts";
+import ProductDetail from '../components/productDetails';
 import UpdateProduct from "../components/updateProduct";
 import Scanner from "../components/scanner";
 import Foot from "../components/foot";
@@ -50,6 +51,7 @@ class Home extends React.Component {
 			selectedQuantity: 1,
 			expDate: new Date(),
 			productIDForUpdate: "",
+			productToDetail: {},
 			notification: {}
 		};
 		this.setDate = this.setDate.bind(this);
@@ -127,7 +129,7 @@ class Home extends React.Component {
 		this.setState({ productName });
 	};
 
-	onLocationChange(value: string) {
+	onLocationChange(value) {
 		if (value === "Fridge") {
 			this.setState({
 				selectedLocation: value,
@@ -149,13 +151,13 @@ class Home extends React.Component {
 		}
 	}
 
-	onCategoryChange(value: string) {
+	onCategoryChange(value) {
 		this.setState({
 			selectedCategory: value
 		});
 	}
 
-	onQuantityChange(value: string) {
+	onQuantityChange(value) {
 		this.setState({
 			selectedQuantity: value
 		});
@@ -235,6 +237,13 @@ class Home extends React.Component {
 	toAddProductScreen = () => {
 		this.setState({ view: "addProduct" });
 	};
+
+	toProductDetailScreen = (id) => {
+		const filteredProducts = this.state.user.inventoryProducts.filter(
+			product => product._id === id
+		);
+		this.setState({view: 'productDetail', productToDetail: filteredProducts[0]})
+	}
 
 	toAddProductScreenClear = () => {
 		this.setState({
@@ -613,6 +622,7 @@ class Home extends React.Component {
 									sortByLocation={this.sortByLocation}
 									editProduct={this.editProduct}
 									deleteProduct={this.deleteProduct}
+									toProductDetailScreen={this.toProductDetailScreen}
 									extraData={this.state.user}
 									products={(() => {
 										switch (this.state.productView) {
@@ -701,6 +711,11 @@ class Home extends React.Component {
 									})()}
 								/>
 							);
+							break;
+						case "productDetail":
+							return (
+								<ProductDetail product={this.state.productToDetail} />
+							)
 							break;
 						case "updateProduct":
 							return (
