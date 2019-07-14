@@ -162,6 +162,9 @@ const SendPushNote = obj => {
         // Log any errors.
 				console.error(error);
 			}
+			catch(err){
+				throw err
+			}
 		}
   })();
   //Wait for response from Apple or Google

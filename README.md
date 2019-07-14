@@ -63,6 +63,7 @@ Our app will be using the following API:
 
 ## Future Features / Icebox
 When looking to the future of "Fridge2Table," we want to furthur our goal of helping users manage their food from purchase to when they finally enjoy it at their table. When we think about this goal, there are clear avenues for expanding our app's functionality. With the following future features, our users will be able to make and store recipies, connect their favorite foods as ingredients to those recipies, and see which recipes they can make with the food thay have. If they're missing food from their home inventory, our users will be able to automatically or manually create shopping lists with new items and items populated from their inventory, past and present.
+* Add multi-device push notification functionality. 
 * A more in-depth informational modal for each food item that pops up when the user clicks the list item. This modal would include the full name, the expiration dates, a date-since- added counter, ingredients, and clear large buttons to access the multiple ways they can interact with the item.
 * Add a CronJob to eliminate user's food data that haven't logged in within a year.
 * Add a toggle button to the sort options that toggles between the expiration date and the daily counter data points. 
