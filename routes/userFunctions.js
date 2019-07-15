@@ -80,6 +80,18 @@ const updateUser = function(reqTarget, reqUpdate) {
 			$pullAll: { inventoryProducts: reqUpdate.removeThisProduct }
 		});
 	} 
+	// Update their grocery list by adding a new grocery items's ObjectId
+	if (reqUpdate.groceryObjId !== undefined) {
+		Object.assign(finalUpdate, {
+			$push: { groceryList: reqUpdate.groceryObjId }
+		});
+	}
+	// Update their inventory by removing the grocery item's ObjectId (which must be nested in an array).
+	if (reqUpdate.removeThisGrocery !== undefined) {
+		Object.assign(finalUpdate, {
+			$pullAll: { groceryList: reqUpdate.removeThisGrocery }
+		});
+	} 
 	// Update their number of expired products, incrementing up one.
 	if (reqUpdate.addExpired !== undefined) {
 		Object.assign(finalUpdate, { $inc: { expiredFood: 1 } });

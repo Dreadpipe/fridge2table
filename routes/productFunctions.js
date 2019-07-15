@@ -31,7 +31,7 @@ const targetProduct = function(reqTarget) {
 	if (reqTarget.lessThanQuantity !== undefined) {
 		Object.assign(finalTarget, { quantity: { $lte: lessThanQuantity } });
 	}
-	// Target a product by its quantity if it is less than a number provided in the "greaterThanQuantity" variable
+	// Target a product by its quantity if it is greater than a number provided in the "greaterThanQuantity" variable
 	if (reqTarget.greaterThanQuantity !== undefined) {
 		Object.assign(finalTarget, { quantity: { $gte: greaterThanQuantity } });
 	}
