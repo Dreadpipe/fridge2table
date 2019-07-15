@@ -3,11 +3,12 @@ const express = require("express");
 const router = express.Router();
 
 // Bring in the database models
-const { User, Product } = require("../models");
+const { GroceryItem, Product, User } = require("../models");
 
 //Bring in the modular functions
 const { targetUser, updateUser } = require("./userFunctions");
 const { targetProduct, updateProduct } = require("./productFunctions");
+const { targetGroceryItem, updateGroceryItem } = require("./groceryFunctions");
 const { addDays, subtractDays } = require("./dateFunctions");
 
 //++++++++++++++++++++++
@@ -25,7 +26,8 @@ router.get("/healthCheck", function(req, res) {
 router.get("/findAllUsers", function(req, res) {
 	User.find({})
 		.populate("allProduct")
-		.populate("currentInventory")
+		.populate("inventoryProducts")
+		.populate("groceryList")
 		.then(data => {
 			res.json(data); // Send the data in the response to the call.
 		})
@@ -45,6 +47,7 @@ router.get("/findOneUser/:id", function(req, res) {
 	})
 		.populate("allProduct")
 		.populate("inventoryProducts")
+		.populate("groceryList")
 		.then(data => {
 			res.json(data); // Send the data in the response to the call.
 		})
@@ -104,6 +107,38 @@ router.get("/findOneProduct/:objid", function(req, res) {
 		.catch(err => {
 			console.log(
 				"We ran into a problem finding one of our Products.\n------------------------"
+			);
+		});
+});
+
+//-------------------------------------
+
+// Find all Groceries
+router.get("/findAllGroceries", function(req, res) {
+	GroceryItem.find({})
+		.then(data => {
+			res.json(data); // Send the data in the response to the call.
+		})
+		.catch(err => {
+			console.log(
+				"We ran into a problem finding all of our Groceries.\n------------------------"
+			);
+		});
+});
+
+//-------------------------------------
+
+// Find one Grocery Item
+router.get("/findOneGroceryItem/:objid", function(req, res) {
+	GroceryItem.find({
+		_id: req.params.objid // Using the Grocery Item's ObjectId in the database.
+	})
+		.then(data => {
+			res.json(data); // Send the data in the response to the call.
+		})
+		.catch(err => {
+			console.log(
+				"We ran into a problem finding one of our Groceries.\n------------------------"
 			);
 		});
 });
@@ -236,6 +271,42 @@ router.post("/newProduct", function(req, res) {
 	});
 });
 
+
+//-------------------------------------
+
+//Create a new Grocery Item
+router.post("/newGroceryItem", function(req, res) {
+	// Create a new grocery item object using the data in the request.
+	let newGroceryItem = {
+		productname: req.body.name,
+		category: req.body.category,
+		foodId: req.body.id,
+		pic: req.body.pic,
+		numNeeded: req.body.needed,
+		dateAdded: Date.now(),
+		lastUpdated: Date.now(),
+		owner: req.body.userId
+	};
+	// use the newGroceryItem object to create and then save the new product to the Mongo database.
+	new GroceryItem(newGroceryItem).save().then(newGroceryItem => {
+		//Create a target and update object for a new query to update the user who added the product.
+		const target = {
+			_id: newGroceryItem.owner
+		};
+		const update = {
+			groceryObjId: newGroceryItem._id
+		};
+		// Send the data to the user so that their array of groceries includes the new grocery item.
+		updateUser(target, update);
+		res.json(newGroceryItem);
+	})
+	.catch(err => {
+		console.log(
+			"We had a problem creating a new grocery item in the database.\n------------------------"
+		);
+	});
+});
+
 //++++++++++++++++++++++
 // All PUT Routes Below ------------
 //++++++++++++++++++++++
@@ -255,6 +326,16 @@ router.put("/updateProduct", function(req, res) {
 	const reqTarget = req.body.target;
 	const reqUpdate = req.body.update;
 	updateProduct(reqTarget, reqUpdate);
+	res.end();
+});
+
+//-------------------------------------
+
+//Update Grocery Item
+router.put("/updateGroceryItem", function(req, res) {
+	const reqTarget = req.body.target;
+	const reqUpdate = req.body.update;
+	updateGroceryItem(reqTarget, reqUpdate);
 	res.end();
 });
 
@@ -284,6 +365,7 @@ router.delete("/removeUser", function(req, res) {
 			console.log("We've got a problem deleing the user!");
 		});
 });
+
 //-------------------------------------
 
 //Remove Product
@@ -309,6 +391,32 @@ router.post("/removeProduct", function(req, res) {
 	} else {
 		console.log(
 			"You need to include the owner's id and the food's id when removing a product!"
+		);
+	}
+});
+
+//-------------------------------------
+
+//Remove Grocery Item
+router.post("/removeGroceryItem", function(req, res) {
+	const reqTarget = req.body.target;
+	console.log(reqTarget)
+	const userId = { _id: reqTarget.owner };
+	let removeFromUser = { removeThisGrocery: [reqTarget._id] };
+	// If the response has both the product's owner's id, and the grocery id, proceed with deleting the item.
+	if (reqTarget.owner && reqTarget._id) {
+		GroceryItem.deleteOne(targetGroceryItem(reqTarget))
+			.then(data => {
+				// Remove the item from the owner's inventory of products.
+				updateUser(userId, removeFromUser);
+				res.end();
+			})
+			.catch(err => {
+				console.log("We've got a problem deleting the grocery item!");
+			});
+	} else {
+		console.log(
+			"You need to include the owner's id and the food's id when removing a grocery item!"
 		);
 	}
 });

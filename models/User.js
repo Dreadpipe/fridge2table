@@ -18,7 +18,7 @@ const userSchema = new Schema({
   allProducts: [ // An array of every foodID ever scanned into the inventory.
     {
       type: String,
-      ref: 'allProduct',
+      ref: 'historicProducts',
       required: true,
       default: null,
     },
@@ -27,6 +27,14 @@ const userSchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: 'product',
+      required: true,
+      default: null,
+    },
+  ],
+  groceryList: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'groceryItem',
       required: true,
       default: null,
     },
