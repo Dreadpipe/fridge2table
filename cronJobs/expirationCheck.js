@@ -26,12 +26,14 @@ const dailyCheck = function() {
 						.populate("allProduct")
 						.populate("inventoryProducts")
 						.then(data => {
-							const pushObj = {
-								productname: product.productname,
-								pushToken: data[0].pushToken,
-								message: "One of your items is expiring within the week."
-							};
-							SendPushNote(pushObj);
+							data[0].pushToken.forEach(token => {
+                const pushObj = {
+                  productname: product.productname,
+                  pushToken: token,
+                  message: "One of your items just expired!"
+                };
+                SendPushNote(pushObj);
+              })
 						})
 						.catch(err => {
 							console.log(
@@ -53,12 +55,14 @@ const dailyCheck = function() {
 						.populate("allProduct")
 						.populate("inventoryProducts")
 						.then(data => {
-							const pushObj = {
-								productname: product.productname,
-								pushToken: data[0].pushToken,
-								message: "One of your items is expiring within two days."
-							};
-							SendPushNote(pushObj);
+							data[0].pushToken.forEach(token => {
+                const pushObj = {
+                  productname: product.productname,
+                  pushToken: token,
+                  message: "One of your items just expired!"
+                };
+                SendPushNote(pushObj);
+              })
 						})
 						.catch(err => {
 							console.log(
