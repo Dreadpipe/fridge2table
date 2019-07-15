@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
 	}
 });
 
+// Variable to hold token globally to send to backend
 let expoToken = "";
-const PUSH_ENDPOINT = `https://immense-ravine-93808.herokuapp.com/users/push-token`;
 
 async function registerForPushNotifications() {
 	const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
@@ -36,7 +36,7 @@ async function registerForPushNotifications() {
 		return;
 	}
 	// console.log(status, token);
-	expoToken = token;
+  expoToken = token;
 }
 class Home extends React.Component {
 	constructor(props) {
@@ -67,7 +67,9 @@ class Home extends React.Component {
 				this.setState({ user: response.data[0], view: "fridge" }, () => {
 					registerForPushNotifications()
 						.then(() => {
-							this.addPushToken();
+              if (!this.state.user.pushToken.includes(expoToken)) {
+                this.addPushToken();
+              }
 						})
 						.catch(err => console.log(err));
 				});
@@ -89,7 +91,7 @@ class Home extends React.Component {
 		);
 	}
 
-	//Notification functions
+	// Notification functions
 
 	_handleNotification = notification => {
 		this.setState({ notification: notification });
@@ -104,7 +106,6 @@ class Home extends React.Component {
 	};
 
 	addPushToken = () => {
-    if (!this.state.user.pushToken.includes(expoToken)) {
       query = {
         target: {
           id: this.props.user.id
@@ -113,12 +114,7 @@ class Home extends React.Component {
           pushToken: expoToken
         }
       };
-      axios.put(
-        `https://immense-ravine-93808.herokuapp.com/updateUser`,
-        query,
-        {}
-      );
-    }
+      API.updateUser(query);
 	};
 
 	// Input-form functions:
