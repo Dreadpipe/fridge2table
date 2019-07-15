@@ -34,7 +34,7 @@ mongoose
 			//'0 0 0-23 1-31 * *' = Hourly Check.
 			//'0,15,30,45 * * * * *' = every 15 seconds
 			//'0 * * * * *' = once a minute
-new CronJob('0,15,30,45 * * * * *', function() {
+new CronJob('0 0 0-23 1-31 * *', function() {
 	dailyCheck();
 }, null, true, 'America/Los_Angeles');
 
@@ -42,3 +42,4 @@ new CronJob('0,15,30,45 * * * * *', function() {
 app.listen(PORT, function() {
 	console.log(`🌎  ==> API Server now listening on PORT ${PORT} !`);
 });     
+  
