@@ -67,7 +67,12 @@ class Home extends React.Component {
 				this.setState({ user: response.data[0], view: "fridge" }, () => {
 					registerForPushNotifications()
 						.then(() => {
-              if (!this.state.user.pushToken.includes(expoToken)) {
+              // First check if pushToken array contains more than one token, then if the array already contains the generated token
+              if ((Array.isArray(this.state.user.pushToken)) && (!this.state.user.pushToken.includes(expoToken))) {
+                // If not, adds the new token to the array
+                this.addPushToken();
+                // Otherwise, updates the token to the current device to incorporate old logic
+              } else {
                 this.addPushToken();
               }
 						})
