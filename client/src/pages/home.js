@@ -13,8 +13,8 @@ import ProductDetail from '../components/productDetails';
 import UpdateProduct from "../components/updateProduct";
 import Scanner from "../components/scanner";
 import Foot from "../components/foot";
-// import API from "../utils/API";
-import API from "./src/utils/API-dev.js";
+import API from "../utils/API";
+// import API from "../utils/API-dev.js";
 import { Notifications, Permissions } from "expo";
 import axios from "axios";
 
@@ -104,19 +104,21 @@ class Home extends React.Component {
 	};
 
 	addPushToken = () => {
-		query = {
-			target: {
-				id: this.props.user.id
-			},
-			update: {
-				pushToken: expoToken
-			}
-		};
-		axios.put(
-			`https://immense-ravine-93808.herokuapp.com/updateUser`,
-			query,
-			{}
-		);
+    if (!this.state.user.pushToken.includes(expoToken)) {
+      query = {
+        target: {
+          id: this.props.user.id
+        },
+        update: {
+          pushToken: expoToken
+        }
+      };
+      axios.put(
+        `https://immense-ravine-93808.herokuapp.com/updateUser`,
+        query,
+        {}
+      );
+    }
 	};
 
 	// Input-form functions:
