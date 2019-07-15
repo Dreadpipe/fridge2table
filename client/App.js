@@ -8,7 +8,7 @@ import FullFridge from "./src/components/fullFridge";
 import Home from "./src/pages/home";
 import jwtDecode from "jwt-decode";
 // import API from "./src/utils/API";
-import API from "./src/utils/API-dev.js";
+import API from "./src/utils/API-dev";
 import getEnvVars from "./env";
 import { Font, AppLoading } from "expo";
 import { Ionicons } from "@expo/vector-icons";
