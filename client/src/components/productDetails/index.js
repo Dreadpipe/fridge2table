@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		display: "flex",
 		flexDirection: "column",
-		justifyContent: "space-around",
+		justifyContent: "flex-start",
+		alignItems: "center",
 		padding: 20,
 		backgroundColor: "#EBF5FF"
 	},
@@ -30,27 +31,47 @@ const styles = StyleSheet.create({
 		display: "flex",
 		flexDirection: "row",
 		justifyContent: "space-between",
-		alignItems: "center"
+		alignItems: "center",
+		width: "100%"
 	},
 	detailsDiv: {
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
 		justifyContent: "space-between",
-		height: vh(25)
+		height: vh(25),
+		width: "100%",
+		marginTop: 8,
+		marginBottom: 40
+	},
+	detailLine: {
+		borderTopWidth: 1,
+		borderTopColor: "#8F8F8F",
+		padding: 8,
+		width: "100%"
 	},
 	expRow: {
 		display: "flex",
-		flexDirection: "row"
+		flexDirection: "row",
+		borderTopWidth: 1,
+		borderBottomWidth: 1,
+		borderTopColor: "#8F8F8F",
+		borderBottomColor: "#8F8F8F",
+		padding: 8,
+		width: "100%"
 	},
 	btnDiv: {
 		display: "flex",
 		flexDirection: "column",
-		alignItems: "center",
-		alignContent: 'center',
-		justifyContent: 'center',
-		textAlign: 'center'
-		
+		width: 200
+	},
+	btn: {
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "center",
+		height: vh(10),
+		width: 200,
+		marginBottom: 8
 	}
 });
 
@@ -71,9 +92,15 @@ function ProductDetail(props) {
 				/>
 			</View>
 			<View style={styles.detailsDiv}>
-				<H3>Location: {props.product.location}</H3>
-				<H3>Category: {props.product.category}</H3>
-				<H3>Quantity: {props.product.quantity}</H3>
+				<View style={styles.detailLine}>
+					<H3>Location: {props.product.location}</H3>
+				</View>
+				<View style={styles.detailLine}>
+					<H3>Category: {props.product.category}</H3>
+				</View>
+				<View style={styles.detailLine}>
+					<H3>Quantity: {props.product.quantity}</H3>
+				</View>
 				{(() => {
 					// Function to calculate difference between dates taken in part from this resource: https://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript
 					const _MS_PER_DAY = 1000 * 60 * 60 * 24;
@@ -90,7 +117,11 @@ function ProductDetail(props) {
 					const a = new Date();
 					const b = new Date(props.product.dateAdded);
 					const difference = dateDiffInDays(a, b);
-					return <H3>Added: {difference}d ago</H3>;
+					return (
+						<View style={styles.detailLine}>
+							<H3>Added: {difference}d ago</H3>
+						</View>
+					);
 				})()}
 				{(() => {
 					// Function to calculate difference between dates taken in part from this resource: https://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript
@@ -161,13 +192,29 @@ function ProductDetail(props) {
 				})()}
 			</View>
 			<View style={styles.btnDiv}>
-				<Button success onPress={() => props.editProduct(props.product._id)}>
+				<Button
+					success
+					style={styles.btn}
+					onPress={() => props.editProduct(props.product._id)}
+				>
 					<Icon name="edit" type="FontAwesome" />
 					<Text>Edit</Text>
 				</Button>
-				<Button danger onPress={() => props.deleteProduct(props.product._id)}>
+				<Button
+					warning
+					style={styles.btn}
+					onPress={() => props.deleteProduct(props.product._id)}
+				>
+					<Icon name="list" type="FontAwesome" />
+					<Text>Add to Grocery List</Text>
+				</Button>
+				<Button
+					danger
+					style={styles.btn}
+					onPress={() => props.deleteProduct(props.product._id)}
+				>
 					<Icon name="trash" type="FontAwesome" />
-					<Text>Delete </Text>
+					<Text>Delete</Text>
 				</Button>
 			</View>
 		</Content>
