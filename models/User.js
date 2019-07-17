@@ -11,10 +11,13 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  pushToken: {
+  pushToken: [
+    {
     type: String,
+    ref: 'pushTokens',
     required: false,
-  },
+  }
+],
   allProducts: [ // An array of every foodID ever scanned into the inventory.
     {
       type: String,

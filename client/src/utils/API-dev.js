@@ -21,5 +21,8 @@ export default {
 	},
 	getCurrentUser(id) {
 		return axios.get(`http://${IP_ADDRESS}:3001/findOneUser/${id}`);
-	}
+  },
+  updateUser(query) {
+    return axios.put(`http://${IP_ADDRESS}:3001/updateUser`, query);
+  }
 };
