@@ -43,8 +43,6 @@ const targetUser = function(reqTarget) {
 	if (finalTarget === undefined) {
 		console.log("There was no valid target.");
 	}
-	console.log("The target data will be:"); // REMOVE FOR FINAL DEPLOYMENT
-	console.log(finalTarget); // REMOVE FOR FINAL DEPLOYMENT
 	// Return the final target object that includes all the targetting parameters.
 	return finalTarget;
 }
@@ -53,7 +51,6 @@ const targetUser = function(reqTarget) {
 
 // Update User Function
 const updateUser = function(reqTarget, reqUpdate) {
-	console.log(reqTarget)
 	const finalTarget = targetUser(reqTarget); // Create a target object for the update by sending the requested target data through the targetUser function.
 	let finalUpdate = {}; // Establish an object that will be filled with the update parameters.
 	// If any of the following parameters exist, add them to the update object.
@@ -63,7 +60,9 @@ const updateUser = function(reqTarget, reqUpdate) {
 	}
 	// Update their push token for notifications
 	if (reqUpdate.pushToken !== undefined) {
-		Object.assign(finalUpdate, { pushToken: reqUpdate.pushToken });
+    Object.assign(finalUpdate, { 
+      $push:  {pushToken: reqUpdate.pushToken }
+    });
 	}
 	// Update their list of all Edamam scanned foods
 	if (reqUpdate.brandNewProduct !== undefined) {
@@ -81,6 +80,18 @@ const updateUser = function(reqTarget, reqUpdate) {
 	if (reqUpdate.removeThisProduct !== undefined) {
 		Object.assign(finalUpdate, {
 			$pullAll: { inventoryProducts: reqUpdate.removeThisProduct }
+		});
+	} 
+	// Update their grocery list by adding a new grocery items's ObjectId
+	if (reqUpdate.groceryObjId !== undefined) {
+		Object.assign(finalUpdate, {
+			$push: { groceryList: reqUpdate.groceryObjId }
+		});
+	}
+	// Update their inventory by removing the grocery item's ObjectId (which must be nested in an array).
+	if (reqUpdate.removeThisGrocery !== undefined) {
+		Object.assign(finalUpdate, {
+			$pullAll: { groceryList: reqUpdate.removeThisGrocery }
 		});
 	} 
 	// Update their number of expired products, incrementing up one.
@@ -103,12 +114,9 @@ const updateUser = function(reqTarget, reqUpdate) {
 	// Update their lastUpdated date
 	const now = Date.now();
 	Object.assign(finalUpdate, { lastUpdated: now });
-	console.log("The update data will be:"); // REMOVE FOR FINAL DEPLOYMENT
-	console.log(finalUpdate); // REMOVE FOR FINAL DEPLOYMENT
 	// Take the target and update objects and feed them to the database call
 	User.findOneAndUpdate(finalTarget, finalUpdate)
 		.then(data => {
-			console.log(data); // REMOVE FOR FINAL DEPLOYMENT
 			console.log("Update has been sent to the targeted User!");
 		})
 		.catch(err => {

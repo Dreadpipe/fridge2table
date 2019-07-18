@@ -54,7 +54,7 @@ function ViewProducts(props) {
 				keyExtractor={item => item._id}
 				renderItem={({ item }) => {
 					return (
-						<ListItem icon>
+						<ListItem icon onPress={() => props.toProductDetailScreen(item._id)}>
 							<Left>
 								<Thumbnail
 									square

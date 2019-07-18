@@ -3,10 +3,9 @@ const { User, Product } = require("../models");
 const { Expo } = require("expo-server-sdk");
 const { updateProduct } = require("../routes/productFunctions");
 
-// This function is called by the cron job in server.js to check for the expiration status of all food in the database. 
+// This function is called by the cron job in server.js to check for the expiration status of all food in the database.
 // Depending on the results, it triggers push notifications for our users.
 const dailyCheck = function() {
-	console.log("\nDaily Check"); // REMOVE FOR FINAL DEPLOYMENT
 	// Find all Products
 	Product.find({})
 		.populate("associatedRecipes")
@@ -27,12 +26,14 @@ const dailyCheck = function() {
 						.populate("allProduct")
 						.populate("inventoryProducts")
 						.then(data => {
-							const pushObj = {
-								productname: product.productname,
-								pushToken: data[0].pushToken,
-								message: "One of your items is expiring within the week."
-							};
-							SendPushNote(pushObj);
+							data[0].pushToken.forEach(token => {
+                const pushObj = {
+                  productname: product.productname,
+                  pushToken: token,
+                  message: "One of your items just expired!"
+                };
+                SendPushNote(pushObj);
+              })
 						})
 						.catch(err => {
 							console.log(
@@ -41,7 +42,7 @@ const dailyCheck = function() {
 						});
 					// Remove the sent seven-day warning from the item.
 					updateProduct({ _id: product._id }, { remove7DayWarning: true });
-				// If there is no seven day warning, but there is a remaining two day warning that has passed...
+					// If there is no seven day warning, but there is a remaining two day warning that has passed...
 				} else if (
 					product.sevenDayWarning === null &&
 					product.twoDayWarning !== null &&
@@ -54,12 +55,14 @@ const dailyCheck = function() {
 						.populate("allProduct")
 						.populate("inventoryProducts")
 						.then(data => {
-							const pushObj = {
-								productname: product.productname,
-								pushToken: data[0].pushToken,
-								message: "One of your items is expiring within two days."
-							};
-							SendPushNote(pushObj);
+							data[0].pushToken.forEach(token => {
+                const pushObj = {
+                  productname: product.productname,
+                  pushToken: token,
+                  message: "One of your items just expired!"
+                };
+                SendPushNote(pushObj);
+              })
 						})
 						.catch(err => {
 							console.log(
@@ -68,7 +71,7 @@ const dailyCheck = function() {
 						});
 					// Remove the sent two-day warning from the item.
 					updateProduct({ _id: product._id }, { remove2DayWarning: true });
-				// If there are no warnings left to send, and the expiration day has passed...
+					// If there are no warnings left to send, and the expiration day has passed...
 				} else if (
 					product.sevenDayWarning === null &&
 					product.twoDayWarning === null &&
@@ -83,12 +86,14 @@ const dailyCheck = function() {
 						.populate("allProduct")
 						.populate("inventoryProducts")
 						.then(data => {
-							const pushObj = {
-								productname: product.productname,
-								pushToken: data[0].pushToken,
-								message: "One of your items just expired!"
-							};
-							SendPushNote(pushObj);
+              data[0].pushToken.forEach(token => {
+                const pushObj = {
+                  productname: product.productname,
+                  pushToken: token,
+                  message: "One of your items just expired!"
+                };
+                SendPushNote(pushObj);
+              })
 						})
 						.catch(err => {
 							console.log(
@@ -96,11 +101,14 @@ const dailyCheck = function() {
 							);
 						});
 					// Mark the item as expired.
-					updateProduct({ _id: product._id, owner: product.owner }, { expiredOrNot: true });
+					updateProduct(
+						{ _id: product._id, owner: product.owner },
+						{ expiredOrNot: true }
+					);
 				} else if (product.expiredOrNot === true) {
 					console.log(`The ${product.productname} is expired!!!`);
 				} else {
-					console.log( 
+					console.log(
 						`There's not a seven-day, two-day, or expiration warning to send for the ${
 							product.productname
 						}!`
@@ -120,10 +128,15 @@ const SendPushNote = obj => {
 	let expo = new Expo();
 	// Create the messages that you want to send to clents
 	console.log(obj);
+	// Create an array of messages to send in bulk
 	let messages = [];
+	//Assign each receive push token to variable.
 	let pushToken = obj.pushToken;
+	// Create temp array for received push tokens
 	let somePushTokens = [];
+	//Push received tokes into temp array
 	somePushTokens.push(pushToken);
+	//Loop through temp array
 	for (let pushToken of somePushTokens) {
 		// Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
 		// Check that all your push tokens appear to be valid Expo push tokens
@@ -141,81 +154,72 @@ const SendPushNote = obj => {
 			data: { expFood: obj.productname }
 		});
 	}
-	// The Expo push notification service accepts batches of notifications so
-	// that you don't need to send 1000 requests to send 1000 notifications. We
-	// recommend you batch your notifications to reduce the number of requests
-	// and to compress them (notifications with similar content will get
-	// compressed).
+	//Chunking together multiple notications to send at once
 	let chunks = expo.chunkPushNotifications(messages);
+	//Create array for response from each chunk
 	let tickets = [];
 	(async () => {
-		// Send the chunks to the Expo push notification service. There are
-		// different strategies you could use. A simple one is to send one chunk at a
-		// time, which nicely spreads the load out over time:
+		// Send one chunk at a time, which nicely spreads the load out.
 		for (let chunk of chunks) {
 			try {
+				// Assign variable for response from sendPushNotifiationAsync
 				let ticketChunk = await expo.sendPushNotificationsAsync(chunk);
+				// Console log the response.
 				console.log(ticketChunk);
+				// Push each response into tickets array.
 				tickets.push(...ticketChunk);
-				// NOTE: If a ticket contains an error code in ticket.details.error, you
-				// must handle it appropriately. The error codes are listed in the Expo
-				// documentation:
-				// https://docs.expo.io/versions/latest/guides/push-notifications#response-format
 			} catch (error) {
 				console.error(error);
 			}
 		}
 	})();
-	// ...
-	// Later, after the Expo push notification service has delivered the
-	// notifications to Apple or Google (usually quickly, but allow the the service
-	// up to 30 minutes when under load), a "receipt" for each notification is
-	// created. The receipts will be available for at least a day; stale receipts
-	// are deleted.
-	//
-	// The ID of each receipt is sent back in the response "ticket" for each
-	// notification. In summary, sending a notification produces a ticket, which
-	// contains a receipt ID you later use to get the receipt.
-	//
-	// The receipts may contain error codes to which you must respond. In
-	// particular, Apple or Google may block apps that continue to send
-	// notifications to devices that have blocked notifications or have uninstalled
-	// your app. Expo does not control this policy and sends back the feedback from
-	// Apple and Google so you can handle it appropriately.
+	//Wait for response from Apple or Google
+	// ...THEN...
+	// Create array to hold responses from sendPushNotificationsAsynch
 	let receiptIds = [];
+	// Loop through each response
 	for (let ticket of tickets) {
 		// NOTE: Not all tickets have IDs; for example, tickets for notifications
 		// that could not be enqueued will have error information and no receipt ID.
+		// Check if ticket contains id
 		if (ticket.id) {
+			//If no error, push ticket.id into response array
 			receiptIds.push(ticket.id);
 		}
 	}
+	// Assign variable for response from sending receiptsIds
 	let receiptIdChunks = expo.chunkPushNotificationReceiptIds(receiptIds);
 	(async () => {
-		// Like sending notifications, there are different strategies you could use
-		// to retrieve batches of receipts from the Expo service.
+		// Chunk together multiple receiptIds to send at once.
+		// Loop through each chunk
 		for (let chunk of receiptIdChunks) {
 			try {
+				// Assign variable for receiptId chunk response
 				let receipts = await expo.getPushNotificationReceiptsAsync(chunk);
+				// Console log response
 				console.log(receipts);
-
 				// The receipts specify whether Apple or Google successfully received the
 				// notification and information about an error, if one occurred.
+				// Loop through each receipt
 				for (let receipt of receipts) {
+					//If no error
 					if (receipt.status === "ok") {
+						//Keep checking receipts
 						continue;
+						//If receipt contained an error
 					} else if (receipt.status === "error") {
+						//Message did not send
 						console.error(
 							`There was an error sending a notification: ${receipt.message}`
 						);
+						// If error details exists
 						if (receipt.details && receipt.details.error) {
-							// The error codes are listed in the Expo documentation:
-							// https://docs.expo.io/versions/latest/guides/push-notifications#response-format
-							// You must handle the errors appropriately.
+							// Print the code to console.
 							console.error(`The error code is ${receipt.details.error}`);
 						}
 					}
 				}
+				//Catch any external errors and log them.
 			} catch (error) {
 				console.error(error);
 			}

@@ -5,7 +5,6 @@ const { targetUser, updateUser } = require("./userFunctions");
 
 // Target Product Function
 const targetProduct = function(reqTarget) {
-	console.log(reqTarget); // REMOVE FOR FINAL DEPLOYMENT
 	let finalTarget = {}; // Establish an object that will be filled with the targeting parameters.
 	// If any of the following parameters exist, add them to the target object.
 	// Target a product by its name
@@ -32,7 +31,7 @@ const targetProduct = function(reqTarget) {
 	if (reqTarget.lessThanQuantity !== undefined) {
 		Object.assign(finalTarget, { quantity: { $lte: lessThanQuantity } });
 	}
-	// Target a product by its quantity if it is less than a number provided in the "greaterThanQuantity" variable
+	// Target a product by its quantity if it is greater than a number provided in the "greaterThanQuantity" variable
 	if (reqTarget.greaterThanQuantity !== undefined) {
 		Object.assign(finalTarget, { quantity: { $gte: greaterThanQuantity } });
 	}
@@ -64,8 +63,6 @@ const targetProduct = function(reqTarget) {
 	if (finalTarget === undefined) {
 		console.log("There was no valid target.");
 	}
-	console.log("The target data will be:"); // REMOVE FOR FINAL DEPLOYMENT
-	console.log(finalTarget); // REMOVE FOR FINAL DEPLOYMENT
 	// Return the final target object that includes all the targetting parameters.
 	return finalTarget;
 }
@@ -183,8 +180,6 @@ const updateProduct = function(reqTarget, reqUpdate) {
 	// Update its lastUpdated date
 	const now = Date.now();
 	Object.assign(finalUpdate, { lastUpdated: now });
-	console.log("The update data will be:"); // REMOVE FOR FINAL DEPLOYMENT
-	console.log(finalUpdate); // REMOVE FOR FINAL DEPLOYMENT
 	// Take the target and update objects and feed them to the database call
 	Product.findOneAndUpdate(finalTarget, finalUpdate)
 		.then(data => {

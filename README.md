@@ -9,7 +9,7 @@ Fridge2Table has one overarching goal - to make the modern problem of food manag
 Every feature of our app has the singular goal of enhancing the food management experience for our users, and we intend to make that experience great.
 
 ## Deployment 
-Our app will be deployed on Android through the Google Play store - [Fridge2Table Storefront](). The back end will be hosted on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas), and our server will be hosted on [Heroku](https://www.heroku.com/). 
+Our app will be deployed on Android through the Google Play store - [Fridge2Table Storefront](https://play.google.com/store/apps/details?id=com.dreamteamdesigns.fridge2table). The back end will be hosted on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas), and our server will be hosted on [Heroku](https://www.heroku.com/). 
 
 ## MVP
 * Have a login/signup page. 
@@ -62,7 +62,11 @@ Our app will be using the following API:
 * The iOS date adding component resists being centered on the screen, and there is no submit button. This seems to be an issue primarily with the iOS.
 
 ## Future Features / Icebox
-When looking to the future of "Fridge2Table," we want to furthur our goal of helping users manage their food from purchase to when they finally enjoy it at their table. When we think about this goal, there are clear avenues for expanding our app's functionality. With the following future features, our users will be able to make and store recipies, connect their favorite foods as ingredients to those recipies, and see which recipes they can make with the food thay have. If they're missing food from their home inventory, our users will be able to automatically or manually create shopping lists with new items and items populated from their inventory, past and present. 
+When looking to the future of "Fridge2Table," we want to furthur our goal of helping users manage their food from purchase to when they finally enjoy it at their table. When we think about this goal, there are clear avenues for expanding our app's functionality. With the following future features, our users will be able to make and store recipies, connect their favorite foods as ingredients to those recipies, and see which recipes they can make with the food thay have. If they're missing food from their home inventory, our users will be able to automatically or manually create shopping lists with new items and items populated from their inventory, past and present.
+* Add multi-device push notification functionality. 
+* A more in-depth informational modal for each food item that pops up when the user clicks the list item. This modal would include the full name, the expiration dates, a date-since- added counter, ingredients, and clear large buttons to access the multiple ways they can interact with the item.
+* Add a CronJob to eliminate user's food data that haven't logged in within a year.
+* Add a toggle button to the sort options that toggles between the expiration date and the daily counter data points. 
 * A "Historic Inventory" list of all items they put into the inventory using the Edamam API.
 * A grocery list, unique to each user, to which users can add new products, and products from their Historic inventory.
 * Allow users to track how much of an item is left in servings matching those on the food label.
