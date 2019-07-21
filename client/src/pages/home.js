@@ -9,7 +9,7 @@ import Freezer from "../components/freezer";
 import Pantry from "../components/pantry";
 import AddProduct from "../components/addProduct";
 import ViewProducts from "../components/viewProducts";
-import ProductDetail from '../components/productDetails';
+import ProductDetail from "../components/productDetails";
 import UpdateProduct from "../components/updateProduct";
 import Scanner from "../components/scanner";
 import Foot from "../components/foot";
@@ -36,7 +36,7 @@ async function registerForPushNotifications() {
 		return;
 	}
 	// console.log(status, token);
-  expoToken = token;
+	expoToken = token;
 }
 class Home extends React.Component {
 	constructor(props) {
@@ -67,14 +67,17 @@ class Home extends React.Component {
 				this.setState({ user: response.data[0], view: "fridge" }, () => {
 					registerForPushNotifications()
 						.then(() => {
-              // First check if pushToken array contains more than one token, then if the array already contains the generated token
-              if ((Array.isArray(this.state.user.pushToken)) && (!this.state.user.pushToken.includes(expoToken))) {
-                // If not, adds the new token to the array
-                this.addPushToken();
-                // Otherwise, updates the token to the current device to incorporate old logic
-              } else {
-                this.addPushToken();
-              }
+							// First check if pushToken array contains more than one token, then if the array already contains the generated token
+							if (
+								Array.isArray(this.state.user.pushToken) &&
+								!this.state.user.pushToken.includes(expoToken)
+							) {
+								// If not, adds the new token to the array
+								this.addPushToken();
+								// Otherwise, updates the token to the current device to incorporate old logic
+							} else {
+								this.addPushToken();
+							}
 						})
 						.catch(err => console.log(err));
 				});
@@ -111,15 +114,15 @@ class Home extends React.Component {
 	};
 
 	addPushToken = () => {
-      query = {
-        target: {
-          id: this.props.user.id
-        },
-        update: {
-          pushToken: expoToken
-        }
-      };
-      API.updateUser(query);
+		query = {
+			target: {
+				id: this.props.user.id
+			},
+			update: {
+				pushToken: expoToken
+			}
+		};
+		API.updateUser(query);
 	};
 
 	// Input-form functions:
@@ -242,12 +245,15 @@ class Home extends React.Component {
 		this.setState({ view: "addProduct" });
 	};
 
-	toProductDetailScreen = (id) => {
+	toProductDetailScreen = id => {
 		const filteredProducts = this.state.user.inventoryProducts.filter(
 			product => product._id === id
 		);
-		this.setState({view: 'productDetail', productToDetail: filteredProducts[0]})
-	}
+		this.setState({
+			view: "productDetail",
+			productToDetail: filteredProducts[0]
+		});
+	};
 
 	toAddProductScreenClear = () => {
 		this.setState({
@@ -323,6 +329,10 @@ class Home extends React.Component {
 						API.removeFood(data)
 							.then(() => {
 								this.updateUser();
+								this.setState({
+									view: "viewProducts",
+									productView: "all"
+								});
 							})
 							.catch(err => console.log(err));
 					}
@@ -718,8 +728,12 @@ class Home extends React.Component {
 							break;
 						case "productDetail":
 							return (
-								<ProductDetail product={this.state.productToDetail} />
-							)
+								<ProductDetail
+									editProduct={this.editProduct}
+									deleteProduct={this.deleteProduct}
+									product={this.state.productToDetail}
+								/>
+							);
 							break;
 						case "updateProduct":
 							return (
