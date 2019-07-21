@@ -41,5 +41,4 @@ new CronJob('0 0 0-23 1-31 * *', function() {
 //Start server
 app.listen(PORT, function() {
 	console.log(`🌎  ==> API Server now listening on PORT ${PORT} !`);
-});     
-  
+});
