@@ -32,10 +32,17 @@ export default {
 		return axios.get(
 			`https://immense-ravine-93808.herokuapp.com/findOneUser/${id}`
 		);
-  },
-  updateUser(query) {
-    return axios.put(`https://immense-ravine-93808.herokuapp.com/updateUser`,
-      query
-    );
-  }
+	},
+	updateUser(query) {
+		return axios.put(
+			`https://immense-ravine-93808.herokuapp.com/updateUser`,
+			query
+		);
+	},
+	postGroceryItem(item) {
+		return axios.post(
+			`https://immense-ravine-93808.herokuapp.com/newGroceryItem`,
+			item
+		);
+	}
 };

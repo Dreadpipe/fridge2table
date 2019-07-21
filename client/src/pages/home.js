@@ -222,6 +222,7 @@ class Home extends React.Component {
 	updateUser = () => {
 		API.getCurrentUser(this.state.user.thirdPartyId)
 			.then(response => {
+				console.log(response.data[0])
 				this.setState({ user: response.data[0] });
 			})
 			.catch(err => console.log(err));
@@ -442,6 +443,27 @@ class Home extends React.Component {
 				return alert("Product updated! Click OK to view updated products");
 			})
 			.catch(err => console.log(err));
+	};
+
+	// Grocery-List Functions
+
+	addGroceryItem = id => {
+		// View is set to "spinner" while the updateProduct function is processed
+		this.setState({ view: "spinner" });
+		// Filter call that returns only the product with the matching id
+		const filteredProducts = this.state.user.inventoryProducts.filter(
+			product => product._id === id
+		);
+		const groceryItem = {
+			name: filteredProducts[0].productname,
+			category: filteredProducts[0].category,
+			pic: filteredProducts[0].pic,
+			needed: 1,
+			userId: filteredProducts[0].owner
+		};
+		API.postGroceryItem(groceryItem).then(() => {
+			this.updateUser()
+		})
 	};
 
 	// Render function
@@ -731,6 +753,7 @@ class Home extends React.Component {
 								<ProductDetail
 									editProduct={this.editProduct}
 									deleteProduct={this.deleteProduct}
+									addGroceryItem={this.addGroceryItem}
 									product={this.state.productToDetail}
 								/>
 							);

@@ -27,13 +27,13 @@ const dailyCheck = function() {
 						.populate("inventoryProducts")
 						.then(data => {
 							data[0].pushToken.forEach(token => {
-                const pushObj = {
-                  productname: product.productname,
-                  pushToken: token,
-                  message: "One of your items just expired!"
-                };
-                SendPushNote(pushObj);
-              })
+								const pushObj = {
+									productname: product.productname,
+									pushToken: token,
+									message: `Your ${product.productname} is expiring in seven days!`
+								};
+								SendPushNote(pushObj);
+							});
 						})
 						.catch(err => {
 							console.log(
@@ -56,13 +56,13 @@ const dailyCheck = function() {
 						.populate("inventoryProducts")
 						.then(data => {
 							data[0].pushToken.forEach(token => {
-                const pushObj = {
-                  productname: product.productname,
-                  pushToken: token,
-                  message: "One of your items just expired!"
-                };
-                SendPushNote(pushObj);
-              })
+								const pushObj = {
+									productname: product.productname,
+									pushToken: token,
+									message: `Your ${product.productname} is expiring in two days!`
+								};
+								SendPushNote(pushObj);
+							});
 						})
 						.catch(err => {
 							console.log(
@@ -86,14 +86,14 @@ const dailyCheck = function() {
 						.populate("allProduct")
 						.populate("inventoryProducts")
 						.then(data => {
-              data[0].pushToken.forEach(token => {
-                const pushObj = {
-                  productname: product.productname,
-                  pushToken: token,
-                  message: "One of your items just expired!"
-                };
-                SendPushNote(pushObj);
-              })
+							data[0].pushToken.forEach(token => {
+								const pushObj = {
+									productname: product.productname,
+									pushToken: token,
+									message: `Your ${product.productname} has expired!`
+								};
+								SendPushNote(pushObj);
+							});
 						})
 						.catch(err => {
 							console.log(

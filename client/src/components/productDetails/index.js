@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
 });
 
 function ProductDetail(props) {
-	console.log(props.product);
 	return (
 		<Content contentContainerStyle={styles.content}>
 			<View style={styles.nameDiv}>
@@ -207,7 +206,7 @@ function ProductDetail(props) {
 				<Button
 					warning
 					style={styles.btn}
-					onPress={() => props.addProductToGroceryList(props.product._id)}
+					onPress={() => props.addGroceryItem(props.product._id)}
 				>
 					<Icon name="list" type="FontAwesome" />
 					<Text>Add to Grocery List</Text>
