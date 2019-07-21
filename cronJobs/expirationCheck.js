@@ -3,8 +3,8 @@ const { User, Product } = require("../models");
 const { Expo } = require("expo-server-sdk");
 const { updateProduct } = require("../routes/productFunctions");
 
-// This function is called by the cron job in server.js to check for the expiration status of all food in the database.
-// Depending on the results, it triggers push notifications for our users.
+/* This function is called by the cron job in server.js to check for the expiration status of all food in the database.
+Depending on the results, it triggers push notifications for our users. */
 const dailyCheck = function() {
 	// Find all Products
 	Product.find({})

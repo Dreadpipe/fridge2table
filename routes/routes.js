@@ -9,6 +9,7 @@ const { GroceryItem, Product, User } = require("../models");
 const { targetUser, updateUser } = require("./userFunctions");
 const { targetProduct, updateProduct } = require("./productFunctions");
 const { targetGroceryItem, updateGroceryItem } = require("./groceryFunctions");
+const { finishShopping } = require("./finishShopping");
 const { addDays, subtractDays } = require("./dateFunctions");
 
 //++++++++++++++++++++++
@@ -338,6 +339,13 @@ router.put("/updateGroceryItem", function(req, res) {
 	updateGroceryItem(reqTarget, reqUpdate);
 	res.end();
 });
+
+// Finish Shopping
+router.put("/finishShopping/:ownerid", function(req, res) {
+	const grocerListOwner = req.params.ownerid
+	finishShopping(grocerListOwner);
+	res.end();
+})
 
 //++++++++++++++++++++++
 // All DELETE Routes Below ------------
