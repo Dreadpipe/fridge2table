@@ -32,19 +32,6 @@ const options = {
   socketTimeoutMS: 25000
 };
 
-// Cron to create open connections, set to every minute.
-// new CronJob('0 * * * * *', function() {
-//   console.log("\nConnecting to DB");
-//   mongoose.disconnect();
-//   //Connect to Mongo
-//   mongoose
-//     .connect(process.env.MONGODB_URI || "mongodb://localhost/fridge2table", options)
-//     .catch(function(err) {
-//       console.log("We've got a problem with the database!");
-//       console.log(err);
-//     });
-// }, null, true, 'America/Los_Angeles');
-
 // //Connect to Mongo
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fridge2table", options)
 .catch(function(err) {
@@ -52,18 +39,12 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fridge2table", 
   console.log(err);
 });
 
-// Cron to disconnect the server, set for every 15 seconds.
-// new CronJob('0,15,30,45 * * * * *', function() {
-//   console.log("\nDisconnecting from DB")
-//   mongoose.disconnect();
-// }, null, true, 'America/Los_Angeles');
-
 
 			//'0 0 0 1-31 * *' = Daily Check.
 			//'0 0 0-23 1-31 * *' = Hourly Check.
 			//'0,15,30,45 * * * * *' = every 15 seconds
 			//'0 * * * * *' = once a minute
-new CronJob('0,15,30,45 * * * * *', function() {
+new CronJob('0 0 0-23 1-31 * *', function() {
 	dailyCheck();
 }, null, true, 'America/Los_Angeles');
 
