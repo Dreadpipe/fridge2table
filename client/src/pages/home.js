@@ -10,6 +10,7 @@ import Pantry from "../components/pantry";
 import AddProduct from "../components/addProduct";
 import ViewProducts from "../components/viewProducts";
 import ProductDetail from "../components/productDetails";
+import GroceryList from "../components/groceryList";
 import UpdateProduct from "../components/updateProduct";
 import Scanner from "../components/scanner";
 import Foot from "../components/foot";
@@ -81,7 +82,7 @@ class Home extends React.Component {
 				if (response.data[0].inventoryProducts.length === 0) {
 					// Toast that pops up if user doesn't have any products
 					Toast.show({
-						text: `Welcome to Fridge2Table! Looks like you don't have any products. Click "Add New Product" down here!`,
+						text: `Welcome to Fridge2Table! Looks like you don't have any products. Click "New Product" down here!`,
 						buttonText: "Okay",
 						position: "bottom",
 						type: "warning",
@@ -252,6 +253,10 @@ class Home extends React.Component {
 			productToDetail: filteredProducts[0]
 		});
 	};
+
+	toGroceryListScreen = () => {
+		this.setState({view: 'groceryList'})
+	}
 
 	toAddProductScreenClear = () => {
 		this.setState({
@@ -755,6 +760,11 @@ class Home extends React.Component {
 								/>
 							);
 							break;
+						case "groceryList":
+							return (
+								<GroceryList groceryItems={this.state.user.groceryList}/>
+							)
+							break;
 						case "updateProduct":
 							return (
 								<UpdateProduct
@@ -795,6 +805,7 @@ class Home extends React.Component {
 				})()}
 				<Foot
 					toAddProductScreenClear={this.toAddProductScreenClear}
+					toGroceryListScreen={this.toGroceryListScreen}
 					viewAllProducts={() =>
 						this.setState({
 							view: "viewProducts",
