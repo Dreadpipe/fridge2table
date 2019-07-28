@@ -26,6 +26,6 @@ export default {
 		return axios.put(`http://${IP_ADDRESS}:3001/updateUser`, query);
 	},
 	postGroceryItem(item) {
-		return axios.post(`http://${IP_ADDRESS}:3001/newGroceryItem`, item)
+		return axios.post(`http://${IP_ADDRESS}:3001/newGroceryItem`, item);
 	}
 };
