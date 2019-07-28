@@ -20,15 +20,25 @@ app.use(express.json());
 //Routes
 app.use("/", routes);
 
-//Connect to Mongo
-mongoose
-	.connect(process.env.MONGODB_URI || "mongodb://localhost/fridge2table", {
-		useNewUrlParser: true
-	})
-	.catch(function(err) {
-		console.log("We've got a problem with the database!");
-		console.log(err);
-	});
+//Connection options
+const options = {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  reconnectTries: 5,
+  reconnectInterval: 500,
+  poolSize: 10,
+  bufferMaxEntries: 0,
+  connectTimeoutMS: 10000, 
+  socketTimeoutMS: 25000
+};
+
+// //Connect to Mongo
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fridge2table", options)
+.catch(function(err) {
+  console.log("We've got a problem with the database!");
+  console.log(err);
+});
+
 
 			//'0 0 0 1-31 * *' = Daily Check.
 			//'0 0 0-23 1-31 * *' = Hourly Check.
