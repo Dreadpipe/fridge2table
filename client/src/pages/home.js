@@ -9,7 +9,8 @@ import Freezer from "../components/freezer";
 import Pantry from "../components/pantry";
 import AddProduct from "../components/addProduct";
 import ViewProducts from "../components/viewProducts";
-import ProductDetail from '../components/productDetails';
+import ProductDetail from "../components/productDetails";
+import GroceryList from "../components/groceryList";
 import UpdateProduct from "../components/updateProduct";
 import Scanner from "../components/scanner";
 import Foot from "../components/foot";
@@ -36,7 +37,7 @@ async function registerForPushNotifications() {
 		return;
 	}
 	// console.log(status, token);
-  expoToken = token;
+	expoToken = token;
 }
 class Home extends React.Component {
 	constructor(props) {
@@ -71,9 +72,9 @@ class Home extends React.Component {
               if ((Array.isArray(this.state.user.pushToken)) && (!this.state.user.pushToken.includes(expoToken))) {
                 // If not, adds the new token to the array
                 this.addPushToken();
-                // Otherwise, updates the token to the current device to incorporate old logic
+                // Logs that the token already exists
               } else {
-                this.addPushToken();
+                return console.log("User already has this push token saved!");
               }
 						})
 						.catch(err => console.log(err));
@@ -81,7 +82,7 @@ class Home extends React.Component {
 				if (response.data[0].inventoryProducts.length === 0) {
 					// Toast that pops up if user doesn't have any products
 					Toast.show({
-						text: `Welcome to Fridge2Table! Looks like you don't have any products. Click "Add New Product" down here!`,
+						text: `Welcome to Fridge2Table! Looks like you don't have any products. Click "New Product" down here!`,
 						buttonText: "Okay",
 						position: "bottom",
 						type: "warning",
@@ -111,15 +112,15 @@ class Home extends React.Component {
 	};
 
 	addPushToken = () => {
-      query = {
-        target: {
-          id: this.props.user.id
-        },
-        update: {
-          pushToken: expoToken
-        }
-      };
-      API.updateUser(query);
+		query = {
+			target: {
+				id: this.props.user.id
+			},
+			update: {
+				pushToken: expoToken
+			}
+		};
+		API.updateUser(query);
 	};
 
 	// Input-form functions:
@@ -219,6 +220,7 @@ class Home extends React.Component {
 	updateUser = () => {
 		API.getCurrentUser(this.state.user.thirdPartyId)
 			.then(response => {
+				console.log(response.data[0])
 				this.setState({ user: response.data[0] });
 			})
 			.catch(err => console.log(err));
@@ -242,11 +244,18 @@ class Home extends React.Component {
 		this.setState({ view: "addProduct" });
 	};
 
-	toProductDetailScreen = (id) => {
+	toProductDetailScreen = id => {
 		const filteredProducts = this.state.user.inventoryProducts.filter(
 			product => product._id === id
 		);
-		this.setState({view: 'productDetail', productToDetail: filteredProducts[0]})
+		this.setState({
+			view: "productDetail",
+			productToDetail: filteredProducts[0]
+		});
+	};
+
+	toGroceryListScreen = () => {
+		this.setState({view: 'groceryList'})
 	}
 
 	toAddProductScreenClear = () => {
@@ -323,6 +332,10 @@ class Home extends React.Component {
 						API.removeFood(data)
 							.then(() => {
 								this.updateUser();
+								this.setState({
+									view: "viewProducts",
+									productView: "all"
+								});
 							})
 							.catch(err => console.log(err));
 					}
@@ -432,6 +445,27 @@ class Home extends React.Component {
 				return alert("Product updated! Click OK to view updated products");
 			})
 			.catch(err => console.log(err));
+	};
+
+	// Grocery-List Functions
+
+	addGroceryItem = id => {
+		// View is set to "spinner" while the updateProduct function is processed
+		this.setState({ view: "spinner" });
+		// Filter call that returns only the product with the matching id
+		const filteredProducts = this.state.user.inventoryProducts.filter(
+			product => product._id === id
+		);
+		const groceryItem = {
+			name: filteredProducts[0].productname,
+			category: filteredProducts[0].category,
+			pic: filteredProducts[0].pic,
+			needed: 1,
+			userId: filteredProducts[0].owner
+		};
+		API.postGroceryItem(groceryItem).then(() => {
+			this.updateUser()
+		})
 	};
 
 	// Render function
@@ -718,7 +752,17 @@ class Home extends React.Component {
 							break;
 						case "productDetail":
 							return (
-								<ProductDetail product={this.state.productToDetail} />
+								<ProductDetail
+									editProduct={this.editProduct}
+									deleteProduct={this.deleteProduct}
+									addGroceryItem={this.addGroceryItem}
+									product={this.state.productToDetail}
+								/>
+							);
+							break;
+						case "groceryList":
+							return (
+								<GroceryList groceryItems={this.state.user.groceryList}/>
 							)
 							break;
 						case "updateProduct":
@@ -761,6 +805,7 @@ class Home extends React.Component {
 				})()}
 				<Foot
 					toAddProductScreenClear={this.toAddProductScreenClear}
+					toGroceryListScreen={this.toGroceryListScreen}
 					viewAllProducts={() =>
 						this.setState({
 							view: "viewProducts",

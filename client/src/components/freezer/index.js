@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 
 const noItemsToast = () => {
 	Toast.show({
-		text: `You haven't added any items in this category. Click "Add New Product" below!`,
+		text: `You haven't added any items in this category. Click "New Product" below!`,
 		buttonText: "Okay",
 		position: "bottom",
 		type: "warning",

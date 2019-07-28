@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		display: "flex",
 		flexDirection: "column",
-		justifyContent: "flex-start",
+		justifyContent: "center",
 		alignItems: "center",
 		padding: 20,
 		backgroundColor: "#EBF5FF"
@@ -38,13 +38,15 @@ const styles = StyleSheet.create({
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
-		justifyContent: "space-between",
-		height: vh(25),
 		width: "100%",
-		marginTop: 8,
-		marginBottom: 40
+		marginTop: vh(3),
+		marginBottom: vh(3)
 	},
 	detailLine: {
+		display: 'flex',
+		flexDirection: 'row',
+		alignItems: 'center',
+		height: 40,
 		borderTopWidth: 1,
 		borderTopColor: "#8F8F8F",
 		padding: 8,
@@ -53,11 +55,13 @@ const styles = StyleSheet.create({
 	expRow: {
 		display: "flex",
 		flexDirection: "row",
+		alignItems: 'center',
 		borderTopWidth: 1,
 		borderBottomWidth: 1,
 		borderTopColor: "#8F8F8F",
 		borderBottomColor: "#8F8F8F",
 		padding: 8,
+		height: 40,
 		width: "100%"
 	},
 	btnDiv: {
@@ -69,14 +73,13 @@ const styles = StyleSheet.create({
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "center",
-		height: vh(10),
+		height: vh(9),
 		width: 200,
 		marginBottom: 8
 	}
 });
 
 function ProductDetail(props) {
-	console.log(props.product);
 	return (
 		<Content contentContainerStyle={styles.content}>
 			<View style={styles.nameDiv}>
@@ -203,7 +206,7 @@ function ProductDetail(props) {
 				<Button
 					warning
 					style={styles.btn}
-					onPress={() => props.deleteProduct(props.product._id)}
+					onPress={() => props.addGroceryItem(props.product._id)}
 				>
 					<Icon name="list" type="FontAwesome" />
 					<Text>Add to Grocery List</Text>
