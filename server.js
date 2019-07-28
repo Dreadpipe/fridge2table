@@ -63,9 +63,9 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fridge2table", 
 			//'0 0 0-23 1-31 * *' = Hourly Check.
 			//'0,15,30,45 * * * * *' = every 15 seconds
 			//'0 * * * * *' = once a minute
-// new CronJob('0,15,30,45 * * * * *', function() {
-// 	dailyCheck();
-// }, null, true, 'America/Los_Angeles');
+new CronJob('0,15,30,45 * * * * *', function() {
+	dailyCheck();
+}, null, true, 'America/Los_Angeles');
 
 //Start server
 app.listen(PORT, function() {
