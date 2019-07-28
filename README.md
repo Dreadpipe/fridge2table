@@ -11,7 +11,7 @@ Every feature of our app has the singular goal of enhancing the food management 
 ## Deployment 
 Our app will be deployed on Android through the Google Play store - [Fridge2Table Storefront](https://play.google.com/store/apps/details?id=com.dreamteamdesigns.fridge2table). The back end will be hosted on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas), and our server will be hosted on [Heroku](https://www.heroku.com/). 
 
-## MVP
+## Completed MVP
 * Have a login/signup page. 
 
 ![Login Screen and Sign-Up](./readmegifs/login.gif)
@@ -35,6 +35,9 @@ Our app will be deployed on Android through the Google Play store - [Fridge2Tabl
 
 ![Push Notification Gif](./readmegifs/push_notification.gif)
 
+## Active MVP
+Features currently in production include:
+* 
 
 ## Dependencies
 Our app will be using the following NPM:
@@ -46,24 +49,23 @@ Our app will be using the following NPM:
     * [Expo-server-sdk](https://github.com/expo/expo-server-sdk-node) - We will use Expo SDK to run on any native environment in which Expo is present.
     * [Expo Barcode](https://docs.expo.io/versions/latest/sdk/bar-code-scanner/) - Uses Expo to access the camera and read barcodes through the device's own functionality.
     * [Expo Push Notifications](https://docs.expo.io/versions/latest/guides/push-notifications/) - Uses Expo to access the device's push notification utility.
-* [Express](https://www.npmjs.com/package/express) - We will be using Express to communicate between our back and front ends.
+* [Express](https://www.npmjs.com/package/express) - We are using Express to communicate between our back and front ends.
 * [Firebase](https://firebase.google.com/) - We use Firebase Cloud Messaging to trigger expo's push notification API remotely via the project's credentials.
-* [MongoDB](https://www.npmjs.com/package/mongodb) - Our database will be Mongo.
+* [MongoDB](https://www.npmjs.com/package/mongodb) - Our database is MongoDB.
 * [Mongoose](https://www.npmjs.com/package/mongoose) - We will be using the Mongoose ORM to manipulate our database.
 * [React](https://reactjs.org/), [React Native](https://facebook.github.io/react-native/) - Our app is first and foremost a mobile React app, utilizing React Router for our pages, and React Native for our mobile structure.
   _As part of our React program we will be using the following tech_
   * [Native Base](https://nativebase.io/) - Component library for React Native.
 
 ## API
-Our app will be using the following API:
-* [Edamam](https://developer.edamam.com/) - Edamam will be our food and recipe API.
+Our app is using the following API:
+* [Edamam](https://developer.edamam.com/) - Edamam is our food and recipe API.
 
 ## Active Bugs and Issues
 * The iOS date adding component resists being centered on the screen, and there is no submit button. This seems to be an issue primarily with the iOS.
 
 ## Future Features / Icebox
 When looking to the future of "Fridge2Table," we want to furthur our goal of helping users manage their food from purchase to when they finally enjoy it at their table. When we think about this goal, there are clear avenues for expanding our app's functionality. With the following future features, our users will be able to make and store recipies, connect their favorite foods as ingredients to those recipies, and see which recipes they can make with the food thay have. If they're missing food from their home inventory, our users will be able to automatically or manually create shopping lists with new items and items populated from their inventory, past and present.
-* A more in-depth informational modal for each food item that pops up when the user clicks the list item. This modal would include the full name, the expiration dates, a date-since- added counter, ingredients, and clear large buttons to access the multiple ways they can interact with the item.
 * Add a CronJob to eliminate user's food data that haven't logged in within a year.
 * Add a toggle button to the sort options that toggles between the expiration date and the daily counter data points. 
 * A "Historic Inventory" list of all items they put into the inventory using the Edamam API.
