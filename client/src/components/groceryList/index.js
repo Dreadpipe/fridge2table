@@ -32,14 +32,8 @@ function GroceryList(props) {
 					return (
 						<ListItem icon>
 							<Left>
-								<Thumbnail
-									square
-									small
-									source={
-										item.pic
-											? { uri: item.pic }
-											: require("../../../assets/general-food.png")
-									}
+								<CheckBox
+									checked={true}
 								/>
 							</Left>
 							<Body style={{ borderColor: "#8F8F8F", borderBottomWidth: 1 }}>
