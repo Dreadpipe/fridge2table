@@ -68,14 +68,17 @@ class Home extends React.Component {
 				this.setState({ user: response.data[0], view: "fridge" }, () => {
 					registerForPushNotifications()
 						.then(() => {
-              // First check if pushToken array contains more than one token, then if the array already contains the generated token
-              if ((Array.isArray(this.state.user.pushToken)) && (!this.state.user.pushToken.includes(expoToken))) {
-                // If not, adds the new token to the array
-                this.addPushToken();
-                // Logs that the token already exists
-              } else {
-                return console.log("User already has this push token saved!");
-              }
+							// First check if pushToken array contains more than one token, then if the array already contains the generated token
+							if (
+								Array.isArray(this.state.user.pushToken) &&
+								!this.state.user.pushToken.includes(expoToken)
+							) {
+								// If not, adds the new token to the array
+								this.addPushToken();
+								// Logs that the token already exists
+							} else {
+								return console.log("User already has this push token saved!");
+							}
 						})
 						.catch(err => console.log(err));
 				});
@@ -220,7 +223,7 @@ class Home extends React.Component {
 	updateUser = () => {
 		API.getCurrentUser(this.state.user.thirdPartyId)
 			.then(response => {
-				console.log(response.data[0])
+				console.log(response.data[0]);
 				this.setState({ user: response.data[0] });
 			})
 			.catch(err => console.log(err));
@@ -257,8 +260,8 @@ class Home extends React.Component {
 	toGroceryListScreen = () => {
 		this.setState({ view: "spinner" });
 		this.updateUser();
-		this.setState({view: 'groceryList'})
-	}
+		this.setState({ view: "groceryList" });
+	};
 
 	toAddProductScreenClear = () => {
 		this.setState({
@@ -467,7 +470,39 @@ class Home extends React.Component {
 		};
 		API.postGroceryItem(groceryItem).then(() => {
 			this.toGroceryListScreen();
-		})
+		});
+	};
+
+	deleteGroceryItem = id => {
+		const filteredGroceryItems = this.state.user.groceryList.filter(
+			item => item._id === id
+		);
+		const data = {
+			target: filteredGroceryItems[0]
+		};
+		Alert.alert(
+			"Delete Grocery Item",
+			"Are you sure you want to do this?",
+			[
+				{
+					text: "Yes",
+					onPress: () => {
+						API.removeGroceryItem(data)
+							.then(() => {
+								this.toGroceryListScreen();
+							})
+							.catch(err => console.log(err));
+					}
+				},
+				{
+					text: "No",
+					onPress: () => {
+						return;
+					}
+				}
+			],
+			{ cancelable: false }
+		);
 	};
 
 	// Render function
@@ -764,8 +799,12 @@ class Home extends React.Component {
 							break;
 						case "groceryList":
 							return (
-								<GroceryList groceryItems={this.state.user.groceryList}/>
-							)
+								<GroceryList
+									groceryItems={this.state.user.groceryList}
+									extraData={this.state.user}
+									deleteGroceryItem={this.deleteGroceryItem}
+								/>
+							);
 							break;
 						case "updateProduct":
 							return (

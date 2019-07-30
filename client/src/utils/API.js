@@ -44,5 +44,11 @@ export default {
 			`https://immense-ravine-93808.herokuapp.com/newGroceryItem`,
 			item
 		);
+	},
+	removeGroceryItem(item) {
+		return axios.post(
+			`https://immense-ravine-93808.herokuapp.com/removeGroceryItem`,
+			item
+		);
 	}
 };
