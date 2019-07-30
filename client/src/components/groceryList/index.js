@@ -18,6 +18,10 @@ const styles = StyleSheet.create({
 	content: {
 		flex: 1,
 		backgroundColor: "#EBF5FF"
+	},
+	checkbox: {
+		marginRight: 10,
+		marginLeft: -10
 	}
 });
 
@@ -34,6 +38,7 @@ function GroceryList(props) {
 							<Left>
 								<CheckBox
 									checked={true}
+									style={styles.checkbox}
 								/>
 							</Left>
 							<Body style={{ borderColor: "#8F8F8F", borderBottomWidth: 1 }}>
