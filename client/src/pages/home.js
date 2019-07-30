@@ -255,6 +255,8 @@ class Home extends React.Component {
 	};
 
 	toGroceryListScreen = () => {
+		this.setState({ view: "spinner" });
+		this.updateUser();
 		this.setState({view: 'groceryList'})
 	}
 
@@ -464,7 +466,7 @@ class Home extends React.Component {
 			userId: filteredProducts[0].owner
 		};
 		API.postGroceryItem(groceryItem).then(() => {
-			this.updateUser()
+			this.toGroceryListScreen();
 		})
 	};
 
