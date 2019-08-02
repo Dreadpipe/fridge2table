@@ -223,7 +223,6 @@ class Home extends React.Component {
 	updateUser = () => {
 		API.getCurrentUser(this.state.user.thirdPartyId)
 			.then(response => {
-				console.log(response.data[0]);
 				this.setState({ user: response.data[0] });
 			})
 			.catch(err => console.log(err));
@@ -471,6 +470,28 @@ class Home extends React.Component {
 		API.postGroceryItem(groceryItem).then(() => {
 			this.toGroceryListScreen();
 		});
+	};
+
+	checkAcquired = id => {
+		const filteredGroceryItems = this.state.user.groceryList.filter(
+			item => item._id === id
+		);
+
+		const updatedItem = {...filteredGroceryItems[0]};
+		updatedItem.acquiredCheck = !updatedItem.acquiredCheck;
+
+		const data = {
+			target: filteredGroceryItems[0],
+			update: updatedItem
+		};
+
+		console.log(data)
+
+		API.updateGroceryItem(data)
+			.then(() => {
+				this.toGroceryListScreen();
+			})
+			.catch(err => console.log(err));
 	};
 
 	deleteGroceryItem = id => {
@@ -802,6 +823,7 @@ class Home extends React.Component {
 								<GroceryList
 									groceryItems={this.state.user.groceryList}
 									extraData={this.state.user}
+									checkAcquired={this.checkAcquired}
 									deleteGroceryItem={this.deleteGroceryItem}
 								/>
 							);

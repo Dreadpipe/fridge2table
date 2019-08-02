@@ -18,6 +18,10 @@ const targetGroceryItem = function(reqTarget) {
 	if (reqTarget._id !== undefined) {
 		Object.assign(finalTarget, { _id: reqTarget._id });
 	}
+	// Target a grocery item by its acquiredCheck boolean
+	if (reqTarget.acquiredCheck !== undefined) {
+		Object.assign(finalTarget, { acquiredCheck: reqTarget.acquiredCheck });
+	}
 	// Target a grocery item by its expiration date if the date occurs before a date provided in the "expiringBefore" variable
 	if (reqTarget.expiringBefore !== undefined) {
 		Object.assign(finalTarget, { expDate: { $lte: new Date(expiringBefore) } });
@@ -71,6 +75,10 @@ const updateGroceryItem = function(reqTarget, reqUpdate) {
 	// Update the grocery item's expiration date.
 	if (reqUpdate.expDate !== undefined) {
 		Object.assign(finalUpdate, { expDate: reqUpdate.expDate });
+	}
+	// Update the grocery item's acquiredCheck boolean.
+	if (reqUpdate.acquiredCheck !== undefined) {
+		Object.assign(finalUpdate, { acquiredCheck: reqUpdate.acquiredCheck });
 	}
 	// Update the grocery item's amount needed (Expects Number)
 	if (reqUpdate.numNeeded !== undefined) {

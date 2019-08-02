@@ -41,7 +41,7 @@ const groceryItemSchema = new Schema({
     required: true,
     default: 0,
   },
-  aquiredCheck: {
+  acquiredCheck: {
     type: Boolean,
     required: true,
     default: false,

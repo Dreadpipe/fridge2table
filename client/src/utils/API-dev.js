@@ -28,6 +28,9 @@ export default {
 	postGroceryItem(item) {
 		return axios.post(`http://${IP_ADDRESS}:3001/newGroceryItem`, item);
 	},
+	updateGroceryItem(item) {
+		return axios.put(`http://${IP_ADDRESS}:3001/updateGroceryItem`, item);
+	},
 	removeGroceryItem(item) {
 		return axios.post(`http://${IP_ADDRESS}:3001/removeGroceryItem`, item);
 	}
