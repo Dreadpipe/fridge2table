@@ -36,10 +36,7 @@ function GroceryList(props) {
 					return (
 						<ListItem icon>
 							<Left>
-								<CheckBox
-									checked={true}
-									style={styles.checkbox}
-								/>
+								<CheckBox checked={true} style={styles.checkbox} />
 							</Left>
 							<Body style={{ borderColor: "#8F8F8F", borderBottomWidth: 1 }}>
 								<Text numberOfLines={1}>{item.productname}</Text>
