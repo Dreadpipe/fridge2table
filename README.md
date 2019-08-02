@@ -37,7 +37,16 @@ Our app will be deployed on Android through the Google Play store - [Fridge2Tabl
 
 ## Active MVP
 Features currently in production include:
-* 
+* A Grocery List - A view screen that shows all grocery items associated with a user in a list. From this list, a user can do the following:
+    * See the names of every item on their list.
+    * Add the item to their inventory with basic defaults.
+    * Remove grocery items directly without adding them to inventory.
+* The ability to add items from current inventory to the grocery list.
+* Grocery List MVP2: Add the following to the grocery list screen.
+    * See the amount needed of each grocery item.
+    * Mark how many of an item they were able to find, and mark them as aquired.
+    * when adding items to the inventory, users can choose whether to add the item with provided defaults or with edited details.
+* Grocery List MVP3:
 
 ## Dependencies
 Our app will be using the following NPM:
@@ -69,7 +78,7 @@ When looking to the future of "Fridge2Table," we want to furthur our goal of hel
 * Add a CronJob to eliminate user's food data that haven't logged in within a year.
 * Add a toggle button to the sort options that toggles between the expiration date and the daily counter data points. 
 * A "Historic Inventory" list of all items they put into the inventory using the Edamam API.
-* A grocery list, unique to each user, to which users can add new products, and products from their Historic inventory.
+* The ability for users to add grocery items from their Historic inventory.
 * Allow users to track how much of an item is left in servings matching those on the food label.
 * Allow users to assign favorite products to an "ingredient" slot on a recipe.
 * Make food-amount tracking automatic when combined with recipes.
