@@ -54,7 +54,8 @@ class Home extends React.Component {
 			expDate: new Date(),
 			productIDForUpdate: "",
 			productToDetail: {},
-			notification: {}
+			groceryItemLoading: false,
+			notification: {},
 		};
 		this.setDate = this.setDate.bind(this);
 	}
@@ -473,25 +474,38 @@ class Home extends React.Component {
 	};
 
 	checkAcquired = id => {
-		const filteredGroceryItems = this.state.user.groceryList.filter(
-			item => item._id === id
-		);
+		if(!this.state.groceryItemLoading) {
+			this.setState({groceryItemLoading: true});
+			const filteredGroceryItems = this.state.user.groceryList.filter(
+				item => item._id === id
+			);
 
-		const updatedItem = {...filteredGroceryItems[0]};
-		updatedItem.acquiredCheck = !updatedItem.acquiredCheck;
-
-		const data = {
-			target: filteredGroceryItems[0],
-			update: updatedItem
-		};
-
-		console.log(data)
-
-		API.updateGroceryItem(data)
-			.then(() => {
-				this.toGroceryListScreen();
+			const { groceryList, ...rest } = this.state.user;
+			groceryList.forEach(item => {
+				if(item._id === id) {
+					item.checkLoading = true;
+				}
 			})
-			.catch(err => console.log(err));
+			rest.groceryList = groceryList;
+			this.setState({ user: rest });
+	
+			const updatedItem = {...filteredGroceryItems[0]};
+			updatedItem.acquiredCheck = !updatedItem.acquiredCheck;
+	
+			const data = {
+				target: filteredGroceryItems[0],
+				update: updatedItem
+			};
+	
+			console.log(data)
+	
+			API.updateGroceryItem(data)
+				.then(() => {
+					this.toGroceryListScreen();
+					this.setState({groceryItemLoading: false})
+				})
+				.catch(err => console.log(err));
+		}
 	};
 
 	deleteGroceryItem = id => {
@@ -823,6 +837,7 @@ class Home extends React.Component {
 								<GroceryList
 									groceryItems={this.state.user.groceryList}
 									extraData={this.state.user}
+									groceryItemLoading={this.state.groceryItemLoading}
 									checkAcquired={this.checkAcquired}
 									deleteGroceryItem={this.deleteGroceryItem}
 								/>
