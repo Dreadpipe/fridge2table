@@ -37,7 +37,15 @@ function GroceryList(props) {
 					return (
 						<ListItem icon>
 							<Left>
-								{item.checkLoading ? <Spinner size="small" color="blue" /> : <CheckBox checked={item.acquiredCheck ? true : false} style={styles.checkbox} onPress={() => props.checkAcquired(item._id)} />}								
+								{item.checkLoading ? (
+									<Spinner size="small" color="blue" />
+								) : (
+									<CheckBox
+										checked={item.acquiredCheck ? true : false}
+										style={styles.checkbox}
+										onPress={() => props.checkAcquired(item._id)}
+									/>
+								)}
 							</Left>
 							<Body style={{ borderColor: "#8F8F8F", borderBottomWidth: 1 }}>
 								<Text numberOfLines={1}>{item.productname}</Text>
@@ -47,8 +55,15 @@ function GroceryList(props) {
 							</Body>
 							<Left>
 								<Button
+									warning
+									style={{ marginLeft: 10 }}
+									onPress={() => props.addToInventory(item._id)}
+								>
+									<Icon name="plus" type="FontAwesome" />
+								</Button>
+								<Button
 									success
-									style={{ paddingLeft: 2, marginLeft: 10 }}
+									style={{ paddingLeft: 2, marginLeft: 5 }}
 									onPress={() => props.editGroceryItem(item._id)}
 								>
 									<Icon name="edit" type="FontAwesome" />
