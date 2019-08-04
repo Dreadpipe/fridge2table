@@ -51,6 +51,11 @@ const groceryItemSchema = new Schema({
     required: true,
     default: false,
   },
+  numNeededLoading: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   dateAdded: {
     type: Date,
     required: true,

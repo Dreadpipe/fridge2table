@@ -55,7 +55,8 @@ class Home extends React.Component {
 			productIDForUpdate: "",
 			productToDetail: {},
 			groceryItemLoading: false,
-			notification: {},
+			numNeededLoading: false,
+			notification: {}
 		};
 		this.setDate = this.setDate.bind(this);
 	}
@@ -474,37 +475,108 @@ class Home extends React.Component {
 	};
 
 	checkAcquired = id => {
-		if(!this.state.groceryItemLoading) {
-			this.setState({groceryItemLoading: true});
+		if (!this.state.groceryItemLoading) {
+			this.setState({ groceryItemLoading: true });
 			const filteredGroceryItems = this.state.user.groceryList.filter(
 				item => item._id === id
 			);
 
 			const { groceryList, ...rest } = this.state.user;
 			groceryList.forEach(item => {
-				if(item._id === id) {
+				if (item._id === id) {
 					item.checkLoading = true;
 				}
-			})
+			});
 			rest.groceryList = groceryList;
 			this.setState({ user: rest });
-	
-			const updatedItem = {...filteredGroceryItems[0]};
+
+			const updatedItem = { ...filteredGroceryItems[0] };
 			updatedItem.acquiredCheck = !updatedItem.acquiredCheck;
-	
+
 			const data = {
 				target: filteredGroceryItems[0],
 				update: updatedItem
 			};
-	
-			console.log(data)
-	
+
 			API.updateGroceryItem(data)
 				.then(() => {
 					this.toGroceryListScreen();
-					this.setState({groceryItemLoading: false})
+					this.setState({ groceryItemLoading: false });
 				})
 				.catch(err => console.log(err));
+		}
+	};
+
+	addToNumNeeded = id => {
+		if (!this.state.numNeededLoading) {
+			this.setState({ numNeededLoading: true });
+			const filteredGroceryItems = this.state.user.groceryList.filter(
+				item => item._id === id
+			);
+
+			const { groceryList, ...rest } = this.state.user;
+			groceryList.forEach(item => {
+				if (item._id === id) {
+					item.numNeededLoading = true;
+				}
+			});
+			rest.groceryList = groceryList;
+			this.setState({ user: rest });
+
+			const updatedItem = { ...filteredGroceryItems[0] };
+			updatedItem.numNeeded++;
+
+			const data = {
+				target: filteredGroceryItems[0],
+				update: updatedItem
+			};
+
+			console.log(data);
+
+			API.updateGroceryItem(data)
+				.then(() => {
+					this.toGroceryListScreen();
+					this.setState({ numNeededLoading: false });
+				})
+				.catch(err => console.log(err));
+		}
+	};
+
+	subtractFromNumNeeded = id => {
+		if (!this.state.numNeededLoading) {
+			this.setState({ numNeededLoading: true });
+			const filteredGroceryItems = this.state.user.groceryList.filter(
+				item => item._id === id
+			);
+			if (filteredGroceryItems[0].numNeeded > 1) {
+				const { groceryList, ...rest } = this.state.user;
+				groceryList.forEach(item => {
+					if (item._id === id) {
+						item.numNeededLoading = true;
+					}
+				});
+				rest.groceryList = groceryList;
+				this.setState({ user: rest });
+
+				const updatedItem = { ...filteredGroceryItems[0] };
+				updatedItem.numNeeded--;
+
+				const data = {
+					target: filteredGroceryItems[0],
+					update: updatedItem
+				};
+
+				console.log(data);
+
+				API.updateGroceryItem(data)
+					.then(() => {
+						this.toGroceryListScreen();
+						this.setState({ numNeededLoading: false });
+					})
+					.catch(err => console.log(err));
+			} else {
+				this.setState({ numNeededLoading: false });
+			}
 		}
 	};
 
@@ -839,6 +911,8 @@ class Home extends React.Component {
 									extraData={this.state.user}
 									groceryItemLoading={this.state.groceryItemLoading}
 									checkAcquired={this.checkAcquired}
+									addToNumNeeded={this.addToNumNeeded}
+									subtractFromNumNeeded={this.subtractFromNumNeeded}
 									deleteGroceryItem={this.deleteGroceryItem}
 								/>
 							);

@@ -50,23 +50,30 @@ function GroceryList(props) {
 							<Body style={{ borderColor: "#8F8F8F", borderBottomWidth: 1 }}>
 								<Text numberOfLines={1}>{item.productname}</Text>
 								<Text note numberOfLines={1} style={{ color: "#8F8F8F" }}>
-									Needed: {item.numNeeded}
+									Needed: {item.numNeededLoading ? '...' : item.numNeeded}
 								</Text>
 							</Body>
 							<Left>
 								<Button
-									warning
+									success
 									style={{ marginLeft: 10 }}
-									onPress={() => props.addToInventory(item._id)}
+									onPress={() => props.addToNumNeeded(item._id)}
 								>
-									<Icon name="plus" type="FontAwesome" />
+									<Icon name="arrow-up" type="FontAwesome" />
 								</Button>
 								<Button
 									success
-									style={{ paddingLeft: 2, marginLeft: 5 }}
-									onPress={() => props.editGroceryItem(item._id)}
+									style={{ marginLeft: 5 }}
+									onPress={() => props.subtractFromNumNeeded(item._id)}
 								>
-									<Icon name="edit" type="FontAwesome" />
+									<Icon name="arrow-down" type="FontAwesome" />
+								</Button>
+								<Button
+									warning
+									style={{ paddingLeft: 2, marginLeft: 5 }}
+									onPress={() => props.addToInventory(item._id)}
+								>
+									<Icon name="plus" type="FontAwesome" />
 								</Button>
 								<Button
 									danger

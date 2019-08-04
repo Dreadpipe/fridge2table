@@ -82,7 +82,7 @@ const updateGroceryItem = function(reqTarget, reqUpdate) {
 	}
 	// Update the grocery item's amount needed (Expects Number)
 	if (reqUpdate.numNeeded !== undefined) {
-		Object.assign(finalUpdate, { $set: { numNeeded: reqUpdate.numNeeded } });
+		Object.assign(finalUpdate, { numNeeded: reqUpdate.numNeeded });
 	}
 	// Update the grocery item's amount obtained (Expects Number)
 	if (reqUpdate.numGot !== undefined) {
