@@ -281,6 +281,7 @@ router.post("/newGroceryItem", function(req, res) {
 	let newGroceryItem = {
 		productname: req.body.name,
 		category: req.body.category,
+		location: req.body.location,
 		foodId: req.body.id,
 		pic: req.body.pic,
 		numNeeded: req.body.needed,

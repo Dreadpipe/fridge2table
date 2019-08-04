@@ -465,6 +465,7 @@ class Home extends React.Component {
 		const groceryItem = {
 			name: filteredProducts[0].productname,
 			category: filteredProducts[0].category,
+			location: filteredProducts[0].location,
 			pic: filteredProducts[0].pic,
 			needed: 1,
 			userId: filteredProducts[0].owner
@@ -578,6 +579,72 @@ class Home extends React.Component {
 				this.setState({ numNeededLoading: false });
 			}
 		}
+	};
+
+	addGroceryItemToInventory = id => {
+		const filteredGroceryItems = this.state.user.groceryList.filter(
+			item => item._id === id
+		);
+
+		const addDays = function(date, days) {
+			const result = new Date(date);
+			result.setDate(result.getDate() + days);
+			return result;
+		};
+
+		const newProduct = {
+			name: filteredGroceryItems[0].productname,
+			location: filteredGroceryItems[0].location,
+			category: filteredGroceryItems[0].category,
+			quantity: filteredGroceryItems[0].numNeeded,
+			expDate: addDays(new Date(), 7),
+			userId: this.state.user._id
+		};
+
+		if (filteredGroceryItems[0].pic) {
+			newProduct.pic = filteredGroceryItems[0].pic;
+		}
+
+		const data = {
+			target: filteredGroceryItems[0]
+		};
+
+		Alert.alert(
+			"Add to Inventory",
+			`The item will be added to your inventory with the following details:\n\nLocation: ${
+				filteredGroceryItems[0].location
+			}\nCatetogory: ${filteredGroceryItems[0].category}\nQuantity: ${
+				filteredGroceryItems[0].numNeeded
+			}\nExpiration date: ${newProduct.expDate.toString().substr(4, 12)}\n\nDo you want to continue?`,
+			[
+				{
+					text: "Yes",
+					onPress: () => {
+						// The newProduct object is sent up to the database
+						API.addFood(newProduct)
+							.then(() => {
+								// A new call to get the user is made, to get their updated list of products for display
+								API.removeGroceryItem(data)
+									.then(() => {
+										this.updateUser();
+										return alert(
+											"Product added! Click OK to return to the grocery list."
+										);
+									})
+									.catch(err => console.log(err));
+							})
+							.catch(err => console.log(err));
+					}
+				},
+				{
+					text: "No",
+					onPress: () => {
+						return;
+					}
+				}
+			],
+			{ cancelable: false }
+		);
 	};
 
 	deleteGroceryItem = id => {
@@ -913,6 +980,7 @@ class Home extends React.Component {
 									checkAcquired={this.checkAcquired}
 									addToNumNeeded={this.addToNumNeeded}
 									subtractFromNumNeeded={this.subtractFromNumNeeded}
+									addToInventory={this.addGroceryItemToInventory}
 									deleteGroceryItem={this.deleteGroceryItem}
 								/>
 							);

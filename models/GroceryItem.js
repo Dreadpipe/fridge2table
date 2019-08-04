@@ -12,6 +12,11 @@ const groceryItemSchema = new Schema({
     required: false,
     default: null,
   },
+  location: {
+    type: String,
+    required: false,
+    default: null,
+  },
   foodId: {
     type: String,
     required: false,
