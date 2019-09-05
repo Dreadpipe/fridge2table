@@ -26,14 +26,7 @@ const dailyCheck = function() {
 						.populate("allProduct")
 						.populate("inventoryProducts")
 						.then(data => {
-							data[0].pushToken.forEach(token => {
-								const pushObj = {
-									productname: product.productname,
-									pushToken: token,
-									message: `Your ${product.productname} is expiring in seven days!`
-								};
-								SendPushNote(pushObj);
-							});
+							handlePushNotifications(data);
 						})
 						.catch(err => {
 							console.log(
@@ -55,14 +48,7 @@ const dailyCheck = function() {
 						.populate("allProduct")
 						.populate("inventoryProducts")
 						.then(data => {
-							data[0].pushToken.forEach(token => {
-								const pushObj = {
-									productname: product.productname,
-									pushToken: token,
-									message: `Your ${product.productname} is expiring in two days!`
-								};
-								SendPushNote(pushObj);
-							});
+							handlePushNotifications(data);
 						})
 						.catch(err => {
 							console.log(
@@ -86,14 +72,7 @@ const dailyCheck = function() {
 						.populate("allProduct")
 						.populate("inventoryProducts")
 						.then(data => {
-							data[0].pushToken.forEach(token => {
-								const pushObj = {
-									productname: product.productname,
-									pushToken: token,
-									message: `Your ${product.productname} has expired!`
-								};
-								SendPushNote(pushObj);
-							});
+							handlePushNotifications(data);
 						})
 						.catch(err => {
 							console.log(
@@ -226,5 +205,16 @@ const SendPushNote = obj => {
 		}
 	})();
 };
+
+function handlePushNotifications(data) {
+	data[0].pushToken.forEach(token => {
+		const pushObj = {
+			productname: product.productname,
+			pushToken: token,
+			message: `Your ${product.productname} is expiring in seven days!`
+		};
+		SendPushNote(pushObj);
+	});
+}
 
 module.exports = dailyCheck;
