@@ -19,27 +19,7 @@ const dailyCheck = function() {
 					product.sevenDayWarning !== null &&
 					product.sevenDayWarning <= new Date(today)
 				) {
-					// Find the item's owner, construct a push object for a seven day warning, and send it into the SendPushNote function
-					User.find({
-						_id: product.owner
-					})
-						.populate("allProduct")
-						.populate("inventoryProducts")
-						.then(data => {
-							data[0].pushToken.forEach(token => {
-								const pushObj = {
-									productname: product.productname,
-									pushToken: token,
-									message: `Your ${product.productname} is expiring in seven days!`
-								};
-								SendPushNote(pushObj);
-							});
-						})
-						.catch(err => {
-							console.log(
-								"We ran into a problem finding a user to send the seven day warning to.\n------------------------"
-							);
-						});
+				handleNotifyUser("seven day");
 					// Remove the sent seven-day warning from the item.
 					updateProduct({ _id: product._id }, { remove7DayWarning: true });
 					// If there is no seven day warning, but there is a remaining two day warning that has passed...
@@ -48,27 +28,7 @@ const dailyCheck = function() {
 					product.twoDayWarning !== null &&
 					product.twoDayWarning <= new Date(today)
 				) {
-					// Find the item's owner, construct a push object for a two day warning, and send it into the SendPushNote function
-					User.find({
-						_id: product.owner
-					})
-						.populate("allProduct")
-						.populate("inventoryProducts")
-						.then(data => {
-							data[0].pushToken.forEach(token => {
-								const pushObj = {
-									productname: product.productname,
-									pushToken: token,
-									message: `Your ${product.productname} is expiring in two days!`
-								};
-								SendPushNote(pushObj);
-							});
-						})
-						.catch(err => {
-							console.log(
-								"We ran into a problem finding a user to send the two day warning to.\n------------------------"
-							);
-						});
+					handleNotifyUser("two day");
 					// Remove the sent two-day warning from the item.
 					updateProduct({ _id: product._id }, { remove2DayWarning: true });
 					// If there are no warnings left to send, and the expiration day has passed...
@@ -79,27 +39,7 @@ const dailyCheck = function() {
 					product.expDate <= new Date(today) &&
 					product.expiredOrNot === false
 				) {
-					// Find the item's owner, construct a push object for an expired warning and send it into the SendPushNote function
-					User.find({
-						_id: product.owner
-					})
-						.populate("allProduct")
-						.populate("inventoryProducts")
-						.then(data => {
-							data[0].pushToken.forEach(token => {
-								const pushObj = {
-									productname: product.productname,
-									pushToken: token,
-									message: `Your ${product.productname} has expired!`
-								};
-								SendPushNote(pushObj);
-							});
-						})
-						.catch(err => {
-							console.log(
-								"We ran into a problem finding a user to send the expiration warning to.\n------------------------"
-							);
-						});
+					handleNotifyUser("expiration");
 					// Mark the item as expired.
 					updateProduct(
 						{ _id: product._id, owner: product.owner },
@@ -109,9 +49,7 @@ const dailyCheck = function() {
 					console.log(`The ${product.productname} is expired!!!`);
 				} else {
 					console.log(
-						`There's not a seven-day, two-day, or expiration warning to send for the ${
-							product.productname
-						}!`
+						`There's not a seven-day, two-day, or expiration warning to send for the ${product.productname}!`
 					);
 				}
 			});
@@ -226,5 +164,33 @@ const SendPushNote = obj => {
 		}
 	})();
 };
+
+function handleNotifyUser(warningType) {
+	// Find the item's owner, construct a push object for a seven day warning, and send it into the SendPushNote function
+	User.find({
+			_id: product.owner
+		})
+			.populate("allProduct")
+			.populate("inventoryProducts")
+			.then(data => {
+				handlePushNotifications(data);
+			})
+			.catch(err => {
+				console.log(
+					`We ran into a problem finding a user to send the ${warningType} warning to.\n------------------------`
+				);
+			});
+};
+
+function handlePushNotifications(data) {
+	data[0].pushToken.forEach(token => {
+		const pushObj = {
+			productname: product.productname,
+			pushToken: token,
+			message: `Your ${product.productname} is expiring in seven days!`
+		};
+		SendPushNote(pushObj);
+	});
+}
 
 module.exports = dailyCheck;
