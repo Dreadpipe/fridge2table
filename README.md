@@ -5,6 +5,7 @@
     <img src='https://img.shields.io/badge/Version-1.0.1-blue' />
     <img src='https://img.shields.io/badge/Contributors-4-blue' />
     <img src='https://img.shields.io/badge/Platforms-Android | iOS-lightgray' />
+    <img src='https://img.shields.io/badge/Made With-React Native | Expo | NativeBase | Express | Cron | MongoDB-lightgray' />
 </p>
 
 # Fridge2Table
