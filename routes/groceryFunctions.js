@@ -6,57 +6,55 @@ const { GroceryItem } = require('../models');
 // const { targetUser, updateUser } = require("./userFunctions");
 
 // Target Product Function
-const targetGroceryItem = function (reqTarget) {
+const targetGroceryItem = (reqTarget) => {
   const finalTarget = {}; // Establish an object that will be filled with the targeting parameters.
   // If any of the following parameters exist, add them to the target object.
   // Target a grocery item by its name
   if (reqTarget.productname !== undefined) {
     Object.assign(finalTarget, { productname: reqTarget.productname });
   }
-  // Target a grocery item by its Edamam-provided food Id
+  // Target by its Edamam-provided food Id
   if (reqTarget.foodId !== undefined) {
     Object.assign(finalTarget, { foodId: reqTarget.foodId });
   }
-  // Target a grocery item by its database ObjectId
+  // Target by its database ObjectId
   if (reqTarget._id !== undefined) {
     Object.assign(finalTarget, { _id: reqTarget._id });
   }
-  // Target a grocery item by its acquiredCheck boolean
+  // Target by its acquiredCheck boolean
   if (reqTarget.acquiredCheck !== undefined) {
     Object.assign(finalTarget, { acquiredCheck: reqTarget.acquiredCheck });
   }
-  // Target a grocery item by its expiration date if the date occurs before a date provided in the "expiringBefore" variable
+  // Target by its expiration date if the date occurs before the "expiringBefore" date.
   if (reqTarget.expiringBefore !== undefined) {
     Object.assign(finalTarget, { expDate: { $lte: new Date(expiringBefore) } });
   }
-  // Target a grocery item by its expiration date if the date occurs after a date provided in the "expiringAfter" variable
+  // Target by its expiration date if the date occurs after the "expiringAfter" date.
   if (reqTarget.expiringAfter !== undefined) {
     Object.assign(finalTarget, { expDate: { $gte: new Date(expiringAfter) } });
   }
-  // Target a grocery item by its amount needed if it is less than a number provided in the "lessThanQuantity" variable
+  // Target by its amount needed if it is less than a number in lessThanQuantity.
   if (reqTarget.lessThanNeeded !== undefined) {
     Object.assign(finalTarget, { numNeeded: { $lte: lessThanNeeded } });
   }
-  // Target a grocery item by its amount needed if it is greater than a number provided in the "greaterThanQuantity" variable
+  // Target by its amount needed if it is greater than a number provided in greaterThanQuantity.
   if (reqTarget.greaterThanNeeded !== undefined) {
     Object.assign(finalTarget, { numNeeded: { $gte: greaterThanNeeded } });
   }
-  // Target a grocery item by its owner's ObjectId
+  // Target by its owner's ObjectId
   if (reqTarget.owner !== undefined) {
     Object.assign(finalTarget, { owner: reqTarget.owner });
   }
-  // Target a grocery item depending on if it was added before a date provided in the "addedBefore" variable.
+  // Target depending on if it was added before a date provided in the "addedBefore" variable.
   if (reqTarget.addedBefore !== undefined) {
     Object.assign(finalTarget, { dateAdded: { $lte: new Date(addedBefore) } });
   }
-  // Target a grocery item depending on if it was added after a date provided in the "addedAfter" variable.
+  // Target depending on if it was added after a date provided in the "addedAfter" variable.
   if (reqTarget.addedAfter !== undefined) {
     Object.assign(finalTarget, { dateAdded: { $gte: new Date(addedAfter) } });
   }
-  // If the final object does not have any targetting data, then either none was provided or it was not valid.
-  if (finalTarget === undefined) {
-    console.log('There was no valid target.');
-  }
+  // If the final object is empty, then nothing was provided or it was not valid.
+  if (finalTarget === undefined) { console.log('There was no valid target.'); }
   // Return the final target object that includes all the targetting parameters.
   return finalTarget;
 };
@@ -64,9 +62,11 @@ const targetGroceryItem = function (reqTarget) {
 //--------------------------------
 
 // Update Grocery Item Function
-const updateGroceryItem = function (reqTarget, reqUpdate) {
-  const finalTarget = targetGroceryItem(reqTarget); // Create a target object for the update by sending the requested target data through the targetProduct function.
-  const finalUpdate = {}; // Establish an object that will be filled with the update parameters.
+const updateGroceryItem = (reqTarget, reqUpdate) => {
+  // Create a target for the update by sending the requested target data through targetProduct().
+  const finalTarget = targetGroceryItem(reqTarget);
+  // Establish an object that will be filled with the update parameters.
+  const finalUpdate = {};
   // Update the product's name string
   if (reqUpdate.productname !== undefined) {
     Object.assign(finalUpdate, { productname: reqUpdate.productname });
@@ -91,7 +91,7 @@ const updateGroceryItem = function (reqTarget, reqUpdate) {
   if (reqUpdate.numGot !== undefined) {
     Object.assign(finalUpdate, { $set: { numGot: reqUpdate.numGot } });
   }
-  // If the final object does not have any updating data, then either none was provided or it was not valid.
+  // If the final object is empty, then nothing was provided or it was not valid.
   if (finalUpdate === undefined) {
     console.log('There was no valid update.');
   }
@@ -104,11 +104,7 @@ const updateGroceryItem = function (reqTarget, reqUpdate) {
       console.log(data);
       console.log('Update has been sent to the targeted grocery item!');
     })
-    .catch((err) => {
-      console.log(
-        "We've got a problem. The update to the targeted grocery item failed!",
-      );
-    });
+    .catch(() => { console.log("We've got a problem. The update to the targeted grocery item failed!"); });
 };
 
 //--------------------------------
