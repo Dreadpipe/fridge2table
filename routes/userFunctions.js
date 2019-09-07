@@ -66,7 +66,7 @@ const updateUser = (reqTarget, reqUpdate) => {
   // Update their push token for notifications
   if (reqUpdate.pushToken !== undefined) {
     Object.assign(finalUpdate, {
-      $push:  {pushToken: reqUpdate.pushToken },
+      $push: { pushToken: reqUpdate.pushToken },
     });
   }
   // Update their list of all Edamam scanned foods
