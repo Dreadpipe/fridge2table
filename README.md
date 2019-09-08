@@ -4,13 +4,66 @@
     <img src='https://img.shields.io/badge/Build-Passing-brightgreen' />
     <img src='https://img.shields.io/badge/Version-1.0.1-blue' />
     <img src='https://img.shields.io/badge/Contributors-4-blue' />
-    <img src='https://img.shields.io/badge/Platforms-Android | iOS-lightgray' />
     <img src='https://img.shields.io/badge/Made With-React Native | Expo | NativeBase | Express | Cron | MongoDB-lightgray' />
+    <img src='https://img.shields.io/badge/Platforms-Android | iOS-lightgray' />
+    <img src='https://img.shields.io/badge/Awards-1st Place: Next Level Contest-purple' />
 </p>
 
 # Fridge2Table
 
-The app that helps get your food fresh from your fridge to your table.
+Every year, according to the Food and Agriculture Organization of the United Nations, roughly 1.3 billion metric tons of food goes to waste—about one-third of all the food produced annually worldwide. The Fridge2Table mobile app is built to combat this waste on the front lines, helping consumers track their groceries by category and expiration date to make sure they're used before they go bad. 
+
+## Installation
+
+To run and test the development version of Fridge2Table on an emulator or phone, fork this repository, then run `npm i`.
+
+In the `fridge2table/client` folder, create a `env.js` file with the following code pasted in:
+
+```js
+import { Constants } from 'expo';
+import { Platform } from 'react-native';
+
+const ENV = {
+  dev: {
+    IP_ADDRESS: '[IP ADDRESS GOES HERE]',
+    AUTH0_CLIENT_ID: '[CUSTOM CLIENT ID GOES HERE]',
+    AUTH0_DOMAIN: '[CUSTOM AUTH0 DOMAIN GOES HERE]',
+  },
+  staging: {
+    IP_ADDRESS: '[IP ADDRESS GOES HERE]',
+    AUTH0_CLIENT_ID: '[CUSTOM CLIENT ID GOES HERE]',
+    AUTH0_DOMAIN: '[CUSTOM AUTH0 DOMAIN GOES HERE]',
+  },
+  prod: {
+    IP_ADDRESS: '[IP ADDRESS GOES HERE]',
+    AUTH0_CLIENT_ID: '[CUSTOM CLIENT ID GOES HERE]',
+    AUTH0_DOMAIN: '[CUSTOM AUTH0 DOMAIN GOES HERE]',
+  },
+};
+
+const getEnvVars = (env = Constants.manifest.releaseChannel) => {
+  // What is __DEV__ ?
+  // This variable is set to true when react-native is running in Dev mode.
+  // __DEV__ is true when run locally, but false when published.
+  if (__DEV__) {
+    return ENV.dev;
+  } if (env === 'staging') {
+    return ENV.staging;
+  } if (env === 'prod') {
+    return ENV.prod;
+  }
+};
+
+export default getEnvVars;
+```
+
+Add in your own IP address, Auth0 client ID, and Auth0 domaing in the `dev`, `staging`, and `prod` objects inside the `ENV` object. This will set up your environmental variables.
+
+To fire up the front and back ends concurrently, run `npm start`, which should conclude with a screen that looks like this:
+
+![Screenshot of development server](./readmegifs/dev_screenshot.png)
+
+Clicking on `http://localhost:19002` should navigate you to Expo's online development interface, where you can run a test version of the app on either an Android emulator, an iOS emulator, or an Android or iOS phone. To use an Android emulator, you'll need to download and run it through Android Studio, and to use an iOS emulator, you'll need to download and run it through Xcode. To run it on your phone, download the Expo app and scan the provided QR code.
 
 ## Overview and Goals
 
