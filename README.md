@@ -4,8 +4,10 @@
     <img src='https://img.shields.io/badge/Build-Passing-brightgreen' />
     <img src='https://img.shields.io/badge/Version-1.0.1-blue' />
     <img src='https://img.shields.io/badge/Contributors-4-blue' />
+    <img src='https://img.shields.io/badge/APIs-1-blue' />
     <img src='https://img.shields.io/badge/Made With-React Native | Expo | NativeBase | Express | Cron | MongoDB-lightgray' />
     <img src='https://img.shields.io/badge/Platforms-Android | iOS-lightgray' />
+    <a href='https://play.google.com/store/apps/details?id=com.dreamteamdesigns.fridge2table' target='_blank'><img src='https://img.shields.io/badge/Deployed-Google Play Store-brightgreen' /></a>
     <img src='https://img.shields.io/badge/Awards-1st Place: Next Level Contest-purple' />
 </p>
 
@@ -70,10 +72,6 @@ Clicking on `http://localhost:19002` should navigate you to Expo's online develo
 Fridge2Table has one overarching goal - to make the modern problem of food management smooth and efficient. In achieving this goal, Fridge2Table will give users the ability to track their food wherever they store it with expiration dates and regular notifications if their food sits unused for too long.
 
 Every feature of our app has the singular goal of enhancing the food management experience for our users, and we intend to make that experience great.
-
-## Deployment
-
-Our app will be deployed on Android through the Google Play store - [Fridge2Table Storefront](https://play.google.com/store/apps/details?id=com.dreamteamdesigns.fridge2table). The back end will be hosted on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas), and our server will be hosted on [Heroku](https://www.heroku.com/).
 
 ## Completed MVP
 
