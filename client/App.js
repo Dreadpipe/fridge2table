@@ -1,17 +1,17 @@
-import React from "react";
-import { StyleSheet, Platform } from "react-native";
-import { Container, Root, Spinner } from "native-base";
-import { AuthSession } from "expo";
-import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
-import { getStatusBarHeight } from "react-native-status-bar-height";
-import FullFridge from "./src/components/fullFridge";
-import Home from "./src/pages/home";
-import jwtDecode from "jwt-decode";
+import React from 'react';
+import { StyleSheet, Platform } from 'react-native';
+import { Container, Root, Spinner } from 'native-base';
+import { AuthSession } from 'expo';
+import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+import FullFridge from './src/components/fullFridge';
+import Home from './src/pages/home';
+import jwtDecode from 'jwt-decode';
 // import API from "./src/utils/API";
-import API from "./src/utils/API-dev";
-import getEnvVars from "./env";
-import { Font, AppLoading } from "expo";
-import { Ionicons } from "@expo/vector-icons";
+import API from './src/utils/API-dev';
+import getEnvVars from './env';
+import { Font, AppLoading } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 
 const { AUTH0_CLIENT_ID } = getEnvVars();
 const { AUTH0_DOMAIN } = getEnvVars();
@@ -23,20 +23,20 @@ const styles = StyleSheet.create({
 	container: {
 		width: vw(100),
 		height: vh(100) - getStatusBarHeight(),
-		paddingTop: Platform.OS === "ios" ? 0 : getStatusBarHeight()
+		paddingTop: Platform.OS === 'ios' ? 0 : getStatusBarHeight()
 	}
 });
 
 // Converts an object to a query string
 function toQueryString(params) {
 	return (
-		"?" +
+		'?' +
 		Object.entries(params)
 			.map(
 				([key, value]) =>
 					`${encodeURIComponent(key)}=${encodeURIComponent(value)}`
 			)
-			.join("&")
+			.join('&')
 	);
 }
 
@@ -53,10 +53,10 @@ export default class App extends React.Component {
 
 	async loadFonts() {
 		await Font.loadAsync({
-			Roboto: require("native-base/Fonts/Roboto.ttf"),
-			Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-			FontAwesome: require("native-base/Fonts/FontAwesome.ttf"),
-			MaterialCommunityIcons: require("native-base/Fonts/MaterialCommunityIcons.ttf"),
+			Roboto: require('native-base/Fonts/Roboto.ttf'),
+			Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+			FontAwesome: require('native-base/Fonts/FontAwesome.ttf'),
+			MaterialCommunityIcons: require('native-base/Fonts/MaterialCommunityIcons.ttf'),
 			...Ionicons.font
 		});
 		this.setState({ isReady: true });
@@ -73,9 +73,9 @@ export default class App extends React.Component {
 		const queryParams = toQueryString({
 			client_id: auth0ClientId,
 			redirect_uri: redirectUrl,
-			response_type: "id_token", // id_token will return a JWT token
-			scope: "openid profile", // retrieve the user's profile
-			nonce: "nonce" // ideally, this will be a random value
+			response_type: 'id_token', // id_token will return a JWT token
+			scope: 'openid profile', // retrieve the user's profile
+			nonce: 'nonce' // ideally, this will be a random value
 		});
 		const authUrl = `${auth0Domain}/authorize` + queryParams;
 
@@ -83,7 +83,7 @@ export default class App extends React.Component {
 		const response = await AuthSession.startAsync({ authUrl });
 
 		// If the response is successful, login function fires the handleResponse function; if it's unsuccessful, the spinner view is dropped and the user is brought back to the login view
-		if (response.type === "success") {
+		if (response.type === 'success') {
 			this.handleResponse(response.params);
 		} else {
 			this.setState({ spinnerOrNo: false });
@@ -93,8 +93,8 @@ export default class App extends React.Component {
 	handleResponse = response => {
 		if (response.error) {
 			Alert(
-				"Authentication error",
-				response.error_description || "something went wrong"
+				'Authentication error',
+				response.error_description || 'something went wrong'
 			);
 			this.setState({ spinnerOrNo: false });
 			return;
@@ -106,15 +106,15 @@ export default class App extends React.Component {
 		let user;
 
 		// Necessary details about the user are pulled from the decoded JWT token, depending on whether the user signs in with just a name and e-mail address or through third-part authentication via Google or Facebook
-		if (decoded.sub.split("|")[0] === "auth0") {
+		if (decoded.sub.split('|')[0] === 'auth0') {
 			user = {
 				name: decoded.nickname,
-				id: decoded.sub.split("|")[1]
+				id: decoded.sub.split('|')[1]
 			};
 		} else {
 			user = {
 				name: decoded.name,
-				id: decoded.sub.split("|")[1]
+				id: decoded.sub.split('|')[1]
 			};
 		}
 
@@ -143,7 +143,7 @@ export default class App extends React.Component {
 							return (
 								<Spinner
 									color="#193652"
-									style={{ flex: 1, backgroundColor: "#EBF5FF" }}
+									style={{ flex: 1, backgroundColor: '#EBF5FF' }}
 								/>
 							);
 						}
