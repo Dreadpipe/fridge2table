@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, View, ImageBackground } from "react-native";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import {
 	Button,
 	Text,
@@ -11,23 +11,23 @@ import {
 	Label,
 	Picker,
 	DatePicker
-} from "native-base";
-import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
-import FridgeCategoryPicker from "../fridgeCategoryPicker";
-import FreezerCategoryPicker from "../freezerCategoryPicker";
-import PantryCategoryPicker from "../pantryCategoryPicker";
+} from 'native-base';
+import { vh } from 'react-native-expo-viewport-units';
+import FridgeCategoryPicker from '../fridgeCategoryPicker';
+import FreezerCategoryPicker from '../freezerCategoryPicker';
+import PantryCategoryPicker from '../pantryCategoryPicker';
 
 const styles = StyleSheet.create({
 	content: {
-		display: "flex",
-		justifyContent: "space-around",
-		alignItems: "center",
-		width: "100%",
-		height: "100%",
-		backgroundColor: "#EBF5FF"
+		display: 'flex',
+		justifyContent: 'space-around',
+		alignItems: 'center',
+		width: '100%',
+		height: '100%',
+		backgroundColor: '#EBF5FF'
 	},
 	form: {
-		width: "95%"
+		width: '95%'
 	},
 	productName: {
 		paddingBottom: 5,
@@ -38,31 +38,31 @@ const styles = StyleSheet.create({
 		width: undefined
 	},
 	iconDiv: {
-		textAlign: "center"
+		textAlign: 'center'
 	},
 	scanBtn: {
 		display: 'flex',
 		flexDirection: 'column',
-		justifyContent: "center",
+		justifyContent: 'center',
 		height: vh(13),
 		width: 200,
-		backgroundColor: "#193652"
+		backgroundColor: '#193652'
 	},
 	addBtn: {
 		display: 'flex',
 		flexDirection: 'column',
-		justifyContent: "center",
+		justifyContent: 'center',
 		height: vh(13),
 		width: 200,
-		backgroundColor: "#83b8b6"
+		backgroundColor: '#83b8b6'
 	},
 	barcodeIcon: {
 		fontSize: 60,
-		textAlign: "center"
+		textAlign: 'center'
 	},
 	plusIcon: {
 		fontSize: 60,
-		textAlign: "center"
+		textAlign: 'center'
 	}
 });
 
@@ -84,7 +84,7 @@ class AddProduct extends React.Component {
 							mode="dropdown"
 							iosIcon={<Icon name="arrow-down" />}
 							style={styles.categoryPicker}
-							placeholderStyle={{ color: "#bfc6ea" }}
+							placeholderStyle={{ color: '#bfc6ea' }}
 							placeholderIconColor="#007aff"
 							selectedValue={this.props.location}
 							onValueChange={this.props.onLocationChange}
@@ -98,7 +98,7 @@ class AddProduct extends React.Component {
 						<Label>Category</Label>
 						{(() => {
 							switch (this.props.location) {
-								case "Fridge":
+								case 'Fridge':
 									return (
 										<FridgeCategoryPicker
 											styles={styles.categoryPicker}
@@ -107,7 +107,7 @@ class AddProduct extends React.Component {
 										/>
 									);
 									break;
-								case "Freezer":
+								case 'Freezer':
 									return (
 										<FreezerCategoryPicker
 											styles={styles.categoryPicker}
@@ -116,7 +116,7 @@ class AddProduct extends React.Component {
 										/>
 									);
 									break;
-								case "Pantry":
+								case 'Pantry':
 									return (
 										<PantryCategoryPicker
 											styles={styles.categoryPicker}
@@ -135,7 +135,7 @@ class AddProduct extends React.Component {
 							iosIcon={<Icon name="arrow-down" />}
 							style={styles.categoryPicker}
 							placeholder="Press to select"
-							placeholderStyle={{ color: "#bfc6ea" }}
+							placeholderStyle={{ color: '#bfc6ea' }}
 							placeholderIconColor="#007aff"
 							selectedValue={this.props.quantity.toString()}
 							onValueChange={this.props.onQuantityChange}
@@ -154,14 +154,14 @@ class AddProduct extends React.Component {
 					</Item>
 					<DatePicker
 						defaultDate={new Date()}
-						locale={"en"}
+						locale={'en'}
 						timeZoneOffsetInMinutes={undefined}
 						modalTransparent={false}
-						animationType={"fade"}
-						androidMode={"default"}
+						animationType={'fade'}
+						androidMode={'default'}
 						placeHolderText="Press here to select expiration date"
-						textStyle={{ color: "green" }}
-						placeHolderTextStyle={{ color: "#8F8F8F" }}
+						textStyle={{ color: 'green' }}
+						placeHolderTextStyle={{ color: '#8F8F8F' }}
 						onDateChange={this.props.setDate}
 						disabled={false}
 					/>
@@ -175,7 +175,9 @@ class AddProduct extends React.Component {
 							style={styles.barcodeIcon}
 							onPress={this.props.toScanner}
 						/>
-						<Text style={{ textAlign: "center", fontSize: 18 }}>Scan Barcode</Text>
+						<Text style={{ textAlign: 'center', fontSize: 18 }}>
+							Scan Barcode
+						</Text>
 					</Button>
 				</View>
 				<View style={styles.iconDiv}>
@@ -186,7 +188,9 @@ class AddProduct extends React.Component {
 							style={styles.plusIcon}
 							onPress={this.props.addProduct}
 						/>
-						<Text style={{ textAlign: "center", fontSize: 18 }}>Add Product</Text>
+						<Text style={{ textAlign: 'center', fontSize: 18 }}>
+							Add Product
+						</Text>
 					</Button>
 				</View>
 			</Content>
