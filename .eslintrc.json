@@ -30,6 +30,7 @@
 		"react/jsx-indent-props": 0,
 		"global-require": 0,
 		"react/jsx-no-bind": 0,
-		"react/jsx-no-duplicate-props": 0
+		"react/jsx-no-duplicate-props": 0,
+		"no-underscore-dangle": 0
 	}
 }
