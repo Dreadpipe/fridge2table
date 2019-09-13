@@ -28,6 +28,8 @@
 		"no-tabs": 0,
 		"react/jsx-indent": 0,
 		"react/jsx-indent-props": 0,
-		"global-require": 0
+		"global-require": 0,
+		"react/jsx-no-bind": 0,
+		"react/jsx-no-duplicate-props": 0
 	}
 }
