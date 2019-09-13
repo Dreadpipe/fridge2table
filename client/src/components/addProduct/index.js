@@ -1,16 +1,16 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
-	Button,
-	Text,
-	Icon,
-	Content,
-	Form,
-	Item,
-	Input,
-	Label,
-	Picker,
-	DatePicker
+  Button,
+  Text,
+  Icon,
+  Content,
+  Form,
+  Item,
+  Input,
+  Label,
+  Picker,
+  DatePicker,
 } from 'native-base';
 import { vh } from 'react-native-expo-viewport-units';
 import FridgeCategoryPicker from '../fridgeCategoryPicker';
@@ -18,57 +18,57 @@ import FreezerCategoryPicker from '../freezerCategoryPicker';
 import PantryCategoryPicker from '../pantryCategoryPicker';
 
 const styles = StyleSheet.create({
-	content: {
-		display: 'flex',
-		justifyContent: 'space-around',
-		alignItems: 'center',
-		width: '100%',
-		height: '100%',
-		backgroundColor: '#EBF5FF'
-	},
-	form: {
-		width: '95%'
-	},
-	productName: {
-		paddingBottom: 5,
-		paddingTop: 5,
-		marginLeft: 0
-	},
-	categoryPicker: {
-		width: undefined
-	},
-	iconDiv: {
-		textAlign: 'center'
-	},
-	scanBtn: {
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'center',
-		height: vh(13),
-		width: 200,
-		backgroundColor: '#193652'
-	},
-	addBtn: {
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'center',
-		height: vh(13),
-		width: 200,
-		backgroundColor: '#83b8b6'
-	},
-	barcodeIcon: {
-		fontSize: 60,
-		textAlign: 'center'
-	},
-	plusIcon: {
-		fontSize: 60,
-		textAlign: 'center'
-	}
+  content: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#EBF5FF',
+  },
+  form: {
+    width: '95%',
+  },
+  productName: {
+    paddingBottom: 5,
+    paddingTop: 5,
+    marginLeft: 0,
+  },
+  categoryPicker: {
+    width: undefined,
+  },
+  iconDiv: {
+    textAlign: 'center',
+  },
+  scanBtn: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: vh(13),
+    width: 200,
+    backgroundColor: '#193652',
+  },
+  addBtn: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: vh(13),
+    width: 200,
+    backgroundColor: '#83b8b6',
+  },
+  barcodeIcon: {
+    fontSize: 60,
+    textAlign: 'center',
+  },
+  plusIcon: {
+    fontSize: 60,
+    textAlign: 'center',
+  },
 });
 
 class AddProduct extends React.Component {
-	render() {
-		return (
+  render() {
+    return (
 			<Content contentContainerStyle={styles.content}>
 				<Form style={styles.form}>
 					<Item floatingLabel style={styles.productName}>
@@ -97,35 +97,35 @@ class AddProduct extends React.Component {
 					<Item picker>
 						<Label>Category</Label>
 						{(() => {
-							switch (this.props.location) {
-								case 'Fridge':
-									return (
+						  switch (this.props.location) {
+						    case 'Fridge':
+						      return (
 										<FridgeCategoryPicker
 											styles={styles.categoryPicker}
 											onCategoryChange={this.props.onCategoryChange}
 											selectedCategory={this.props.category}
 										/>
-									);
-									break;
-								case 'Freezer':
-									return (
+						      );
+						      break;
+						    case 'Freezer':
+						      return (
 										<FreezerCategoryPicker
 											styles={styles.categoryPicker}
 											onCategoryChange={this.props.onCategoryChange}
 											selectedCategory={this.props.category}
 										/>
-									);
-									break;
-								case 'Pantry':
-									return (
+						      );
+						      break;
+						    case 'Pantry':
+						      return (
 										<PantryCategoryPicker
 											styles={styles.categoryPicker}
 											onCategoryChange={this.props.onCategoryChange}
 											selectedCategory={this.props.category}
 										/>
-									);
-									break;
-							}
+						      );
+						      break;
+						  }
 						})()}
 					</Item>
 					<Item picker>
@@ -154,18 +154,22 @@ class AddProduct extends React.Component {
 					</Item>
 					<DatePicker
 						defaultDate={new Date()}
-						locale={'en'}
+						locale="en"
 						timeZoneOffsetInMinutes={undefined}
 						modalTransparent={false}
-						animationType={'fade'}
-						androidMode={'default'}
+						animationType="fade"
+						androidMode="default"
 						placeHolderText="Press here to select expiration date"
 						textStyle={{ color: 'green' }}
 						placeHolderTextStyle={{ color: '#8F8F8F' }}
 						onDateChange={this.props.setDate}
 						disabled={false}
 					/>
-					<Text>Date: {this.props.date.toString().substr(4, 12)}</Text>
+					<Text>
+Date:
+{' '}
+{this.props.date.toString().substr(4, 12)}
+</Text>
 				</Form>
 				<View style={styles.iconDiv}>
 					<Button large style={styles.scanBtn}>
@@ -194,8 +198,8 @@ class AddProduct extends React.Component {
 					</Button>
 				</View>
 			</Content>
-		);
-	}
+    );
+  }
 }
 
 export default AddProduct;
