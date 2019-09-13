@@ -1,3 +1,4 @@
+/* eslint-disable no-new */
 /* eslint-disable no-console */
 // Dependencies
 require('dotenv').config();
@@ -5,7 +6,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 // eslint-disable-next-line prefer-destructuring
 const CronJob = require('cron').CronJob;
-const dailyCheck = require('./cronJobs/expirationCheck');
+const { 
+  dailyCheck, check7, check2, checkExp 
+} = require('./cronJobs/expirationCheck');
 const routes = require('./routes/routes').router;
 
 const PORT = process.env.PORT || 3001;
@@ -42,7 +45,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/fridge2table', 
   });
 
 
-// '0 0 0 1-31 * *' = Daily Check.
+// '0 0 12 1-31 * *' = Daily Check.
 // '0 0 0-23 1-31 * *' = Hourly Check.
 // '0,15,30,45 * * * * *' = every 15 seconds
 // '0 * * * * *' = once a minute
@@ -50,6 +53,12 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/fridge2table', 
 new CronJob('0 0 0-23 1-31 * *', () => {
   dailyCheck();
 }, null, true, 'America/Los_Angeles');
+
+// new CronJob('0 * * * * *', () => {
+//   check7();
+//   check2();
+//   checkExp();
+// }, null, true, 'America/Los_Angeles');
 
 // Start server
 app.listen(PORT, () => {

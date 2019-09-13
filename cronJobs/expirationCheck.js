@@ -6,6 +6,7 @@ require('dotenv').config();
 const { Expo } = require('expo-server-sdk');
 const { User, Product } = require('../models');
 const { updateProduct } = require('../routes/productFunctions');
+const { addDays } = require('../routes/dateFunctions');
 
 // Generic push object for testing SendPushNote function
 // const pushObject = {
@@ -123,22 +124,36 @@ const SendPushNote = (pushObj) => {
 // Timeout for testing SendPushNote changes, may use later
 // setTimeout(() => SendPushNote(pushObject), 5000);
 
-// Constructs a push notification object and then sends it to SendPushNoth()
-function handlePushNotifications(product) {
+// Constructs a push notification object and then sends it to SendPushNote()
+function handlePushNotifications(warningType, owner, product) {
+  let warning;
+  switch (warningType) {
+    case 'seven day':
+      warning = 'expiring in seven days!';
+      break;
+    case 'two day':
+      warning = 'expiring in two days!';
+      break;
+    case 'expiration':
+      warning = 'expired!';
+      break;
+    default:
+      break;
+  }
   const pushObj = {
     productname: product.productname,
-    pushToken: product.pushToken,
-    message: `Your ${product.productname} is expiring in seven days!`,
+    pushToken: owner[0].pushToken,
+    message: `Your ${product.productname} is ${warning}`,
   };
   SendPushNote(pushObj);
 }
 
 // Find the owner, construct a warning push object and send through SendPushNote()
-function handleNotifyUser(warningType) {
+function handleNotifyUser(warningType, product) {
   User.find({ _id: product.owner })
     .populate('allProduct')
     .populate('inventoryProducts')
-    .then((data) => { handlePushNotifications(data); })
+    .then((data) => { handlePushNotifications(warningType, data, product); })
     .catch(() => { console.log(`We ran into a problem finding a user to send the ${warningType} warning to.\n------------------------`); });
 }
 
@@ -195,5 +210,50 @@ const dailyCheck = () => {
     .catch(() => { console.log('We ran into a problem finding our products.\n------------------------'); });
 };
 
+const check7 = () => {
+  const startD = addDays(new Date().setHours(0, 0, 0, 0), 7);
+  const endD = addDays(startD, 1);
+  // Find all Products that will expire seven days from today.
+  Product.find({ expDate: { $gte: startD, $lt: endD } })
+    .populate('associatedRecipes')
+    .then((expIn7Products) => {
+      // Send each product expiring in 7 days through the function that will notify it's owner.
+      expIn7Products.forEach((product) => { handleNotifyUser('seven day', product); });
+    });
+};
 
-module.exports = dailyCheck;
+const check2 = () => {
+  const startD = addDays(new Date().setHours(0, 0, 0, 0), 2);
+  const endD = addDays(startD, 1);
+  // Find all Products that will expire two days from today.
+  Product.find({ expDate: { $gte: startD, $lt: endD } })
+    .populate('associatedRecipes')
+    .then((expIn2Products) => {
+      // Send each product expiring in two days through the function that will notify it's owner.
+      expIn2Products.forEach((product) => { handleNotifyUser('two day', product); });
+    });
+};
+
+const checkExp = () => {
+  // Find all Products that will expire today.
+  const startD = new Date().setHours(0, 0, 0, 0);
+  const endD = addDays(startD, 1);
+  // Find all Products that will expire today.
+  Product.find({ expDate: { $gte: startD, $lt: endD } })
+    .populate('associatedRecipes')
+    .then((expTodayProducts) => {
+      // Send each product expiring today through the function that will notify it's owner.
+      expTodayProducts.forEach((product) => {
+        handleNotifyUser('expiration', product);
+        // Mark the item as expired.
+        updateProduct({ _id: product._id, owner: product.owner }, { expiredOrNot: true });
+      });
+    });
+};
+
+module.exports = {
+  dailyCheck,
+  check7,
+  check2,
+  checkExp,
+};

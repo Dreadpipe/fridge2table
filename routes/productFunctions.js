@@ -79,7 +79,7 @@ const targetProduct = (reqTarget) => {
 
 //--------------------------------
 
-// Update Product Function
+// Update One Product Function
 const updateProduct = (reqTarget, reqUpdate) => {
   // Create a target for the update - sends the target data through the targetProduct function.
   const finalTarget = targetProduct(reqTarget);
