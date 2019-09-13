@@ -1,62 +1,62 @@
-import React from "react";
-import { StyleSheet, View, ImageBackground } from "react-native";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import {
-	Button,
-	Text,
-	Icon,
-	Content,
-	Form,
-	Item,
-	Input,
-	Label,
-	Picker,
-	DatePicker
-} from "native-base";
-import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
-import FridgeCategoryPicker from "../fridgeCategoryPicker";
-import FreezerCategoryPicker from "../freezerCategoryPicker";
-import PantryCategoryPicker from "../pantryCategoryPicker";
+  Button,
+  Text,
+  Icon,
+  Content,
+  Form,
+  Item,
+  Input,
+  Label,
+  Picker,
+  DatePicker,
+} from 'native-base';
+import { vh } from 'react-native-expo-viewport-units';
+import FridgeCategoryPicker from '../fridgeCategoryPicker';
+import FreezerCategoryPicker from '../freezerCategoryPicker';
+import PantryCategoryPicker from '../pantryCategoryPicker';
 
 const styles = StyleSheet.create({
-	content: {
-		display: "flex",
-		justifyContent: "space-around",
-		alignItems: "center",
-		width: "100%",
-		height: "100%",
-		backgroundColor: "#EBF5FF"
-	},
-	form: {
-		width: "95%"
-	},
-	productName: {
-		paddingBottom: 5,
-		paddingTop: 5,
-		marginLeft: 0
-	},
-	categoryPicker: {
-		width: undefined
-	},
-	iconDiv: {
-		textAlign: "center"
-	},
-	pencilBtn: {
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: "center",
-		height: vh(13),
-		width: 200,
-		backgroundColor: "#83b8b6"
-	},
-	pencilIcon: {
-		fontSize: 60,
-		textAlign: "center"
-	}
+  content: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#EBF5FF',
+  },
+  form: {
+    width: '95%',
+  },
+  productName: {
+    paddingBottom: 5,
+    paddingTop: 5,
+    marginLeft: 0,
+  },
+  categoryPicker: {
+    width: undefined,
+  },
+  iconDiv: {
+    textAlign: 'center',
+  },
+  pencilBtn: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: vh(13),
+    width: 200,
+    backgroundColor: '#83b8b6',
+  },
+  pencilIcon: {
+    fontSize: 60,
+    textAlign: 'center',
+  },
 });
 
 class UpdateProduct extends React.Component {
-	render() {
-		return (
+  render() {
+    return (
 			<Content contentContainerStyle={styles.content}>
 				<Form style={styles.form}>
 					<Item floatingLabel style={styles.productName}>
@@ -72,7 +72,7 @@ class UpdateProduct extends React.Component {
 							mode="dropdown"
 							iosIcon={<Icon name="arrow-down" />}
 							style={styles.categoryPicker}
-							placeholderStyle={{ color: "#bfc6ea" }}
+							placeholderStyle={{ color: '#bfc6ea' }}
 							placeholderIconColor="#007aff"
 							selectedValue={this.props.location}
 							onValueChange={this.props.onLocationChange}
@@ -85,35 +85,35 @@ class UpdateProduct extends React.Component {
 					<Item picker>
 						<Label>Category</Label>
 						{(() => {
-							switch (this.props.location) {
-								case "Fridge":
-									return (
+						  switch (this.props.location) {
+						    case 'Fridge':
+						      return (
 										<FridgeCategoryPicker
 											styles={styles.categoryPicker}
 											onCategoryChange={this.props.onCategoryChange}
 											selectedCategory={this.props.category}
 										/>
-									);
-									break;
-								case "Freezer":
-									return (
+						      );
+						      break;
+						    case 'Freezer':
+						      return (
 										<FreezerCategoryPicker
 											styles={styles.categoryPicker}
 											onCategoryChange={this.props.onCategoryChange}
 											selectedCategory={this.props.category}
 										/>
-									);
-									break;
-								case "Pantry":
-									return (
+						      );
+						      break;
+						    case 'Pantry':
+						      return (
 										<PantryCategoryPicker
 											styles={styles.categoryPicker}
 											onCategoryChange={this.props.onCategoryChange}
 											selectedCategory={this.props.category}
 										/>
-									);
-									break;
-							}
+						      );
+						      break;
+						  }
 						})()}
 					</Item>
 					<Item picker>
@@ -123,7 +123,7 @@ class UpdateProduct extends React.Component {
 							iosIcon={<Icon name="arrow-down" />}
 							style={styles.categoryPicker}
 							placeholder="Press to select"
-							placeholderStyle={{ color: "#bfc6ea" }}
+							placeholderStyle={{ color: '#bfc6ea' }}
 							placeholderIconColor="#007aff"
 							selectedValue={this.props.quantity.toString()}
 							onValueChange={this.props.onQuantityChange}
@@ -142,18 +142,22 @@ class UpdateProduct extends React.Component {
 					</Item>
 					<DatePicker
 						defaultDate={this.props.date}
-						locale={"en"}
+						locale="en"
 						timeZoneOffsetInMinutes={undefined}
 						modalTransparent={false}
-						animationType={"fade"}
-						androidMode={"default"}
+						animationType="fade"
+						androidMode="default"
 						placeHolderText="Press here to select expiration date"
-						textStyle={{ color: "green" }}
-						placeHolderTextStyle={{ color: "#8F8F8F" }}
+						textStyle={{ color: 'green' }}
+						placeHolderTextStyle={{ color: '#8F8F8F' }}
 						onDateChange={this.props.setDate}
 						disabled={false}
 					/>
-					<Text>Date: {this.props.date.toString().substr(4, 12)}</Text>
+					<Text>
+						Date:
+						{' '}
+						{this.props.date.toString().substr(4, 12)}
+					</Text>
 				</Form>
 				<View style={styles.iconDiv}>
 					<Button style={styles.pencilBtn}>
@@ -163,12 +167,12 @@ class UpdateProduct extends React.Component {
 							style={styles.pencilIcon}
 							onPress={() => this.props.updateProduct(this.props.productID)}
 						/>
-						<Text style={{ textAlign: "center" }}>Update Product</Text>
+						<Text style={{ textAlign: 'center' }}>Update Product</Text>
 					</Button>
 				</View>
 			</Content>
-		);
-	}
+    );
+  }
 }
 
 export default UpdateProduct;
