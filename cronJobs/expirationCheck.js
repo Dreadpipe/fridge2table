@@ -7,51 +7,55 @@ const { Expo } = require('expo-server-sdk');
 const { User, Product } = require('../models');
 const { updateProduct } = require('../routes/productFunctions');
 
+// Generic push object for testing SendPushNote function
+// const pushObject = {
+//   productname: 'Celery',
+//   pushToken: process.env.PUSH_TOKENS.split(' '),
+//   message: 'Your Celery is expiring in seven days!',
+// };
+
 // Helper Functions
 
-const SendPushNote = (obj) => {
+const SendPushNote = (pushObj) => {
   // Create a new Expo SDK client
   const expo = new Expo();
   // Create the messages that you want to send to clents
-  console.log(obj);
+  console.log('\n', pushObj);
   // Create an array of messages to send in bulk
   const messages = [];
-  // Assign each receive push token to variable.
-  const { pushToken } = obj;
-  // Create temp array for received push tokens
-  const somePushTokens = [];
-  // Push received tokes into temp array
-  somePushTokens.push(pushToken);
   // Loop through temp array
-  for (const pushToken of somePushTokens) {
+  pushObj.pushToken.map((pushToken) => {
     // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
     // Check that all your push tokens appear to be valid Expo push tokens
     if (!Expo.isExpoPushToken(pushToken)) {
       console.error(`Push token ${pushToken} is not a valid Expo push token`);
-      continue;
     }
-    // Construct a message (see https://docs.expo.io/versions/latest/guides/push-notifications.html)
+    // Construct a message object and push to array (see https://docs.expo.io/versions/latest/guides/push-notifications.html)
     messages.push({
       to: pushToken,
       title: 'Fridge2Table',
       sound: 'default',
-      body: obj.message,
+      body: pushObj.message,
       badge: 1,
-      data: { expFood: obj.productname },
+      data: { expFood: pushObj.productname },
     });
-  }
+    console.log('\n', messages);
+    return messages;
+  });
   // Chunking together multiple notications to send at once
   const chunks = expo.chunkPushNotifications(messages);
   // Create array for response from each chunk
   const tickets = [];
   (async () => {
     // Send one chunk at a time, which nicely spreads the load out.
+    // eslint-disable-next-line no-restricted-syntax
     for (const chunk of chunks) {
       try {
         // Assign variable for response from sendPushNotifiationAsync
+        // eslint-disable-next-line no-await-in-loop
         const ticketChunk = await expo.sendPushNotificationsAsync(chunk);
         // Console log the response.
-        console.log(ticketChunk);
+        console.log('\n', ticketChunk);
         // Push each response into tickets array.
         tickets.push(...ticketChunk);
       } catch (error) {
@@ -64,7 +68,7 @@ const SendPushNote = (obj) => {
   // Create array to hold responses from sendPushNotificationsAsynch
   const receiptIds = [];
   // Loop through each response
-  for (const ticket of tickets) {
+  tickets.map((ticket) => {
     // NOTE: Not all tickets have IDs; for example, tickets for notifications
     // that could not be enqueued will have error information and no receipt ID.
     // Check if ticket contains id
@@ -72,25 +76,29 @@ const SendPushNote = (obj) => {
       // If no error, push ticket.id into response array
       receiptIds.push(ticket.id);
     }
-  }
+    return receiptIds;
+  });
   // Assign variable for response from sending receiptsIds
   const receiptIdChunks = expo.chunkPushNotificationReceiptIds(receiptIds);
   (async () => {
     // Chunk together multiple receiptIds to send at once.
     // Loop through each chunk
+    // eslint-disable-next-line no-restricted-syntax
     for (const chunk of receiptIdChunks) {
       try {
         // Assign variable for receiptId chunk response
+        // eslint-disable-next-line no-await-in-loop
         const receipts = await expo.getPushNotificationReceiptsAsync(chunk);
         // Console log response
-        console.log(receipts);
-        // The receipts specify whether Apple or Google successfully received the
-        // notification and information about an error, if one occurred.
+        console.log('\n', receipts);
+        // The receipts specify whether Apple or Google successfully received the notification and information about an error, if one occurred.
         // Loop through each receipt
+        // eslint-disable-next-line no-restricted-syntax
         for (const receipt of receipts) {
           // If no error
           if (receipt.status === 'ok') {
             // Keep checking receipts
+            // eslint-disable-next-line no-continue
             continue;
             // If receipt contained an error
           } else if (receipt.status === 'error') {
@@ -112,17 +120,17 @@ const SendPushNote = (obj) => {
     }
   })();
 };
+// Timeout for testing SendPushNote changes, may use later
+// setTimeout(() => SendPushNote(pushObject), 5000);
 
 // Constructs a push notification object and then sends it to SendPushNoth()
-function handlePushNotifications(data) {
-  data[0].pushToken.forEach((token) => {
-    const pushObj = {
-      productname: product.productname,
-      pushToken: token,
-      message: `Your ${product.productname} is expiring in seven days!`,
-    };
-    SendPushNote(pushObj);
-  });
+function handlePushNotifications(product) {
+  const pushObj = {
+    productname: product.productname,
+    pushToken: product.pushToken,
+    message: `Your ${product.productname} is expiring in seven days!`,
+  };
+  SendPushNote(pushObj);
 }
 
 // Find the owner, construct a warning push object and send through SendPushNote()
@@ -140,7 +148,7 @@ function handleNotifyUser(warningType) {
 
 /* This function is called in server.js to check expirations of all food in the database.
 Depending on the results, it triggers push notifications for our users. */
-const dailyCheck = function () {
+const dailyCheck = () => {
   // Find all Products
   Product.find({})
     .populate('associatedRecipes')
