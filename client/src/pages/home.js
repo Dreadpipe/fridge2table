@@ -1,39 +1,38 @@
-import React from "react";
-import { StyleSheet, View, Platform, Alert, Text, Button } from "react-native";
-import { Toast, Spinner, Root } from "native-base";
-import { getStatusBarHeight } from "react-native-status-bar-height";
-import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
-import Head from "../components/head";
-import OpenFridge from "../components/openFridge";
-import Freezer from "../components/freezer";
-import Pantry from "../components/pantry";
-import AddProduct from "../components/addProduct";
-import ViewProducts from "../components/viewProducts";
-import ProductDetail from "../components/productDetails";
-import GroceryList from "../components/groceryList";
-import UpdateProduct from "../components/updateProduct";
-import Scanner from "../components/scanner";
-import Foot from "../components/foot";
+import React from 'react';
+import { StyleSheet, View, Platform, Alert } from 'react-native';
+import { Toast, Spinner } from 'native-base';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { vh } from 'react-native-expo-viewport-units';
+import Head from '../components/head';
+import OpenFridge from '../components/openFridge';
+import Freezer from '../components/freezer';
+import Pantry from '../components/pantry';
+import AddProduct from '../components/addProduct';
+import ViewProducts from '../components/viewProducts';
+import ProductDetail from '../components/productDetails';
+import GroceryList from '../components/groceryList';
+import UpdateProduct from '../components/updateProduct';
+import Scanner from '../components/scanner';
+import Foot from '../components/foot';
 // import API from "../utils/API";
-import API from "../utils/API-dev";
-import { Notifications, Permissions } from "expo";
-import axios from "axios";
+import API from '../utils/API-dev';
+import { Notifications, Permissions } from 'expo';
 
 const styles = StyleSheet.create({
 	container: {
-		height: Platform.OS === "ios" ? vh(100) : vh(100) - getStatusBarHeight(),
-		width: "100%"
+		height: Platform.OS === 'ios' ? vh(100) : vh(100) - getStatusBarHeight(),
+		width: '100%'
 	}
 });
 
 // Variable to hold token globally to send to backend
-let expoToken = "";
+let expoToken = '';
 
 async function registerForPushNotifications() {
 	const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
 	const token = await Notifications.getExpoPushTokenAsync();
-	if (status !== "granted") {
-		alert("You did not grant notifications permissions");
+	if (status !== 'granted') {
+		alert('You did not grant notifications permissions');
 		return;
 	}
 	// console.log(status, token);
@@ -44,15 +43,15 @@ class Home extends React.Component {
 		super(props);
 		this.state = {
 			user: {},
-			view: "spinner",
-			productView: "all",
-			productName: "",
-			picURL: "",
-			selectedLocation: "Fridge",
-			selectedCategory: "Dairy",
+			view: 'spinner',
+			productView: 'all',
+			productName: '',
+			picURL: '',
+			selectedLocation: 'Fridge',
+			selectedCategory: 'Dairy',
 			selectedQuantity: 1,
 			expDate: new Date(),
-			productIDForUpdate: "",
+			productIDForUpdate: '',
 			productToDetail: {},
 			groceryItemLoading: false,
 			numNeededLoading: false,
@@ -67,7 +66,7 @@ class Home extends React.Component {
 		// Once user is fully loaded through API call, view is switched from the spinner to the fridge
 		API.getCurrentUser(this.props.user.id)
 			.then(response => {
-				this.setState({ user: response.data[0], view: "fridge" }, () => {
+				this.setState({ user: response.data[0], view: 'fridge' }, () => {
 					registerForPushNotifications()
 						.then(() => {
 							// First check if pushToken array contains more than one token, then if the array already contains the generated token
@@ -79,7 +78,7 @@ class Home extends React.Component {
 								this.addPushToken();
 								// Logs that the token already exists
 							} else {
-								return console.log("User already has this push token saved!");
+								return console.log('User already has this push token saved!');
 							}
 						})
 						.catch(err => console.log(err));
@@ -88,9 +87,9 @@ class Home extends React.Component {
 					// Toast that pops up if user doesn't have any products
 					Toast.show({
 						text: `Welcome to Fridge2Table! Looks like you don't have any products. Click "New Product" down here!`,
-						buttonText: "Okay",
-						position: "bottom",
-						type: "warning",
+						buttonText: 'Okay',
+						position: 'bottom',
+						type: 'warning',
 						duration: 30000,
 						style: { marginBottom: vh(9) }
 					});
@@ -109,8 +108,8 @@ class Home extends React.Component {
 		// Toast that pops up when the notification is sent to the user's device
 		Toast.show({
 			text: `Check the expiration for ${notification.data.expFood}!`,
-			buttonText: "Okay!",
-			position: "bottom",
+			buttonText: 'Okay!',
+			position: 'bottom',
 			duration: 10000,
 			style: { marginBottom: vh(9) }
 		});
@@ -140,22 +139,22 @@ class Home extends React.Component {
 	};
 
 	onLocationChange(value) {
-		if (value === "Fridge") {
+		if (value === 'Fridge') {
 			this.setState({
 				selectedLocation: value,
-				selectedCategory: "Dairy",
+				selectedCategory: 'Dairy',
 				selectedQuantity: 1
 			});
-		} else if (value === "Freezer") {
+		} else if (value === 'Freezer') {
 			this.setState({
 				selectedLocation: value,
-				selectedCategory: "Meats",
+				selectedCategory: 'Meats',
 				selectedQuantity: 1
 			});
 		} else {
 			this.setState({
 				selectedLocation: value,
-				selectedCategory: "Canned Goods",
+				selectedCategory: 'Canned Goods',
 				selectedQuantity: 1
 			});
 		}
@@ -182,7 +181,7 @@ class Home extends React.Component {
 		) {
 			// View is set to "spinner" while the addProduct function is being processed
 
-			this.setState({ view: "spinner" });
+			this.setState({ view: 'spinner' });
 			// A new product object is created to be sent to the database
 			const newProduct = {
 				name: this.state.productName,
@@ -203,22 +202,22 @@ class Home extends React.Component {
 				.then(() => {
 					// The product's info is cleared from state object after the product is added
 					this.setState({
-						view: "addProduct",
-						productName: "",
-						picURL: "",
-						selectedCategory: "Dairy",
-						selectedLocation: "Fridge",
+						view: 'addProduct',
+						productName: '',
+						picURL: '',
+						selectedCategory: 'Dairy',
+						selectedLocation: 'Fridge',
 						selectedQuantity: 1,
 						expDate: new Date()
 					});
 					// A new call to get the user is made, to get their updated list of products for display
 					this.updateUser();
-					return alert("Product added! Click OK to add more.");
+					return alert('Product added! Click OK to add more.');
 				})
 				.catch(err => console.log(err));
 		} else {
 			// An alert that pops up if the user fails to fill out the entire input form to add a product
-			return alert("Please make sure to fill out the entire product form");
+			return alert('Please make sure to fill out the entire product form');
 		}
 	};
 
@@ -233,19 +232,19 @@ class Home extends React.Component {
 	// Navigation functions
 
 	toFridgeScreen = () => {
-		this.setState({ view: "fridge" });
+		this.setState({ view: 'fridge' });
 	};
 
 	toFreezerScreen = () => {
-		this.setState({ view: "freezer" });
+		this.setState({ view: 'freezer' });
 	};
 
 	toPantryScreen = () => {
-		this.setState({ view: "pantry" });
+		this.setState({ view: 'pantry' });
 	};
 
 	toAddProductScreen = () => {
-		this.setState({ view: "addProduct" });
+		this.setState({ view: 'addProduct' });
 	};
 
 	toProductDetailScreen = id => {
@@ -253,31 +252,31 @@ class Home extends React.Component {
 			product => product._id === id
 		);
 		this.setState({
-			view: "productDetail",
+			view: 'productDetail',
 			productToDetail: filteredProducts[0]
 		});
 	};
 
 	toGroceryListScreen = () => {
-		this.setState({ view: "spinner" });
+		this.setState({ view: 'spinner' });
 		this.updateUser();
-		this.setState({ view: "groceryList" });
+		this.setState({ view: 'groceryList' });
 	};
 
 	toAddProductScreenClear = () => {
 		this.setState({
-			view: "addProduct",
-			productName: "",
-			picURL: "",
-			selectedLocation: "Fridge",
-			selectedCategory: "Dairy",
+			view: 'addProduct',
+			productName: '',
+			picURL: '',
+			selectedLocation: 'Fridge',
+			selectedCategory: 'Dairy',
 			selectedQuantity: 1,
 			expDate: new Date()
 		});
 	};
 
 	toScanner = () => {
-		this.setState({ view: "scanner" });
+		this.setState({ view: 'scanner' });
 	};
 
 	// Scanner functions
@@ -311,7 +310,7 @@ class Home extends React.Component {
 			product => product._id === id
 		);
 		this.setState({
-			view: "updateProduct",
+			view: 'updateProduct',
 			productName: filteredProducts[0].productname,
 			selectedLocation: filteredProducts[0].location,
 			selectedCategory: filteredProducts[0].category,
@@ -329,25 +328,25 @@ class Home extends React.Component {
 			target: filteredProducts[0]
 		};
 		Alert.alert(
-			"Delete Product",
-			"Are you sure you want to do this?",
+			'Delete Product',
+			'Are you sure you want to do this?',
 			[
 				{
-					text: "Yes",
+					text: 'Yes',
 					onPress: () => {
 						API.removeFood(data)
 							.then(() => {
 								this.updateUser();
 								this.setState({
-									view: "viewProducts",
-									productView: "all"
+									view: 'viewProducts',
+									productView: 'all'
 								});
 							})
 							.catch(err => console.log(err));
 					}
 				},
 				{
-					text: "No",
+					text: 'No',
 					onPress: () => {
 						return;
 					}
@@ -383,7 +382,7 @@ class Home extends React.Component {
 		// Inventory products array is pulled out of the user object via ES6 destructuring, then the sorted array is added back in its place
 		const { inventoryProducts, ...rest } = this.state.user;
 		rest.inventoryProducts = sortedArray;
-		this.setState({ view: "viewProducts", user: rest });
+		this.setState({ view: 'viewProducts', user: rest });
 	};
 
 	sortAlphabetically = () => {
@@ -400,7 +399,7 @@ class Home extends React.Component {
 		// Inventory products array is pulled out of the user object via ES6 destructuring, then the sorted array is added back in its place
 		const { inventoryProducts, ...rest } = this.state.user;
 		rest.inventoryProducts = sortedArray;
-		this.setState({ view: "viewProducts", user: rest });
+		this.setState({ view: 'viewProducts', user: rest });
 	};
 
 	sortByLocation = () => {
@@ -417,14 +416,14 @@ class Home extends React.Component {
 		// Inventory products array is pulled out of the user object via ES6 destructuring, then the sorted array is added back in its place
 		const { inventoryProducts, ...rest } = this.state.user;
 		rest.inventoryProducts = sortedArray;
-		this.setState({ view: "viewProducts", user: rest });
+		this.setState({ view: 'viewProducts', user: rest });
 	};
 
 	// Update-Product Screen Functions
 
 	updateProduct = id => {
 		// View is set to "spinner" while the updateProduct function is processed
-		this.setState({ view: "spinner" });
+		this.setState({ view: 'spinner' });
 		// Filter call that returns only the product with the matching id
 		const filteredProducts = this.state.user.inventoryProducts.filter(
 			product => product._id === id
@@ -447,8 +446,8 @@ class Home extends React.Component {
 				// A new call to get the user is made, to get the list of products with the updated product details
 				this.updateUser();
 				// The view is switched to "viewProducts," with the updated product on display
-				this.setState({ view: "viewProducts", productView: "all" });
-				return alert("Product updated! Click OK to view updated products");
+				this.setState({ view: 'viewProducts', productView: 'all' });
+				return alert('Product updated! Click OK to view updated products');
 			})
 			.catch(err => console.log(err));
 	};
@@ -457,7 +456,7 @@ class Home extends React.Component {
 
 	addGroceryItem = id => {
 		// View is set to "spinner" while the updateProduct function is processed
-		this.setState({ view: "spinner" });
+		this.setState({ view: 'spinner' });
 		// Filter call that returns only the product with the matching id
 		const filteredProducts = this.state.user.inventoryProducts.filter(
 			product => product._id === id
@@ -610,15 +609,17 @@ class Home extends React.Component {
 		};
 
 		Alert.alert(
-			"Add to Inventory",
+			'Add to Inventory',
 			`The item will be added to your inventory with the following details:\n\nLocation: ${
 				filteredGroceryItems[0].location
 			}\nCatetogory: ${filteredGroceryItems[0].category}\nQuantity: ${
 				filteredGroceryItems[0].numNeeded
-			}\nExpiration date: ${newProduct.expDate.toString().substr(4, 12)}\n\nDo you want to continue?`,
+			}\nExpiration date: ${newProduct.expDate
+				.toString()
+				.substr(4, 12)}\n\nDo you want to continue?`,
 			[
 				{
-					text: "Yes",
+					text: 'Yes',
 					onPress: () => {
 						// The newProduct object is sent up to the database
 						API.addFood(newProduct)
@@ -628,7 +629,7 @@ class Home extends React.Component {
 									.then(() => {
 										this.updateUser();
 										return alert(
-											"Product added! Click OK to return to the grocery list."
+											'Product added! Click OK to return to the grocery list.'
 										);
 									})
 									.catch(err => console.log(err));
@@ -637,7 +638,7 @@ class Home extends React.Component {
 					}
 				},
 				{
-					text: "No",
+					text: 'No',
 					onPress: () => {
 						return;
 					}
@@ -655,11 +656,11 @@ class Home extends React.Component {
 			target: filteredGroceryItems[0]
 		};
 		Alert.alert(
-			"Delete Grocery Item",
-			"Are you sure you want to do this?",
+			'Delete Grocery Item',
+			'Are you sure you want to do this?',
 			[
 				{
-					text: "Yes",
+					text: 'Yes',
 					onPress: () => {
 						API.removeGroceryItem(data)
 							.then(() => {
@@ -669,7 +670,7 @@ class Home extends React.Component {
 					}
 				},
 				{
-					text: "No",
+					text: 'No',
 					onPress: () => {
 						return;
 					}
@@ -692,159 +693,159 @@ class Home extends React.Component {
 				{(() => {
 					// Switch statement that displays the appropriate page view, depending on what's set as "view" in the state object
 					switch (this.state.view) {
-						case "fridge":
+						case 'fridge':
 							return (
 								<OpenFridge
 									user={this.state.user}
 									viewMeats={() =>
 										this.setState({
-											view: "viewProducts",
-											productView: "fridgeMeats"
+											view: 'viewProducts',
+											productView: 'fridgeMeats'
 										})
 									}
 									countMeats={this.countByCategoryAndLocation(
-										"Meats",
-										"Fridge"
+										'Meats',
+										'Fridge'
 									)}
 									viewDairy={() =>
 										this.setState({
-											view: "viewProducts",
-											productView: "fridgeDairy"
+											view: 'viewProducts',
+											productView: 'fridgeDairy'
 										})
 									}
 									countDairy={this.countByCategoryAndLocation(
-										"Dairy",
-										"Fridge"
+										'Dairy',
+										'Fridge'
 									)}
 									viewProduce={() =>
 										this.setState({
-											view: "viewProducts",
-											productView: "fridgeProduce"
+											view: 'viewProducts',
+											productView: 'fridgeProduce'
 										})
 									}
 									countProduce={this.countByCategoryAndLocation(
-										"Produce",
-										"Fridge"
+										'Produce',
+										'Fridge'
 									)}
 									viewGrains={() =>
 										this.setState({
-											view: "viewProducts",
-											productView: "fridgeGrains"
+											view: 'viewProducts',
+											productView: 'fridgeGrains'
 										})
 									}
 									countGrains={this.countByCategoryAndLocation(
-										"Grains",
-										"Fridge"
+										'Grains',
+										'Fridge'
 									)}
 									viewDrinks={() =>
 										this.setState({
-											view: "viewProducts",
-											productView: "fridgeDrinks"
+											view: 'viewProducts',
+											productView: 'fridgeDrinks'
 										})
 									}
 									countDrinks={this.countByCategoryAndLocation(
-										"Drinks",
-										"Fridge"
+										'Drinks',
+										'Fridge'
 									)}
 									viewMisc={() =>
 										this.setState({
-											view: "viewProducts",
-											productView: "fridgeMisc"
+											view: 'viewProducts',
+											productView: 'fridgeMisc'
 										})
 									}
-									countMisc={this.countByCategoryAndLocation("Misc", "Fridge")}
+									countMisc={this.countByCategoryAndLocation('Misc', 'Fridge')}
 								/>
 							);
 							break;
-						case "pantry":
+						case 'pantry':
 							return (
 								<Pantry
 									user={this.state.user}
 									viewGrains={() =>
 										this.setState({
-											view: "viewProducts",
-											productView: "pantryGrains"
+											view: 'viewProducts',
+											productView: 'pantryGrains'
 										})
 									}
 									countGrains={this.countByCategoryAndLocation(
-										"Grains",
-										"Pantry"
+										'Grains',
+										'Pantry'
 									)}
 									viewCans={() =>
 										this.setState({
-											view: "viewProducts",
-											productView: "pantryCans"
+											view: 'viewProducts',
+											productView: 'pantryCans'
 										})
 									}
 									countCans={this.countByCategoryAndLocation(
-										"Canned Goods",
-										"Pantry"
+										'Canned Goods',
+										'Pantry'
 									)}
 									viewProduce={() =>
 										this.setState({
-											view: "viewProducts",
-											productView: "pantryProduce"
+											view: 'viewProducts',
+											productView: 'pantryProduce'
 										})
 									}
 									countProduce={this.countByCategoryAndLocation(
-										"Produce",
-										"Pantry"
+										'Produce',
+										'Pantry'
 									)}
 									viewSpices={() =>
 										this.setState({
-											view: "viewProducts",
-											productView: "pantrySpices"
+											view: 'viewProducts',
+											productView: 'pantrySpices'
 										})
 									}
 									countSpices={this.countByCategoryAndLocation(
-										"Spice Rack",
-										"Pantry"
+										'Spice Rack',
+										'Pantry'
 									)}
 									viewMisc={() =>
 										this.setState({
-											view: "viewProducts",
-											productView: "pantryMisc"
+											view: 'viewProducts',
+											productView: 'pantryMisc'
 										})
 									}
-									countMisc={this.countByCategoryAndLocation("Misc", "Pantry")}
+									countMisc={this.countByCategoryAndLocation('Misc', 'Pantry')}
 								/>
 							);
 							break;
-						case "freezer":
+						case 'freezer':
 							return (
 								<Freezer
 									user={this.state.user}
 									viewMeats={() =>
 										this.setState({
-											view: "viewProducts",
-											productView: "freezerMeats"
+											view: 'viewProducts',
+											productView: 'freezerMeats'
 										})
 									}
 									countMeats={this.countByCategoryAndLocation(
-										"Meats",
-										"Freezer"
+										'Meats',
+										'Freezer'
 									)}
 									viewProduce={() =>
 										this.setState({
-											view: "viewProducts",
-											productView: "freezerProduce"
+											view: 'viewProducts',
+											productView: 'freezerProduce'
 										})
 									}
 									countProduce={this.countByCategoryAndLocation(
-										"Produce",
-										"Freezer"
+										'Produce',
+										'Freezer'
 									)}
 									viewMisc={() =>
 										this.setState({
-											view: "viewProducts",
-											productView: "freezerMisc"
+											view: 'viewProducts',
+											productView: 'freezerMisc'
 										})
 									}
-									countMisc={this.countByCategoryAndLocation("Misc", "Freezer")}
+									countMisc={this.countByCategoryAndLocation('Misc', 'Freezer')}
 								/>
 							);
 							break;
-						case "addProduct":
+						case 'addProduct':
 							return (
 								<AddProduct
 									user={this.state.user}
@@ -863,7 +864,7 @@ class Home extends React.Component {
 								/>
 							);
 							break;
-						case "viewProducts":
+						case 'viewProducts':
 							return (
 								<ViewProducts
 									sortByExpDate={this.sortByExpDate}
@@ -875,93 +876,93 @@ class Home extends React.Component {
 									extraData={this.state.user}
 									products={(() => {
 										switch (this.state.productView) {
-											case "all":
+											case 'all':
 												return this.state.user.inventoryProducts;
 												break;
-											case "fridgeProduce":
+											case 'fridgeProduce':
 												return this.sortByCategoryAndLocation(
-													"Produce",
-													"Fridge"
+													'Produce',
+													'Fridge'
 												);
 												break;
-											case "fridgeGrains":
+											case 'fridgeGrains':
 												return this.sortByCategoryAndLocation(
-													"Grains",
-													"Fridge"
+													'Grains',
+													'Fridge'
 												);
 												break;
-											case "fridgeDairy":
+											case 'fridgeDairy':
 												return this.sortByCategoryAndLocation(
-													"Dairy",
-													"Fridge"
+													'Dairy',
+													'Fridge'
 												);
 												break;
-											case "fridgeDrinks":
+											case 'fridgeDrinks':
 												return this.sortByCategoryAndLocation(
-													"Drinks",
-													"Fridge"
+													'Drinks',
+													'Fridge'
 												);
 												break;
-											case "fridgeMisc":
-												return this.sortByCategoryAndLocation("Misc", "Fridge");
+											case 'fridgeMisc':
+												return this.sortByCategoryAndLocation('Misc', 'Fridge');
 												break;
-											case "fridgeMeats":
+											case 'fridgeMeats':
 												return this.sortByCategoryAndLocation(
-													"Meats",
-													"Fridge"
+													'Meats',
+													'Fridge'
 												);
 												break;
-											case "freezerMeats":
+											case 'freezerMeats':
 												return this.sortByCategoryAndLocation(
-													"Meats",
-													"Freezer"
+													'Meats',
+													'Freezer'
 												);
 												break;
-											case "freezerProduce":
+											case 'freezerProduce':
 												return this.sortByCategoryAndLocation(
-													"Produce",
-													"Freezer"
+													'Produce',
+													'Freezer'
 												);
 												break;
-											case "freezerMisc":
+											case 'freezerMisc':
 												return this.sortByCategoryAndLocation(
-													"Misc",
-													"Freezer"
+													'Misc',
+													'Freezer'
 												);
 												break;
-											case "pantryProduce":
+											case 'pantryProduce':
 												return this.sortByCategoryAndLocation(
-													"Produce",
-													"Pantry"
+													'Produce',
+													'Pantry'
 												);
 												break;
-											case "pantryCans":
+											case 'pantryCans':
 												return this.sortByCategoryAndLocation(
-													"Canned Goods",
-													"Pantry"
+													'Canned Goods',
+													'Pantry'
 												);
 												break;
-											case "pantrySpices":
+											case 'pantrySpices':
 												return this.sortByCategoryAndLocation(
-													"Spice Rack",
-													"Pantry"
+													'Spice Rack',
+													'Pantry'
 												);
 												break;
-											case "pantryGrains":
+											case 'pantryGrains':
 												return this.sortByCategoryAndLocation(
-													"Grains",
-													"Pantry"
+													'Grains',
+													'Pantry'
 												);
 												break;
-											case "pantryMisc":
-												return this.sortByCategoryAndLocation("Misc", "Pantry");
+											case 'pantryMisc':
+												return this.sortByCategoryAndLocation('Misc', 'Pantry');
 												break;
 										}
 									})()}
 								/>
 							);
 							break;
-						case "productDetail":
+						case 'productDetail':
 							return (
 								<ProductDetail
 									editProduct={this.editProduct}
@@ -971,7 +972,7 @@ class Home extends React.Component {
 								/>
 							);
 							break;
-						case "groceryList":
+						case 'groceryList':
 							return (
 								<GroceryList
 									groceryItems={this.state.user.groceryList}
@@ -985,7 +986,7 @@ class Home extends React.Component {
 								/>
 							);
 							break;
-						case "updateProduct":
+						case 'updateProduct':
 							return (
 								<UpdateProduct
 									user={this.state.user}
@@ -1004,7 +1005,7 @@ class Home extends React.Component {
 								/>
 							);
 							break;
-						case "scanner":
+						case 'scanner':
 							return (
 								<Scanner
 									user={this.state.user}
@@ -1013,11 +1014,11 @@ class Home extends React.Component {
 								/>
 							);
 							break;
-						case "spinner":
+						case 'spinner':
 							return (
 								<Spinner
 									color="#193652"
-									style={{ flex: 1, backgroundColor: "#EBF5FF" }}
+									style={{ flex: 1, backgroundColor: '#EBF5FF' }}
 								/>
 							);
 							break;
@@ -1028,8 +1029,8 @@ class Home extends React.Component {
 					toGroceryListScreen={this.toGroceryListScreen}
 					viewAllProducts={() =>
 						this.setState({
-							view: "viewProducts",
-							productView: "all"
+							view: 'viewProducts',
+							productView: 'all'
 						})
 					}
 				/>
