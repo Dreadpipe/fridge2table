@@ -1,5 +1,5 @@
-import axios from "axios";
-import getEnvVars from "../../env";
+import axios from 'axios';
+import getEnvVars from '../../env';
 
 const { IP_ADDRESS } = getEnvVars();
 
