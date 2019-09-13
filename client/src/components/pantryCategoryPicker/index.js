@@ -1,14 +1,14 @@
-import React from "react";
-import { Picker, Icon, Item } from "native-base";
+import React from 'react';
+import { Picker, Icon } from 'native-base';
 
 function PantryCategoryPicker(props) {
-	return (
+  return (
 		<Picker
 			mode="dropdown"
 			iosIcon={<Icon name="arrow-down" />}
 			style={props.styles}
 			placeholder="Press to select"
-			placeholderStyle={{ color: "#bfc6ea" }}
+			placeholderStyle={{ color: '#bfc6ea' }}
 			placeholderIconColor="#007aff"
 			selectedValue={props.selectedCategory}
 			onValueChange={props.onCategoryChange.bind(this)}
@@ -19,7 +19,7 @@ function PantryCategoryPicker(props) {
 			<Picker.Item label="Spice Rack" value="Spice Rack" />
 			<Picker.Item label="Misc" value="Misc" />
 		</Picker>
-	);
+  );
 }
 
 export default PantryCategoryPicker;
