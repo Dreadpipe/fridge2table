@@ -1,28 +1,26 @@
-import React from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
-import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
-import Constants from "expo-constants";
-import { Permissions } from "expo-permissions";
-import { BarCodeScanner } from "expo-barcode-scanner";
-import axios from "axios";
-import _ from "lodash";
-import API from "../../utils/API";
+import React from 'react';
+import { Text, View, StyleSheet, Button } from 'react-native';
+import { vw } from 'react-native-expo-viewport-units';
+import { Permissions } from 'expo-permissions';
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import axios from 'axios';
+import _ from 'lodash';
 
 styles = StyleSheet.create({
 	scanner: {
 		flex: 1,
-		justifyContent: "flex-end"
+		justifyContent: 'flex-end'
 	},
 	targeter: {
-		position: "absolute",
+		position: 'absolute',
 		height: vw(80),
 		width: vw(80),
-		borderColor: "white",
+		borderColor: 'white',
 		borderWidth: 3,
-		borderStyle: "dashed",
+		borderStyle: 'dashed',
 		borderRadius: 5,
 		left: vw(10),
-		top: "22%"
+		top: '22%'
 	}
 });
 
@@ -34,7 +32,7 @@ export default class BarCodeScannerExample extends React.Component {
 
 	async componentDidMount() {
 		const { status } = await Permissions.askAsync(Permissions.CAMERA);
-		this.setState({ hasCameraPermission: status === "granted" });
+		this.setState({ hasCameraPermission: status === 'granted' });
 		console.log(this.props);
 	}
 
@@ -57,7 +55,7 @@ export default class BarCodeScannerExample extends React.Component {
 				<View style={styles.targeter} />
 				{scanned && (
 					<Button
-						title={"Tap to Scan Again"}
+						title={'Tap to Scan Again'}
 						onPress={() => this.setState({ scanned: false })}
 					/>
 				)}
@@ -65,7 +63,7 @@ export default class BarCodeScannerExample extends React.Component {
 		);
 	}
 
-	handleBarCodeScanned = ({ type, data }) => {
+	handleBarCodeScanned = ({ data }) => {
 		this.setState({ scanned: true });
 		// alert(`Bar code with type ${type} and data ${data} has been scanned!`);
 
@@ -89,12 +87,12 @@ export default class BarCodeScannerExample extends React.Component {
 					toTitleCase(response.data.hints[0].food.label),
 					response.data.hints[0].food.image
 				);
-				alert("Product name found!");
+				alert('Product name found!');
 				this.props.toAddProductScreen();
 			})
 			.catch(err => {
 				if (err) {
-					alert("Sorry, product not found. Please enter the name manually.");
+					alert('Sorry, product not found. Please enter the name manually.');
 					this.props.toAddProductScreen();
 				}
 			});
