@@ -6,8 +6,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 // eslint-disable-next-line prefer-destructuring
 const CronJob = require('cron').CronJob;
-const { 
-  dailyCheck, check7, check2, checkExp 
+const {
+  dailyCheck, check7, check2, checkExp,
 } = require('./cronJobs/expirationCheck');
 const routes = require('./routes/routes').router;
 
@@ -54,11 +54,11 @@ new CronJob('0 0 0-23 1-31 * *', () => {
   dailyCheck();
 }, null, true, 'America/Los_Angeles');
 
-// new CronJob('0 * * * * *', () => {
-//   check7();
-//   check2();
-//   checkExp();
-// }, null, true, 'America/Los_Angeles');
+new CronJob('0,15,30,45 * * * * *', () => {
+  check7();
+  check2();
+  checkExp();
+}, null, true, 'America/Los_Angeles');
 
 // Start server
 app.listen(PORT, () => {
