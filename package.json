@@ -30,7 +30,7 @@
 		"expo-server-sdk": "^3.3.0",
 		"express": "^4.17.1",
 		"if-env": "^1.0.4",
-		"mongoose": "^5.5.15"
+		"mongoose": "^5.7.5"
 	},
 	"devDependencies": {
 		"concurrently": "^4.1.0",
