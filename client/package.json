@@ -9,7 +9,7 @@
 		"publish": "expo publish --release-channel prod"
 	},
 	"dependencies": {
-		"axios": "^0.19.0",
+		"axios": "^0.21.1",
 		"expo": "^32.0.0",
 		"jwt-decode": "^2.2.0",
 		"native-base": "^2.12.1",
